@@ -5,11 +5,11 @@ import LogosSection from './components/LogosSection';
 import ExistSection from './components/ExistSection';
 import AiEraSection from './components/AiEraSection';
 import FeaturesSection from './components/FeaturesSection';
-import AwardsSection from './components/AwardsSection';
 import TestimonialSection from './components/TestimonialSection';
 import CTASection from './components/CTASection';
 import Footer from './components/Footer';
 import AboutUsPage from './components/AboutUsPage';
+import ModuleViewPage from './components/ModuleViewPage';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -63,6 +63,7 @@ export default function App() {
   }, []);
 
   const isAboutPage = currentPath === '/about-us' || currentPath === '/about-us/';
+  const isModulePage = currentPath.startsWith('/module');
 
   return (
     <div className="relative flex min-h-screen flex-col justify-between bg-white">
@@ -70,6 +71,8 @@ export default function App() {
       <main className="flex-1">
         {isAboutPage ? (
           <AboutUsPage />
+        ) : isModulePage ? (
+          <ModuleViewPage />
         ) : (
           <>
             <HeroSection />
@@ -77,7 +80,6 @@ export default function App() {
             <ExistSection />
             <AiEraSection />
             <FeaturesSection />
-            <AwardsSection />
             <TestimonialSection />
             <CTASection />
           </>
