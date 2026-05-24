@@ -4,12 +4,12 @@ export default function LineageSection() {
       <div className="section-visibility-identity">
         <div className="container bg-white">
           <div className="section-visibility-identity__wrapper relative flex flex-col gap-lg overflow-hidden border-x-[0.5px] border-t-[0.5px] border-gray-600 px-sm pt-xxl sm:px-xl lg:gap-64px lg:px-80px lg:pt-88px">
-            <div className="section-visibility-identity__heading flex flex-col gap-lg lg:flex-row lg:items-start lg:justify-between">
-              <div className="flex w-full flex-col gap-sm lg:max-w-[504px]">
+            <div className="section-visibility-identity__heading flex flex-col gap-lg items-center justify-center text-center">
+              <div className="flex w-full flex-col gap-sm lg:max-w-[504px] items-center text-center mx-auto">
                 <h3 className="heading-h1"><span className="gradient-text-blue">Identity Lineage®</span></h3>
-                <p className="subtitle-m w-full lg:max-w-[365px]">Quickly understand the full context of any Non-Human Identity with Clutch's Identity Lineage®</p>
+                <p className="subtitle-m w-full lg:max-w-[365px] text-center">Quickly understand the full context of any Non-Human Identity with Clutch's Identity Lineage®</p>
               </div>
-              <div className="flex w-full flex-col gap-md sm:flex-row sm:items-center sm:justify-between lg:max-w-[386px] lg:flex-col lg:items-start lg:justify-start">
+              <div className="flex w-full flex-col gap-md sm:flex-row sm:items-center sm:justify-center lg:max-w-[600px] lg:flex-col lg:items-center lg:justify-center mx-auto text-center mt-4">
                 <p className="body-text-m"><b>Identity Lineage<sup>®</sup></b> provides a contextualized view of any Non-Human Identity, offering detailed insights into how it operates and empowering security teams with a deep understanding of the organizational ecosystem through simple and intuitive visualization.</p>
               </div>
             </div>
@@ -25,39 +25,39 @@ export default function LineageSection() {
         <div className="container bg-white">
           <div className="section-visibility-context__wrapper relative flex flex-col gap-xl overflow-hidden border-x-[0.5px] border-t-[0.5px] border-gray-600 px-sm py-xxl sm:px-xl lg:gap-64px lg:px-80px lg:py-88px">
             <p className="large-paragraph-m mx-auto w-full max-w-[961px] text-center">By aggregating and correlating information from various integrations, Clutch creates an intuitive visual mapping of the Non-Human Identity Lineage®. This allows security teams to quickly understand its full context:</p>
-            <div className="icons-list grid grid-cols-1 gap-sm lg:grid-cols-2 lg:gap-x-100px">
-              <div className="icons-list__item flex gap-xs">
+            <div className="icons-list grid grid-cols-1 gap-sm lg:grid-cols-2 lg:gap-x-100px justify-items-center">
+              <div className="icons-list__item flex gap-xs items-center text-center">
                 <span className="block shrink-0 mt-[3px]" style={{opacity: 1}}>
                   <img alt="Origin (Source of Truth)" loading="lazy" width="18" height="18" decoding="async" data-nimg="1" className="h-[18px] w-[18px]" style={{color: 'transparent'}} srcSet="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Forigin-v2.a597884e.svg&amp;w=32&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 1x, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Forigin-v2.a597884e.svg&amp;w=48&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 2x" src="/_next/static/media/origin-v2.a597884e.svg" />
                 </span>
                 <p className="body-text-m">Origin (Source of Truth)</p>
               </div>
-              <div className="icons-list__item flex gap-xs">
+              <div className="icons-list__item flex gap-xs items-center text-center">
                 <span className="block shrink-0 mt-[3px]" style={{opacity: 1}}>
                   <img alt="Consumers (CI/CD Pipelines, Applications)" loading="lazy" width="18" height="18" decoding="async" data-nimg="1" className="h-[18px] w-[18px]" style={{color: 'transparent'}} srcSet="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconsumers.4eec6f90.svg&amp;w=32&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 1x, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconsumers.4eec6f90.svg&amp;w=48&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 2x" src="/_next/static/media/consumers.4eec6f90.svg" />
                 </span>
                 <p className="body-text-m">Consumers (CI/CD Pipelines, Applications)</p>
               </div>
-              <div className="icons-list__item flex gap-xs">
+              <div className="icons-list__item flex gap-xs items-center text-center">
                 <span className="block shrink-0 mt-[3px]" style={{opacity: 1}}>
                   <img alt="Attribution to the Workforce (Owners, Creators)" loading="lazy" width="18" height="18" decoding="async" data-nimg="1" className="h-[18px] w-[18px]" style={{color: 'transparent'}} srcSet="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fuser-setting.c326ec55.svg&amp;w=32&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 1x, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fuser-setting.c326ec55.svg&amp;w=48&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 2x" src="/_next/static/media/user-setting.c326ec55.svg" />
                 </span>
                 <p className="body-text-m">Attribution to the Workforce (Owners, Creators)</p>
               </div>
-              <div className="icons-list__item flex gap-xs">
+              <div className="icons-list__item flex gap-xs items-center text-center">
                 <span className="block shrink-0 mt-[3px]" style={{opacity: 1}}>
                   <img alt="Resources (Access and Permissions)" loading="lazy" width="18" height="18" decoding="async" data-nimg="1" className="h-[18px] w-[18px]" style={{color: 'transparent'}} srcSet="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fresources.9800ecf9.svg&amp;w=32&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 1x, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fresources.9800ecf9.svg&amp;w=48&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 2x" src="/_next/static/media/resources.9800ecf9.svg" />
                 </span>
                 <p className="body-text-m">Resources (Access and Permissions)</p>
               </div>
-              <div className="icons-list__item flex gap-xs">
+              <div className="icons-list__item flex gap-xs items-center text-center">
                 <span className="block shrink-0 mt-[3px]" style={{opacity: 1}}>
                   <img alt="Storage (Vaults, Password Manager, Code)" loading="lazy" width="18" height="18" decoding="async" data-nimg="1" className="h-[18px] w-[18px]" style={{color: 'transparent'}} srcSet="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdata.d830bf52.svg&amp;w=32&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 1x, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdata.d830bf52.svg&amp;w=48&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 2x" src="/_next/static/media/data.d830bf52.svg" />
                 </span>
                 <p className="body-text-m">Storage (Vaults, Password Manager, Code)</p>
               </div>
             </div>
-            <div className="flex flex-col gap-md lg:gap-lg">
+            <div className="flex flex-col items-center gap-md lg:gap-lg">
               <div className="screen rounded-8" style={{boxShadow: '0px 2px 2px 0px #0000000A'}}>
                 <div className="screen__topbar relative flex h-lg items-center rounded-t-8 border-[0.5px] border-gray-600 px-midsm">
                   <div className="screen__topbar-dots flex items-center gap-xs">
