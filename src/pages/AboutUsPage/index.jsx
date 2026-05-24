@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import heroImg from '../assets/hero.png';
+import heroImg from '../../assets/hero.png';
 
 function FadeInBlock({ children, delay = 0 }) {
   const [ref, inView] = useInView({ threshold: 0.15, triggerOnce: true });
@@ -26,6 +26,12 @@ export default function AboutUsPage() {
     { name: "Andrew Luhrmann", role: "VP Sales" },
     { name: "Erez Cohen", role: "VP Product" },
     { name: "Allan Kristensen", role: "VP Sales Engineering" }
+  ];
+
+  const investors = [
+    { name: "Nir Polak", role: "Clutch Founding Investor", logos: ["Nir Polak"] },
+    { name: "Guru Chahal", role: "Partner, LightSpeed", logos: ["LightSpeed"] },
+    { name: "Jonathan Lim", role: "Partner, SignalFire", logos: ["SignalFire"] }
   ];
 
   const experts = [
@@ -104,9 +110,12 @@ export default function AboutUsPage() {
                     We spent decades as defenders and builders of large-scale enterprise security platforms. At the forefront of creating disruptive cyber solutions and empowering security teams to manage their operations and attack surfaces, <strong className="font-semibold text-black">we witnessed the significant impact of Non-Human Identity-based attacks firsthand</strong>.
                   </p>
                 </div>
-                <div className="lg:pl-xl">
+                <div className="lg:pl-xl flex flex-col gap-md">
                   <p className="body-text-l text-gray-1000">
                     We observed that organizations struggle to know, understand, control, and secure their Non-Human Identity landscape. They often lack visibility into what Non-Human Identities they have, how they are managed, the risks they pose, how these risks can be mitigated, and how to detect and respond to Non-Human Identity-based attacks.
+                  </p>
+                  <p className="body-text-l text-gray-1000">
+                    At Clutch, we leverage our deep domain expertise to empower security teams with the tools they need to clearly, easily, and effectively secure Non-Human Identities across their entire organization.
                   </p>
                 </div>
               </div>
@@ -115,7 +124,39 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* 3. Experts Section */}
+      {/* 3. Investors Section */}
+      <section className="overflow-hidden">
+        <div className="container">
+          <div className="section-border section-border-top flex flex-col gap-lg px-sm py-xxl sm:px-xl lg:gap-72px lg:px-80px lg:py-88px">
+            <FadeInBlock>
+              <h2 className="heading-h2 text-black mb-xl lg:mb-72px max-w-[800px]">
+                Our vision is backed by leading venture capital firms
+              </h2>
+              
+              <div className="flex flex-col">
+                {investors.map((inv, idx) => (
+                  <div key={idx} className="flex flex-col lg:flex-row lg:items-center justify-between border-b-[0.5px] border-black py-md lg:py-lg gap-md lg:gap-0 hover-lift bg-white px-xs -mx-xs transition-transform">
+                    <div className="flex flex-col gap-xxs">
+                      <div className="flex items-center gap-sm">
+                        <h3 className="body-heading-xl text-black">{inv.name}</h3>
+                        <a href="#" className="text-black font-bold text-xl hover:text-primary transition-colors">in</a>
+                      </div>
+                      <p className="body-text-m text-gray-800">{inv.role}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-md items-center lg:justify-end">
+                      {inv.logos.map((logo, lidx) => (
+                        <span key={lidx} className="font-bold text-xl tracking-tight text-black">{logo}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </FadeInBlock>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Experts Section */}
       <section className="overflow-hidden">
         <div className="container">
           <div className="section-border section-border-top flex flex-col gap-lg px-sm py-xxl sm:px-xl lg:gap-72px lg:px-80px lg:py-88px">
@@ -147,7 +188,25 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* 4. CTA / Footer-like Section */}
+      {/* 5. Careers / Join Section */}
+      <section className="overflow-hidden">
+        <div className="container">
+          <div className="section-border section-border-top flex flex-col lg:flex-row justify-between items-start lg:items-center gap-lg px-sm py-xxl sm:px-xl lg:gap-72px lg:px-80px lg:py-88px bg-gray-50">
+            <FadeInBlock>
+               <h2 className="heading-h2 text-black max-w-[700px] mb-md lg:mb-0">
+                 We're looking for sharp-minded, passionate, and talented individuals to join us on this exciting journey.
+               </h2>
+               <div className="mt-md">
+                 <a href="/join" className="button-primary-m">
+                   Open Positions &rarr;
+                 </a>
+               </div>
+            </FadeInBlock>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. CTA / Footer-like Section */}
       <section className="overflow-hidden mb-120px">
         <div className="container">
           <div className="section-border section-border-top flex flex-col gap-lg px-sm py-xxl sm:px-xl lg:gap-72px lg:px-80px lg:py-88px">

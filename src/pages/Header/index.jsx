@@ -416,14 +416,15 @@ function MegaDropdown({ data, isOpen }) {
 
   return (
     <div
-      className={`absolute left-1/2 -translate-x-1/2 top-full pt-[8px] z-50 transition-all duration-200 ${
+      className={`absolute left-1/2 -translate-x-1/2 top-full pt-[14px] z-50 transition-all duration-300 ease-out ${
         isOpen
-          ? 'opacity-100 visible translate-y-0'
-          : 'opacity-0 invisible -translate-y-[6px] pointer-events-none'
+          ? 'opacity-100 visible translate-y-0 scale-100'
+          : 'opacity-0 invisible -translate-y-2 scale-95 pointer-events-none'
       }`}
       style={{ 
         width: 'max-content', 
-        maxWidth: isLarge ? '1140px' : '960px' 
+        maxWidth: isLarge ? '1140px' : '960px',
+        transformOrigin: 'top center'
       }}
     >
       <div
@@ -543,19 +544,21 @@ export default function Header() {
           : 'bg-transparent'
       }`}
     >
-      <div className="container-wide w-full max-w-[1204px] mx-auto px-md lg:px-lg">
+      <div className="container">
         <div className="flex w-full items-center justify-between relative">
           {/* Logo */}
-          <a href="/" className="inline-flex items-center select-none z-50">
-            <img
-              src="/assets/logo-full-black.svg"
-              alt="Snapsec Suite"
-              className="w-[104px] xl:w-[124px]"
-            />
-          </a>
+          <div className="flex-1">
+            <a href="/" className="inline-flex items-center select-none z-50">
+              <img
+                src="/assets/logo-full-black.svg"
+                alt="Snapsec Suite"
+                className="w-[104px] xl:w-[124px]"
+              />
+            </a>
+          </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-0">
+          <nav className="hidden lg:flex items-center gap-0 justify-center">
             {navItems.map((item) => (
               <div
                 key={item.label}
@@ -575,22 +578,7 @@ export default function Header() {
                       <span className="transition-all duration-300">
                         {item.label}
                       </span>
-                      <span className="arrow-icon mt-[2px] flex items-center justify-center">
-                        <svg
-                          width="10"
-                          height="6"
-                          viewBox="0 0 10 6"
-                          fill="none"
-                        >
-                          <path
-                            d="M1 1L5 5L9 1"
-                            stroke="currentColor"
-                            strokeWidth="1.2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </span>
+
                     </span>
                   </div>
                 ) : (
@@ -624,7 +612,7 @@ export default function Header() {
           </nav>
 
           {/* CTA Buttons */}
-          <div className="flex items-center gap-xs z-50">
+          <div className="flex-1 flex justify-end items-center gap-xs z-50">
             <a
               href="https://suite.snapsec.co/demo"
               target="_blank"

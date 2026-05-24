@@ -487,15 +487,14 @@ export default function HeroSection() {
             </h1>
 
             <motion.div
-              className="w-full"
+              className="w-full flex justify-center items-center"
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.45 }}
             >
-              <p className="subtitle-m mx-auto max-w-[520px] text-gray-900 text-center">
-                Unify discovery, vulnerability management, intelligence,
-                <br className="hidden lg:inline-block" />
-                and protection across your entire ecosystem.
+              <p className="subtitle-m w-full max-w-[520px] text-gray-900 text-center flex flex-col items-center justify-center">
+                <span>Unify discovery, vulnerability management, intelligence,</span>
+                <span>and protection across your entire ecosystem.</span>
               </p>
             </motion.div>
           </div>
