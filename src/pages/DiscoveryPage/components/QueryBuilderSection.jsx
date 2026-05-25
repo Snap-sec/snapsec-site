@@ -4,23 +4,21 @@ export default function QueryBuilderSection() {
       <div className="section-tailored-insights">
         <div className="container bg-white">
           <div className="section-tailored-insights__wrapper relative flex flex-col gap-xxl overflow-hidden border-x-[0.5px] border-t-[0.5px] border-gray-600 px-sm py-xxl sm:px-xl lg:gap-64px lg:px-80px lg:py-88px">
-            <h3 className="heading-h1 w-full lg:max-w-[723px] text-center mx-auto">Unlock Tailored Insights Using Clutch's Powerful Query Builder</h3>
-            <div className="section-tailored-insights__content flex flex-col gap-lg lg:flex-col lg:items-center lg:justify-center text-center mt-8">
-              <div className="section-tailored-insights__info flex w-full flex-col gap-xl lg:max-w-[800px] items-center text-center mx-auto">
-                <div className="section-tailored-insights__info-item flex flex-col gap-sm items-center">
-                  <p className="body-heading-xl">Tailored Data Consumption</p>
-                  <p className="body-text-m text-center">Clutch's advanced query builder enables security teams to create multi-conditional queries with detailed granularity, allowing them to consume Clutch's contextualized inventory in the way that best suits their needs and workflows.</p>
+            <h3 className="heading-h1 w-full lg:max-w-[723px] text-center lg:text-left mx-auto lg:mx-0 mb-8 lg:mb-12">Unlock Tailored Insights Using Clutch's Powerful Query Builder</h3>
+            <div className="section-tailored-insights__content flex flex-col gap-lg lg:flex-row lg:items-start lg:justify-between text-center lg:text-left">
+              <div className="section-tailored-insights__info flex w-full flex-col gap-xl lg:w-[48%] items-center lg:items-start text-center lg:text-left mx-auto lg:mx-0">
+                <div className="section-tailored-insights__info-item flex flex-col gap-sm items-center lg:items-start">
+                  <p className="body-heading-xl font-bold">Tailored Data Consumption</p>
+                  <p className="body-text-m text-center lg:text-left">Clutch's advanced query builder enables security teams to create multi-conditional queries with detailed granularity, allowing them to consume Clutch's contextualized inventory in the way that best suits their needs and workflows.</p>
                 </div>
-                <div className="section-tailored-insights__info-item flex flex-col gap-sm items-center">
-                  <p className="body-heading-xl">Flexible Breach Containment Options</p>
-                  <p className="body-text-m text-center">Clutch facilitates a wide range of query options, enabling security teams to understand the potential impact of breaches, such as identifying unrotated NHIs from compromised applications, and covering various practices and scenarios.</p>
+                <div className="section-tailored-insights__info-item flex flex-col gap-sm items-center lg:items-start">
+                  <p className="body-heading-xl font-bold">Flexible Breach Containment Options</p>
+                  <p className="body-text-m text-center lg:text-left">Clutch facilitates a wide range of query options, enabling security teams to understand the potential impact of breaches, such as identifying unrotated NHIs from compromised applications, and covering various practices and scenarios.</p>
                 </div>
               </div>
-              <div className="section-tailored-insights__image flex w-full flex-col gap-sm lg:max-w-[600px] lg:gap-md items-center text-center mx-auto mt-8">
-                <span className="block" style={{opacity: 1}}>
-                  <img alt="Unlock Tailored Insights Using Clutch's Powerful Query Builder" loading="lazy" width="468" height="396" decoding="async" data-nimg="1" className="w-full mx-auto" style={{color: 'transparent'}} srcSet="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fvisibility-tailored-insights-image.b775a34c.svg&amp;w=640&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 1x, /_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fvisibility-tailored-insights-image.b775a34c.svg&amp;w=1080&amp;q=75&amp;dpl=dpl_HdUvuAVMUSwcPVPp3UAoCb9Pan5s 2x" src="/_next/static/media/visibility-tailored-insights-image.b775a34c.svg" />
-                </span>
-                <p className="body-text-xs text-gray-1000 text-center">Complex ecosystems, workflows, and technology stacks may require security teams to move beyond inventory lists and actively query data in more dynamic and flexible ways.</p>
+              <div className="section-tailored-insights__image flex w-full flex-col gap-sm lg:w-[48%] lg:gap-md items-center lg:items-start text-center lg:text-left mx-auto lg:mx-0 mt-8 lg:mt-0">
+                  <img alt="Unlock Tailored Insights" loading="lazy" width="468" height="396" className="w-full lg:max-w-[468px] mx-auto lg:mx-0 rounded-2xl shadow-xl object-cover" src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=800&auto=format&fit=crop" />
+                <p className="body-text-xs text-gray-1000 text-center lg:text-left lg:max-w-[468px]">Complex ecosystems, workflows, and technology stacks may require security teams to move beyond inventory lists and actively query data in more dynamic and flexible ways.</p>
               </div>
             </div>
           </div>
