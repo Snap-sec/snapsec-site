@@ -1,21 +1,25 @@
-import HeroSection from './components/HeroSection';
-import ChallengeSection from './components/ChallengeSection';
-import SolutionSection from './components/SolutionSection';
-import BigTextSection from './components/BigTextSection';
-import IntegrationSection from './components/IntegrationSection';
-import LineageSection from './components/LineageSection';
-import QueryBuilderSection from './components/QueryBuilderSection';
+import HeroSection from './components/HeroSection.jsx';
+import ChallengeSection from './components/ChallengeSection.jsx';
+import SolutionSection from './components/SolutionSection.jsx';
+import QuoteSection from './components/QuoteSection.jsx';
+import IntegrationSection from './components/IntegrationSection.jsx';
+import IdentitySection from './components/IdentitySection.jsx';
+import ContextSection from './components/ContextSection.jsx';
+import TailoredInsightsSection from './components/TailoredInsightsSection.jsx';
+import CTABannerSection from './components/CTABannerSection.jsx';
 
 export default function DiscoveryPage() {
   return (
-    <main className="relative z-5 bg-white text-black font-body">
+    <>
       <HeroSection />
       <ChallengeSection />
       <SolutionSection />
-      <BigTextSection />
+      <QuoteSection />
       <IntegrationSection />
-      <LineageSection />
-      <QueryBuilderSection />
-    </main>
+      <IdentitySection />
+      <ContextSection />
+      <TailoredInsightsSection />
+      <CTABannerSection />
+    </>
   );
 }
