@@ -290,13 +290,15 @@ const dropdownData = {
             icon: Icons.globe,
             title: 'ASM',
             desc: 'Attack Surface Management: Continuous external discovery and exposure monitoring.',
-            link: 'https://docs.snapsec.co/products/asm/assets',
+            link: '/discovery/asm',
+            internal: true,
           },
           {
             icon: Icons.layers,
             title: 'AIM',
             desc: 'Asset Intelligence Module: Automated classification and inventory metadata catalog.',
-            link: 'https://docs.snapsec.co/products/aim/overview',
+            link: '/discovery/aim',
+            internal: true,
           },
         ],
       },
@@ -306,13 +308,15 @@ const dropdownData = {
             icon: Icons.scan,
             title: 'WAS',
             desc: 'Web Application Scanner: Automated dynamic DAST scanning for web apps and APIs.',
-            link: 'https://docs.snapsec.co/products/was/overview',
+            link: '/discovery/was',
+            internal: true,
           },
           {
             icon: Icons.zap,
             title: 'VS',
             desc: 'Vulnerability Scanner: Automated network, port, and infrastructure scanning.',
-            link: 'https://docs.snapsec.co/products/vs/overview',
+            link: '/discovery/vs',
+            internal: true,
           },
         ],
       },
@@ -322,7 +326,8 @@ const dropdownData = {
             icon: Icons.shield,
             title: 'VM',
             desc: 'Vulnerability Management: Centralized tracking, scoring, and remediation workflows.',
-            link: 'https://docs.snapsec.co/products/vm/dashboard',
+            link: '/discovery/vm',
+            internal: true,
           },
         ],
       },
@@ -385,12 +390,12 @@ const dropdownData = {
 };
 
 // ─── Single dropdown item ───────────────────────────────
-function DropdownItem({ icon, title, desc, link }) {
+function DropdownItem({ icon, title, desc, link, internal }) {
   return (
     <a
       href={link}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={internal ? undefined : '_blank'}
+      rel={internal ? undefined : 'noopener noreferrer'}
       className="group flex items-start gap-[12px] rounded-lg p-[10px] -mx-[10px] transition-colors duration-150 hover:bg-gray-50"
     >
       <span className="flex-shrink-0 mt-[2px] text-gray-500 group-hover:text-black transition-colors duration-150">
@@ -493,7 +498,6 @@ function MegaDropdown({ data, isOpen }) {
 // ─── Nav items config ───────────────────────────────────
 const navItems = [
   { label: 'Platform', hasDropdown: false, href: '/platform' },
-  { label: 'Discovery', hasDropdown: false, href: '/discovery' },
   { label: 'Modules', hasDropdown: true },
   { label: 'Usecases', hasDropdown: true },
   { label: 'Resources', hasDropdown: true },
@@ -728,8 +732,8 @@ export default function Header() {
                                 <a
                                   key={it.title}
                                   href={it.link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
+                                  target={it.internal ? undefined : '_blank'}
+                                  rel={it.internal ? undefined : 'noopener noreferrer'}
                                   className="flex items-center gap-[8px] py-[6px]"
                                   onClick={() => setMobileOpen(false)}
                                 >

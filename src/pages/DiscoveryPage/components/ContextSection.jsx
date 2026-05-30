@@ -27,18 +27,18 @@ function CheckIcon() {
 // NHI context dashboard mockup
 function ContextDashboardMockup() {
   const contextItems = [
-    { key: 'Identity', value: 'github-deploy-key-prod', type: 'API Key' },
-    { key: 'Origin', value: 'GitHub / clutch-security/infra', type: 'Source of Truth' },
-    { key: 'Owner', value: 'John Doe — DevOps Team', type: 'Workforce Attribution' },
-    { key: 'Consumer', value: 'CI/CD Pipeline (prod)', type: 'CI/CD' },
-    { key: 'Resources', value: 'AWS S3, ECR, ECS (Admin)', type: 'Access & Permissions' },
-    { key: 'Storage', value: 'HashiCorp Vault — /prod/secrets', type: 'Vault' },
+    { key: 'Host',        value: 'api.acme.com',        type: 'Discovered Asset' },
+    { key: 'WAF',         value: 'Cloudflare',           type: 'Protection Layer' },
+    { key: 'ASN / Host',  value: 'AS13335 Cloudflare',   type: 'Infrastructure' },
+    { key: 'Tech Stack',  value: 'Nginx, React, Vercel',  type: 'Technology' },
+    { key: 'DNS Record',  value: 'CNAME → cf-proxy.net', type: 'DNS Mapping' },
+    { key: 'Certificate', value: 'Expires in 14 days',   type: 'TLS Status' },
   ];
 
   const riskItems = [
-    { label: 'Overprivileged', severity: 'High', color: '#EA580C' },
-    { label: 'Not Rotated (90d)', severity: 'Critical', color: '#DC2626' },
-    { label: 'Shared Secret', severity: 'Medium', color: '#CA8A04' },
+    { label: 'Exposed SSH Port (22)',   severity: 'Critical', color: '#DC2626' },
+    { label: 'Expired TLS Certificate', severity: 'High',     color: '#EA580C' },
+    { label: 'Open Admin Panel',        severity: 'Medium',   color: '#CA8A04' },
   ];
 
   return (
@@ -61,7 +61,7 @@ function ContextDashboardMockup() {
           ))}
         </div>
         <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <span style={{ fontSize: '11px', color: '#6E6E6E' }}>Identity Lineage® — github-deploy-key-prod</span>
+          <span style={{ fontSize: '11px', color: '#6E6E6E' }}>suite.snapsec.co / asm / asset-catalog / api.acme.com</span>
         </div>
       </div>
 
@@ -70,7 +70,7 @@ function ContextDashboardMockup() {
         {/* Left: context fields */}
         <div style={{ padding: '16px', borderRight: '0.5px solid #F0F0F0' }}>
           <div style={{ fontSize: '10px', fontWeight: 600, color: '#9CA3AF', letterSpacing: '0.06em', marginBottom: '12px' }}>
-            IDENTITY CONTEXT
+            ASSET CONTEXT
           </div>
           {contextItems.map((item, i) => (
             <motion.div
@@ -127,13 +127,13 @@ function ContextDashboardMockup() {
             </motion.div>
           ))}
 
-          {/* Blast radius indicator */}
+          {/* Exposure scope */}
           <div style={{ marginTop: '16px' }}>
             <div style={{ fontSize: '10px', fontWeight: 600, color: '#9CA3AF', letterSpacing: '0.06em', marginBottom: '8px' }}>
-              BLAST RADIUS
+              EXPOSURE SCOPE
             </div>
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-              {['AWS S3', 'ECR', 'ECS', 'CloudWatch', '+3 more'].map((item, i) => (
+              {['Subdomains: 4', 'IPs: 2', 'Ports: 6', 'Web Servers: 3', '+2 signals'].map((item, i) => (
                 <span key={i} style={{
                   fontSize: '10px', padding: '2px 8px', borderRadius: '4px',
                   background: '#FEF2F2', color: '#DC2626',
@@ -152,11 +152,11 @@ function ContextDashboardMockup() {
 }
 
 const contextItems = [
-  { label: 'Origin (Source of Truth)' },
-  { label: 'Consumers (CI/CD Pipelines, Applications)' },
-  { label: 'Attribution to the Workforce (Owners, Creators)' },
-  { label: 'Resources (Access and Permissions)' },
-  { label: 'Storage (Vaults, Password Manager, Code)' },
+  { label: 'WAF detection — Cloudflare, Akamai, Fastly and more' },
+  { label: 'ASN and hosting provider identification (AWS, GCP, Azure)' },
+  { label: 'Technology fingerprinting — frameworks, CDN, analytics' },
+  { label: 'DNS record type mapping (A, CNAME, MX, SOA)' },
+  { label: 'Certificate validity, expiry timelines and domain associations' },
 ];
 
 export default function ContextSection() {
@@ -167,7 +167,7 @@ export default function ContextSection() {
 
           <FadeInBlock>
             <p className="large-paragraph-m mx-auto w-full text-center">
-              By aggregating and correlating information from various integrations, Clutch creates an intuitive visual mapping of the Non-Human Identity Lineage®. This allows security teams to quickly understand its full context:
+              ASM enriches every discovered asset with rich metadata — WAF provider, ASN, technology stack, DNS records, certificates and open ports — giving security teams instant context for faster investigation and prioritization.
             </p>
           </FadeInBlock>
 
@@ -191,7 +191,7 @@ export default function ContextSection() {
 
             <FadeInBlock delay={0.3}>
               <p className="body-text-m mx-auto w-full  text-center text-gray-900">
-                This NHI-centric contextual visibility enables not only the quick identification of involved parties and resources, but also provides security teams with the context they need to determine which NHIs present an actual risk.
+                Rich asset context means security teams don't just see what's exposed — they understand why it matters, who owns it, and how to fix it. Actionable context drives faster remediation and smarter prioritization.
               </p>
             </FadeInBlock>
           </div>

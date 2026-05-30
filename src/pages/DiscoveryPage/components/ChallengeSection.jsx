@@ -4,13 +4,9 @@ import { useInView } from 'react-intersection-observer';
 function FadeInBlock({ children, delay = 0 }) {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
   return (
-    <motion.div
-      ref={ref}
-      className="w-full"
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
-    >
+    <motion.div ref={ref} className="w-full"
+      initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}>
       {children}
     </motion.div>
   );
@@ -31,7 +27,7 @@ export default function ChallengeSection() {
             <FadeInBlock delay={0.1}>
               <div className="border-b-[0.5px] border-gray-600 pb-md lg:border-b-0 lg:pb-88px lg:pr-96px">
                 <p className="body-text-m w-full lg:max-w-[386px]">
-                  The proliferation of Non-Human Identities across the entire enterprise, combined with their dynamic nature and decentralization, poses a major challenge for organizations seeking centralized and comprehensive visibility.
+                  Modern organizations have thousands of external-facing assets — subdomains, IPs, ports, certificates, APIs — that grow continuously and unpredictably. Shadow IT, cloud sprawl, and rapid development cycles mean new assets appear and disappear without security teams ever knowing they existed.
                 </p>
               </div>
             </FadeInBlock>
@@ -39,7 +35,7 @@ export default function ChallengeSection() {
             <FadeInBlock delay={0.2}>
               <div className="pb-lg lg:pb-88px lg:pl-96px">
                 <p className="body-text-m w-full lg:max-w-[386px]">
-                  There is a critical need for a context-based inventory that allows security teams to understand which Non-Human Identities exist, their business context, where they are stored, who has access to them, their owners, and their level of privilege.
+                  Without continuous, automated discovery, critical exposures go undetected for weeks or months. Security teams need real-time visibility into what assets are exposed, where risks are concentrated, and which areas require immediate attention — before attackers exploit the gaps.
                 </p>
               </div>
             </FadeInBlock>

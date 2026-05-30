@@ -12,6 +12,7 @@ export default function AppRoutes() {
       <Route path="/" element={<HomePage />} />
       <Route path="/module/*" element={<ModuleViewPage />} />
       <Route path="/discovery" element={<DiscoveryPage />} />
+      <Route path="/discovery/:moduleSlug" element={<DiscoveryPage />} />
       <Route path="/platform" element={<PlatformPage />} />
       <Route path="/about-us" element={<AboutUsPage />} />
       <Route path="/contact-us" element={<ContactUsPage />} />
