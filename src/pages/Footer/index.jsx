@@ -21,7 +21,7 @@ const footerLinks = {
   ],
   Company: [
     { label: 'About Us', href: '/about-us' },
-    { label: 'Contact Us', href: 'mailto:support@snapsec.co' },
+    { label: 'Contact Us', href: '/contact-us' },
   ],
 };
 

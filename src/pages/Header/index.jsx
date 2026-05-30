@@ -492,10 +492,13 @@ function MegaDropdown({ data, isOpen }) {
 
 // ─── Nav items config ───────────────────────────────────
 const navItems = [
+  { label: 'Platform', hasDropdown: false, href: '/platform' },
+  { label: 'Discovery', hasDropdown: false, href: '/discovery' },
   { label: 'Modules', hasDropdown: true },
   { label: 'Usecases', hasDropdown: true },
   { label: 'Resources', hasDropdown: true },
-  { label: 'Company', hasDropdown: false, href: '/about-us' },
+  { label: 'About Us', hasDropdown: false, href: '/about-us' },
+  { label: 'Contact Us', hasDropdown: false, href: '/contact-us' },
 ];
 
 // ─── Header component ──────────────────────────────────
