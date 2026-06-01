@@ -387,6 +387,32 @@ const dropdownData = {
       },
     ],
   },
+  Company: {
+    columns: [
+      {
+        items: [
+          {
+            icon: Icons.fingerprint,
+            title: 'About Us',
+            desc: 'Learn more about our mission, vision, and team.',
+            link: '/about-us',
+            internal: true,
+          },
+        ],
+      },
+      {
+        items: [
+          {
+            icon: Icons.network,
+            title: 'Contact Us',
+            desc: 'Get in touch with our team for support or inquiries.',
+            link: '/contact-us',
+            internal: true,
+          },
+        ],
+      },
+    ],
+  },
 };
 
 // ─── Single dropdown item ───────────────────────────────
@@ -501,8 +527,7 @@ const navItems = [
   { label: 'Modules', hasDropdown: true },
   { label: 'Usecases', hasDropdown: true },
   { label: 'Resources', hasDropdown: true },
-  { label: 'About Us', hasDropdown: false, href: '/about-us' },
-  { label: 'Contact Us', hasDropdown: false, href: '/contact-us' },
+  { label: 'Company', hasDropdown: true },
 ];
 
 // ─── Header component ──────────────────────────────────
