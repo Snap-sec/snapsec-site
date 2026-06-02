@@ -7,10 +7,10 @@ const HeroSection = () => {
         <div className="section-platform-hero__wrapper relative flex flex-col gap-xl overflow-hidden border-x-[0.5px] border-gray-600 px-sm pb-64px sm:px-xl lg:gap-xxl lg:px-80px lg:pb-88px">
           <div className="section-platform-hero__heading mx-auto flex w-full max-w-[790px] flex-col gap-md text-center">
             <h1 className="heading-hero">
-              The Identity Security Platform for Everything That Isn’t a Person
+              All Your Application Security Needs Centralized At One Place
             </h1>
             <p className="subtitle-m mx-auto w-full [&_br]:hidden lg:[&_br]:inline-block">
-              Visibility, governance, and security for every Non-Human Identity, AI Agent, and Secret across your environment
+              Eliminate the complexity of scattered security tools with a unified platform that brings visibility, governance, and threat detection together.
             </p>
           </div>
           <div className="pointer-events-none relative z-1 mx-auto aspect-[632/290] w-full max-w-[632px] lg:pointer-events-auto">

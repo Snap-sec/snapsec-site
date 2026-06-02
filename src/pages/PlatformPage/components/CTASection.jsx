@@ -8,19 +8,19 @@ const CTASection = () => {
           <div className="relative flex w-full flex-col items-center gap-lg lg:gap-lg">
             <div className="relative z-2 flex flex-col gap-sm lg:gap-lg">
               <h3 className="heading-h1 mx-auto w-full max-w-[650px]">
-                Identity Security Beyond the Human Perimeter
+                One Platform to Secure Your Entire Attack Surface
               </h3>
-              <p className="subtitle-m mx-auto w-full max-w-[360px]">
-                See every identity, agent, and secret. Know what each one can do.
+              <p className="subtitle-m mx-auto w-full max-w-[480px]">
+                Discover, detect, prioritize, and remediate — all from a single unified security platform built for modern enterprises.
               </p>
             </div>
             <div className="relative z-2">
               <a
                 className="group button-primary-m min-w-[198px]"
-                href="https://www.clutch.security/book-demo"
+                href="/contact"
               >
                 <span className="block">
-                  See Clutch in Action{' '}
+                  See Snapsec in Action{' '}
                   <span className="inline-block tracking-normal transition-transform duration-300 group-hover:translate-x-[2px]">
                     -&gt;
                   </span>
@@ -63,7 +63,7 @@ const CTASection = () => {
             <div className="section-icons-cards-big-3col__content-item flex flex-col items-center gap-sm lg:px-xs">
               <span className="block shrink-0" style={{ opacity: 1 }}>
                 <img
-                  alt="Business Continuity"
+                  alt="On Prem Instance Support"
                   width="32"
                   height="32"
                   className="size-lg"
@@ -71,16 +71,16 @@ const CTASection = () => {
                 />
               </span>
               <div className="flex flex-col gap-xs">
-                <p className="body-heading-m">Business Continuity</p>
+                <p className="body-heading-m">On Prem Instance Support</p>
                 <p className="body-text-s mx-auto w-full max-w-[288px]">
-                  Recommendations designed to avoid disruption to production systems
+                  Deploy Snapsec on-premise for full data sovereignty and air-gapped environment support
                 </p>
               </div>
             </div>
             <div className="section-icons-cards-big-3col__content-item flex flex-col items-center gap-sm lg:px-xs">
               <span className="block shrink-0" style={{ opacity: 1 }}>
                 <img
-                  alt="Limitless Scalability"
+                  alt="Solution Agnostic"
                   width="32"
                   height="32"
                   className="size-lg"
@@ -88,9 +88,9 @@ const CTASection = () => {
                 />
               </span>
               <div className="flex flex-col gap-xs">
-                <p className="body-heading-m">Limitless Scalability</p>
+                <p className="body-heading-m">Solution Agnostic</p>
                 <p className="body-text-s mx-auto w-full max-w-[288px]">
-                  Purpose-built to scale across cloud, SaaS, on-prem, and AI environments
+                  We connect with any solution — integrating with your existing scanners, tools, and workflows out of the box
                 </p>
               </div>
             </div>
