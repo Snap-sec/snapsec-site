@@ -66,7 +66,7 @@ export default function DiscoveryPage() {
       <HeroSection moduleSlug={moduleSlug} mod={mod} />
       <ChallengeSection moduleSlug={moduleSlug} mod={mod} />
       <SolutionSection moduleSlug={moduleSlug} mod={mod} />
-      <QuoteSection />
+      <QuoteSection moduleSlug={moduleSlug} mod={mod} />
       <IntegrationSection />
       <IdentitySection />
       <ContextSection />
