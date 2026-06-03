@@ -12,8 +12,8 @@ function FadeInBlock({ children, delay = 0 }) {
   );
 }
 
-// Asset Catalog mockup showing real ASM columns
-function AssetCatalogMockup() {
+// Asset Catalog mockup showing real columns
+function AssetCatalogMockup({ slug }) {
   const assets = [
     { host: 'api.acme.com',        type: 'Subdomain',  waf: 'Cloudflare', ports: '443, 80',  exposed: true,  signals: 4 },
     { host: '104.21.48.10',        type: 'IP Address', waf: 'AWS',        ports: '443',       exposed: true,  signals: 2 },
@@ -30,7 +30,7 @@ function AssetCatalogMockup() {
         </div>
         <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', gap: 4 }}>
           <svg width="11" height="12" viewBox="0 0 11 12" fill="none"><circle cx="5.5" cy="6" r="5" stroke="#6E6E6E" strokeWidth="1"/><path d="M5.5 2V6L7.5 8" stroke="#6E6E6E" strokeWidth="1" strokeLinecap="round"/></svg>
-          <span style={{ fontSize: '11px', color: '#6E6E6E' }}>suite.snapsec.co / asm / assets</span>
+          <span style={{ fontSize: '11px', color: '#6E6E6E' }}>suite.snapsec.co / {slug} / assets</span>
         </div>
       </div>
       {/* Table header */}
@@ -56,48 +56,140 @@ function AssetCatalogMockup() {
   );
 }
 
-const solutionCards = [
-  {
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-        <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1"/>
-        <circle cx="24" cy="24" r="8" fill="none" stroke="#000" strokeWidth="1.5"/>
-        <line x1="24" y1="8" x2="24" y2="16" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
-        <line x1="24" y1="32" x2="24" y2="40" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
-        <line x1="8" y1="24" x2="16" y2="24" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
-        <line x1="32" y1="24" x2="40" y2="24" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
-    ),
-    title: 'Continuous Discovery',
-    text: 'Automatically discover every external-facing asset — subdomains, IPs, ports, web servers, certificates, DNS records — with no blind spots.',
+const solutionData = {
+  aim: {
+    title: 'The Snapsec AIM Solution',
+    desc: 'AIM continuously discovers assets, identities, secrets, applications, and infrastructure across your environment. It builds a centralized inventory enriched with ownership, relationships, and context, giving security teams complete visibility into what exists, who owns it, and how it connects.',
+    btnText: 'Explore AIM Live',
+    cards: [
+      {
+        title: 'Identity & Secrets Mapping',
+        text: 'Trace active credentials, API keys, and certificates to their hosting resources to prevent token leakage.'
+      },
+      {
+        title: 'Cloud Adapter Sync',
+        text: 'Connect with AWS, Azure, GCP, and Kubernetes automatically to sync asset logs in real time.'
+      },
+      {
+        title: 'Relationship Mapping',
+        text: 'Identify direct dependencies between infrastructure entities and high-value codebases.'
+      }
+    ]
   },
-  {
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-        <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1"/>
-        <rect x="12" y="14" width="24" height="20" rx="2" stroke="#000" strokeWidth="1.5"/>
-        <line x1="16" y1="20" x2="32" y2="20" stroke="#000" strokeWidth="1"/>
-        <line x1="16" y1="24" x2="28" y2="24" stroke="#000" strokeWidth="1"/>
-        <line x1="16" y1="28" x2="24" y2="28" stroke="#000" strokeWidth="1"/>
-      </svg>
-    ),
-    title: 'Unified Asset Catalog',
-    text: 'Explore and manage all discovered assets in one place. Filter by type, WAF, exposure status, network scope, or signal presence.',
+  vs: {
+    title: 'The Snapsec VS Solution',
+    desc: 'VS continuously scans infrastructure, cloud resources, applications, and external assets to identify vulnerabilities and security weaknesses. Automated assessments help teams detect issues quickly, maintain ongoing visibility, and reduce the time between vulnerability introduction and discovery.',
+    btnText: 'Explore VS Live',
+    cards: [
+      {
+        title: 'Agentless Scanning',
+        text: 'Scan ports, protocols, and services without deploying heavyweight local agents.'
+      },
+      {
+        title: 'Continuous Compliance',
+        text: 'Maintain audit readiness for SOC2, ISO27001, and PCI-DSS requirements via daily scans.'
+      },
+      {
+        title: 'Internal & External Coverage',
+        text: 'Triage exposures on both public domains and internal corporate network environments.'
+      }
+    ]
   },
-  {
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-        <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1"/>
-        <path d="M16 20L24 28L32 20" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <circle cx="24" cy="16" r="3" stroke="#000" strokeWidth="1.5"/>
-      </svg>
-    ),
-    title: 'Risk Signals',
-    text: 'Continuously detect exposures using rule-based intelligence. Signals evaluate assets after each scan and surface violations with severity and trends.',
+  asm: {
+    title: 'The Snapsec ASM Solution',
+    desc: 'ASM continuously discovers, inventories, and monitors internet-facing assets across your organization. It identifies exposed services, shadow IT, unknown assets, and security risks, helping teams understand and secure their entire external attack surface before attackers find it.',
+    btnText: 'Explore ASM Live',
+    cards: [
+      {
+        title: 'Continuous Discovery',
+        text: 'Automatically discover every external-facing asset — subdomains, IPs, ports, web servers, certificates, DNS records — with no blind spots.'
+      },
+      {
+        title: 'Unified Asset Catalog',
+        text: 'Explore and manage all discovered assets in one place. Filter by type, WAF, exposure status, network scope, or signal presence.'
+      },
+      {
+        title: 'Risk Signals',
+        text: 'Continuously detect exposures using rule-based intelligence. Signals evaluate assets after each scan and surface violations with severity and trends.'
+      }
+    ]
   },
+  was: {
+    title: 'The Snapsec WAS Solution',
+    desc: 'WAS performs continuous security testing of web applications and APIs, uncovering vulnerabilities such as authentication flaws, injection issues, and business logic weaknesses. Security and development teams receive validated findings with actionable guidance to strengthen application security.',
+    btnText: 'Explore WAS Live',
+    cards: [
+      {
+        title: 'DAST Security Engine',
+        text: 'Simulate real-world attacks to find business logic flaws and OWASP Top 10 vulnerabilities.'
+      },
+      {
+        title: 'API Security Auditing',
+        text: 'Upload OpenAPI specifications to scan REST and GraphQL endpoints for authorization flaws.'
+      },
+      {
+        title: 'Developer Integration',
+        text: 'Generate copy-pasteable curl commands and Remediation recipes to accelerate dev fixes.'
+      }
+    ]
+  },
+  vm: {
+    title: 'The Snapsec VM Solution',
+    desc: 'VM aggregates vulnerability data from all security tools into a single platform, eliminates noise through deduplication and false-positive analysis, identifies root causes, prioritizes true risk, and orchestrates remediation workflows so security and engineering teams can resolve issues faster.',
+    btnText: 'Explore VM Live',
+    cards: [
+      {
+        title: 'Scanner Aggregation',
+        text: 'Merge findings from Qualys, Trivy, Snyk, and 56+ third-party tools into a single pane of glass.'
+      },
+      {
+        title: 'Risk Prioritization',
+        text: 'Determine business critical impact by correlating threat intelligence with asset criticality.'
+      },
+      {
+        title: 'Workflow Orchestration',
+        text: 'Auto-create JIRA tickets and track SLA breach deadlines with real-time slack alerts.'
+      }
+    ]
+  }
+};
+
+const cardIcons = [
+  // Icon 1
+  (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1"/>
+      <circle cx="24" cy="24" r="8" fill="none" stroke="#000" strokeWidth="1.5"/>
+      <line x1="24" y1="8" x2="24" y2="16" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="24" y1="32" x2="24" y2="40" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="8" y1="24" x2="16" y2="24" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="32" y1="24" x2="40" y2="24" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  ),
+  // Icon 2
+  (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1"/>
+      <rect x="12" y="14" width="24" height="20" rx="2" stroke="#000" strokeWidth="1.5"/>
+      <line x1="16" y1="20" x2="32" y2="20" stroke="#000" strokeWidth="1"/>
+      <line x1="16" y1="24" x2="28" y2="24" stroke="#000" strokeWidth="1"/>
+      <line x1="16" y1="28" x2="24" y2="28" stroke="#000" strokeWidth="1"/>
+    </svg>
+  ),
+  // Icon 3
+  (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1"/>
+      <path d="M16 20L24 28L32 20" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="24" cy="16" r="3" stroke="#000" strokeWidth="1.5"/>
+    </svg>
+  )
 ];
 
-export default function SolutionSection() {
+export default function SolutionSection({ moduleSlug }) {
+  const slug = (moduleSlug || 'asm').toLowerCase();
+  const data = solutionData[slug] || solutionData.asm;
+
   return (
     <section className="section-solution">
       <div className="container">
@@ -105,19 +197,19 @@ export default function SolutionSection() {
 
           <FadeInBlock>
             <div className="mx-auto flex w-full max-w-[734px] flex-col gap-sm text-center items-center">
-              <h3 className="heading-h1 text-center">The Snapsec ASM Solution</h3>
-              <p className="subtitle-m mx-auto w-full max-w-[420px] text-gray-900 text-center">
-                Unified Visibility. Actionable Insights. Real-Time Awareness.
+              <h3 className="heading-h1 text-center">{data.title}</h3>
+              <p className="body-text-m mx-auto w-full max-w-[620px] text-gray-900 text-center" style={{ marginTop: '12px', lineHeight: '1.6' }}>
+                {data.desc}
               </p>
             </div>
           </FadeInBlock>
 
           <div className="flex flex-col gap-xxl">
             <div className="grid grid-cols-1 gap-lg lg:gap-md lg:grid-cols-3">
-              {solutionCards.map((card, i) => (
+              {data.cards.map((card, i) => (
                 <FadeInBlock key={i} delay={i * 0.1}>
                   <div className="flex gap-midmd lg:flex-col lg:gap-sm">
-                    <span className="block shrink-0">{card.icon}</span>
+                    <span className="block shrink-0">{cardIcons[i] || cardIcons[0]}</span>
                     <div className="flex flex-col gap-xxs lg:gap-xs">
                       <p className="body-heading-m">{card.title}</p>
                       <p className="body-text-s text-gray-900">{card.text}</p>
@@ -128,13 +220,13 @@ export default function SolutionSection() {
             </div>
 
             <FadeInBlock delay={0.2}>
-              <AssetCatalogMockup />
+              <AssetCatalogMockup slug={slug} />
             </FadeInBlock>
 
             <FadeInBlock delay={0.3}>
               <div className="flex justify-center">
                 <a className="button-primary-m" href="https://suite.snapsec.co/demo" target="_blank" rel="noopener noreferrer">
-                  <span className="block">Explore ASM Live <span className="inline-block tracking-normal transition-transform duration-300 group-hover:translate-x-[2px]">→</span></span>
+                  <span className="block">{data.btnText} <span className="inline-block tracking-normal transition-transform duration-300 group-hover:translate-x-[2px]">→</span></span>
                 </a>
               </div>
             </FadeInBlock>

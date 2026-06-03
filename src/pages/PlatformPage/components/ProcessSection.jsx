@@ -1,4 +1,9 @@
 import React from 'react';
+import EcosystemWidget from './EcosystemWidget';
+import VulnerabilityWidget from './VulnerabilityWidget';
+import ExposureWidget from './ExposureWidget';
+import WASWidget from './WASWidget';
+import VMWidget from './VMWidget';
 
 const ProcessSection = () => {
   return (
@@ -31,15 +36,7 @@ const ProcessSection = () => {
                 </p>
               </div>
               <div className="section-platform-process__item-image w-full lg:max-w-[468px]">
-                <span className="block" style={{ opacity: 1 }}>
-                  <img
-                    alt="Connect Your Entire Ecosystem"
-                    width="1404"
-                    height="1068"
-                    className="w-full"
-                    src="/images/process-ecosystem.png"
-                  />
-                </span>
+                <EcosystemWidget />
               </div>
             </div>
 
@@ -53,15 +50,7 @@ const ProcessSection = () => {
                 </p>
               </div>
               <div className="section-platform-process__item-image w-full lg:max-w-[468px]">
-                <span className="block" style={{ opacity: 1 }}>
-                  <img
-                    alt="Identify Vulnerabilities Before Attackers"
-                    width="1404"
-                    height="981"
-                    className="w-full"
-                    src="https://www.clutch.security/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprocess-image-2.b7cf8839.png&w=1920&q=75"
-                  />
-                </span>
+                <VulnerabilityWidget />
               </div>
             </div>
 
@@ -75,15 +64,7 @@ const ProcessSection = () => {
                 </p>
               </div>
               <div className="section-platform-process__item-image w-full lg:max-w-[468px]">
-                <span className="block" style={{ opacity: 1 }}>
-                  <img
-                    alt="See Your External Exposure"
-                    width="1404"
-                    height="1122"
-                    className="w-full"
-                    src="https://www.clutch.security/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprocess-image-3.ad083c62.png&w=1920&q=75"
-                  />
-                </span>
+                <ExposureWidget />
               </div>
             </div>
 
@@ -97,15 +78,7 @@ const ProcessSection = () => {
                 </p>
               </div>
               <div className="section-platform-process__item-image w-full lg:max-w-[468px]">
-                <span className="block" style={{ opacity: 1 }}>
-                  <img
-                    alt="Secure Every Web Application"
-                    width="1404"
-                    height="912"
-                    className="w-full"
-                    src="https://www.clutch.security/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprocess-image-4.02d698d4.png&w=1920&q=75"
-                  />
-                </span>
+                <WASWidget />
               </div>
             </div>
 
@@ -119,15 +92,7 @@ const ProcessSection = () => {
                 </p>
               </div>
               <div className="section-platform-process__item-image w-full lg:max-w-[468px]">
-                <span className="block" style={{ opacity: 1 }}>
-                  <img
-                    alt="Prioritize What Matters Most"
-                    width="1404"
-                    height="1068"
-                    className="w-full"
-                    src="https://www.clutch.security/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprocess-image-1.44c7fcec.png&w=1920&q=75"
-                  />
-                </span>
+                <VMWidget />
               </div>
             </div>
 

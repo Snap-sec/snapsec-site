@@ -10,7 +10,10 @@ const CTASection = () => {
               <h3 className="heading-h1 mx-auto w-full max-w-[650px]">
                 One Platform to Secure Your Entire Attack Surface
               </h3>
-              <p className="subtitle-m mx-auto w-full max-w-[480px]">
+              <p
+                className="subtitle-m mx-auto w-full max-w-[480px]"
+                style={{ textAlign: 'center' }}
+              >
                 Discover, detect, prioritize, and remediate — all from a single unified security platform built for modern enterprises.
               </p>
             </div>
@@ -34,7 +37,7 @@ const CTASection = () => {
                   width="932"
                   height="191"
                   className="w-full"
-                  src="https://www.clutch.security/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fplatform-cta-image.c41e7ed0.svg&w=1920&q=75"
+                  src="/images/platform/cta-background.svg"
                 />
               </span>
             </div>

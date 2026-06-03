@@ -112,6 +112,72 @@ const Icons = {
       <circle cx="9" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.4" />
     </svg>
   ),
+  key: (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <circle cx="6" cy="7" r="3.5" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M9 9L15 15" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <path d="M13 13L15 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  ),
+  wrench: (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M11.5 2.5C10 2.5 8.5 3.5 8 5.5L3 14L4 15L12.5 10C14.5 9.5 15.5 8 15.5 6.5C15.5 5.5 15 4.5 14 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="12" cy="6" r="1.5" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  ),
+  clipboard: (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <rect x="3" y="3" width="12" height="14" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M6.5 2V4.5H11.5V2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <line x1="6" y1="8" x2="12" y2="8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <line x1="6" y1="11" x2="10" y2="11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  ),
+  crosshair: (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.4" />
+      <circle cx="9" cy="9" r="2" stroke="currentColor" strokeWidth="1.4" />
+      <line x1="9" y1="1.5" x2="9" y2="3" stroke="currentColor" strokeWidth="1.4" />
+      <line x1="9" y1="15" x2="9" y2="16.5" stroke="currentColor" strokeWidth="1.4" />
+      <line x1="1.5" y1="9" x2="3" y2="9" stroke="currentColor" strokeWidth="1.4" />
+      <line x1="15" y1="9" x2="16.5" y2="9" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  ),
+  map: (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M1.5 4L6.5 2L11.5 4L16.5 2V14L11.5 16L6.5 14L1.5 16V4Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <line x1="6.5" y1="2" x2="6.5" y2="14" stroke="currentColor" strokeWidth="1.4" />
+      <line x1="11.5" y1="4" x2="11.5" y2="16" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  ),
+  alertTriangle: (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M9 2L16 15H2L9 2Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <line x1="9" y1="7" x2="9" y2="10.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <circle cx="9" cy="12.5" r="0.7" fill="currentColor" />
+    </svg>
+  ),
+  cpu: (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <rect x="4" y="4" width="10" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+      <rect x="6.5" y="6.5" width="5" height="5" rx="0.5" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="7" y1="1.5" x2="7" y2="4" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="11" y1="1.5" x2="11" y2="4" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="7" y1="14" x2="7" y2="16.5" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="11" y1="14" x2="11" y2="16.5" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="1.5" y1="7" x2="4" y2="7" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="1.5" y1="11" x2="4" y2="11" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="14" y1="7" x2="16.5" y2="7" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="14" y1="11" x2="16.5" y2="11" stroke="currentColor" strokeWidth="1.2" />
+    </svg>
+  ),
+  box: (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M2 5.5L9 2L16 5.5V12.5L9 16L2 12.5V5.5Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <line x1="9" y1="9" x2="9" y2="16" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M2 5.5L9 9L16 5.5" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  ),
 };
 
 // ─── Arrow for links ────────────────────────────────────
@@ -138,145 +204,95 @@ const dropdownData = {
   Usecases: {
     columns: [
       {
-        badge: 'VULNERABILITY MANAGEMENT',
+        badge: 'DISCOVERY',
         badgeBg: '#004DFF',
         badgeColor: '#FFFFFF',
         items: [
           {
-            icon: Icons.dashboard,
-            title: 'Dashboard & Analytics',
-            desc: 'Centralized vulnerability overview with SLA tracking and severity breakdown',
-            link: 'https://docs.snapsec.co/products/vm/dashboard',
+            icon: Icons.layers,
+            title: 'Complete Asset Inventory',
+            desc: 'Continuously discover and inventory all cloud assets, applications, domains, APIs, containers, and infrastructure.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
-            icon: Icons.bug,
-            title: 'Vulnerability Lifecycle',
-            desc: 'Track vulnerabilities from discovery to remediation with full audit trail',
-            link: 'https://docs.snapsec.co/products/vm/vulnerabilities',
+            icon: Icons.cpu,
+            title: 'Non-Human Identity Discovery',
+            desc: 'Identify service accounts, API keys, secrets, AI agents, and machine identities with their owners and permissions.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
-            icon: Icons.shield,
-            title: 'Remediation & SLA',
-            desc: 'Enforce SLA compliance and manage remediation workflows at scale',
-            link: 'https://docs.snapsec.co/products/vm/change-management',
+            icon: Icons.eye,
+            title: 'Shadow IT Identification',
+            desc: 'Find unmanaged, forgotten, or unauthorized assets that increase security risk and expand the attack surface.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
-            icon: Icons.chart,
-            title: 'Risk Scoring & Prioritization',
-            desc: 'Contextual risk scoring to focus on what matters most',
-            link: 'https://docs.snapsec.co/products/vm/assessments',
+            icon: Icons.map,
+            title: 'Attack Surface Mapping',
+            desc: 'Map relationships between assets, identities, applications, and external exposures to understand organizational risk.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
           },
         ],
       },
       {
-        badge: 'ATTACK SURFACE',
+        badge: 'DETECT',
         badgeBg: '#E6C5F7',
         badgeColor: '#000000',
         items: [
           {
-            icon: Icons.globe,
-            title: 'Discovery & Inventory',
-            desc: 'Continuously discover and inventory all external-facing assets',
-            link: 'https://docs.snapsec.co/products/asm/assets',
+            icon: Icons.bug,
+            title: 'Vulnerability Detection',
+            desc: 'Detect vulnerabilities across infrastructure, applications, containers, cloud resources, and code repositories.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
+          },
+          {
+            icon: Icons.alertTriangle,
+            title: 'Misconfiguration Detection',
+            desc: 'Identify insecure configurations in cloud environments, IAM policies, networks, and applications.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
+          },
+          {
+            icon: Icons.key,
+            title: 'Secret Exposure Detection',
+            desc: 'Discover leaked credentials, API keys, certificates, and sensitive information before they can be exploited.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
             icon: Icons.radar,
-            title: 'Exposure Detection',
-            desc: 'Detect exposed services, misconfigurations, and shadow IT risks',
-            link: 'https://docs.snapsec.co/products/asm/exposures',
-          },
-          {
-            icon: Icons.scan,
-            title: 'Continuous Scanning',
-            desc: 'Automated surface monitoring with real-time change detection',
-            link: 'https://docs.snapsec.co/products/asm/scanning',
-          },
-          {
-            icon: Icons.network,
-            title: 'Attack Path Mapping',
-            desc: 'Visualize attack vectors and potential breach pathways',
-            link: 'https://docs.snapsec.co/products/asm/overview',
+            title: 'Risk-Based Threat Detection',
+            desc: 'Correlate findings across multiple security layers to identify the risks that matter most to the business.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
           },
         ],
       },
       {
-        badge: 'ASSET INTELLIGENCE',
-        badgeBg: '#D9E4FF',
-        badgeColor: '#000000',
-        items: [
-          {
-            icon: Icons.layers,
-            title: 'Asset Classification',
-            desc: 'Automatically classify and tag assets by type, criticality, and ownership',
-            link: 'https://docs.snapsec.co/products/aim/assets',
-          },
-          {
-            icon: Icons.fingerprint,
-            title: 'Technology Fingerprinting',
-            desc: 'Identify technologies, frameworks, and services running on each asset',
-            link: 'https://docs.snapsec.co/products/aim/technology',
-          },
-          {
-            icon: Icons.server,
-            title: 'Infrastructure Mapping',
-            desc: 'Map relationships between assets, services, and infrastructure',
-            link: 'https://docs.snapsec.co/products/aim/overview',
-          },
-          {
-            icon: Icons.tag,
-            title: 'Ownership & Tagging',
-            desc: 'Assign ownership and manage asset metadata organization-wide',
-            link: 'https://docs.snapsec.co/products/aim/assets',
-          },
-        ],
-      },
-      {
-        badge: 'VULNERABILITY SCANNING',
-        badgeBg: '#10B981',
-        badgeColor: '#FFFFFF',
-        items: [
-          {
-            icon: Icons.server,
-            title: 'Infrastructure Scanning',
-            desc: 'Continuous infrastructure and network vulnerability scanning',
-            link: 'https://docs.snapsec.co/products/vs/scanning',
-          },
-          {
-            icon: Icons.radar,
-            title: 'Port & Service Discovery',
-            desc: 'Detect open ports, protocols, and active network services',
-            link: 'https://docs.snapsec.co/products/vs/overview',
-          },
-          {
-            icon: Icons.search,
-            title: 'Exposure Assessment',
-            desc: 'Assess active network exposures and configuration issues',
-            link: 'https://docs.snapsec.co/products/vs/overview',
-          },
-        ],
-      },
-      {
-        badge: 'WEB APPLICATION SCANNING',
+        badge: 'REMEDIATE',
         badgeBg: '#F59E0B',
         badgeColor: '#000000',
         items: [
           {
-            icon: Icons.zap,
-            title: 'Dynamic Testing (DAST)',
-            desc: 'Automated black-box security testing for running applications',
-            link: 'https://docs.snapsec.co/products/was/overview',
+            icon: Icons.crosshair,
+            title: 'Root Cause Remediation',
+            desc: 'Eliminate thousands of related findings by fixing the underlying issue responsible for multiple vulnerabilities.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
-            icon: Icons.network,
-            title: 'API Vulnerability Scanning',
-            desc: 'Identify vulnerabilities in REST, GraphQL, and SOAP APIs',
-            link: 'https://docs.snapsec.co/products/was/api-scanning',
+            icon: Icons.wrench,
+            title: 'Automated Remediation Guidance',
+            desc: 'Provide actionable fix recommendations, upgrade paths, configuration changes, and mitigation steps.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
-            icon: Icons.bug,
-            title: 'OWASP Top 10 Audits',
-            desc: 'Ensure coverage against common web application vulnerabilities',
-            link: 'https://docs.snapsec.co/products/was/overview',
+            icon: Icons.chart,
+            title: 'Risk-Based Prioritization',
+            desc: 'Prioritize remediation efforts using exploitability, asset criticality, exposure level, and business impact.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
+          },
+          {
+            icon: Icons.clipboard,
+            title: 'Remediation Tracking & Governance',
+            desc: 'Track ownership, progress, SLAs, and remediation outcomes across teams from a centralized platform.',
+            link: 'https://docs.snapsec.co/usecases/introduction',
           },
         ],
       },

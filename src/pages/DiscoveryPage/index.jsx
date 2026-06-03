@@ -64,8 +64,8 @@ export default function DiscoveryPage() {
   return (
     <>
       <HeroSection moduleSlug={moduleSlug} mod={mod} />
-      <ChallengeSection />
-      <SolutionSection />
+      <ChallengeSection moduleSlug={moduleSlug} mod={mod} />
+      <SolutionSection moduleSlug={moduleSlug} mod={mod} />
       <QuoteSection />
       <IntegrationSection />
       <IdentitySection />

@@ -30,8 +30,8 @@ const statusStyle = {
 const chartLine =
   'M 0 72 C 30 72 70 56 100 56 C 130 56 170 74 200 74 C 230 74 270 40 300 40 C 330 40 370 56 400 56 C 430 56 470 28 500 28 C 530 28 570 50 600 50 C 630 50 670 36 700 36';
 const chartArea = chartLine + ' L 700 120 L 0 120 Z';
-const dots = [[0,72],[100,56],[200,74],[300,40],[400,56],[500,28],[600,50],[700,36]];
-const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'];
+const dots = [[0, 72], [100, 56], [200, 74], [300, 40], [400, 56], [500, 28], [600, 50], [700, 36]];
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
 
 // ─── Static data ────────────────────────────────────────
 const metrics = [
@@ -474,9 +474,8 @@ export default function HeroSection() {
               {words.map((word) => (
                 <motion.span
                   key={word.id}
-                  className={`inline transition-colors duration-300 ease-in-out ${
-                    currentWord === word.id ? 'text-black' : ''
-                  }`}
+                  className={`inline transition-colors duration-300 ease-in-out ${currentWord === word.id ? 'text-black' : ''
+                    }`}
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.6, delay: (word.id - 1) * 0.15 }}
