@@ -11,12 +11,13 @@ const ContactUsPage = () => {
     referrer: '',
   });
 
-  const [phonePrefix, setPhonePrefix] = useState('+1');
+  const [phonePrefix, setPhonePrefix] = useState('+966');
   const [showPrefixDropdown, setShowPrefixDropdown] = useState(false);
 
   const dropdownRef = useRef(null);
 
   const countries = [
+    { code: '+966', flag: '🇸🇦', name: 'Saudi Arabia' },
     { code: '+1', flag: '🇺🇸', name: 'United States' },
     { code: '+44', flag: '🇬🇧', name: 'United Kingdom' },
     { code: '+49', flag: '🇩🇪', name: 'Germany' },
