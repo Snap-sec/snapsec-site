@@ -34,9 +34,9 @@ export default function AiEraSection() {
                     Introducing
                   </motion.span>
                   <motion.img
-                    src="/assets/logo-full-black.svg"
+                    src="/assets/snapsec-logo.png"
                     alt="Snapsec"
-                    className="w-96px select-none"
+                    className="w-[120px] select-none"
                     initial={{ opacity: 0, x: 20 }}
                     animate={inView ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.4, delay: 0.2 }}
@@ -68,9 +68,9 @@ export default function AiEraSection() {
                   Introducing
                 </motion.span>
                 <motion.img
-                  src="/assets/logo-full-black.svg"
+                  src="/assets/snapsec-logo.png"
                   alt="Snapsec"
-                  className="w-96px select-none"
+                  className="w-[120px] select-none"
                   initial={{ opacity: 0, x: 20 }}
                   animate={inView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.4, delay: 0.2 }}

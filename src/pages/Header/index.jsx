@@ -431,24 +431,120 @@ const dropdownData = {
   },
 };
 
+const getIconStyles = () => {
+  return { bg: 'bg-[#F5F5F5] text-black group-hover:bg-black group-hover:text-white' };
+};
+
+const promoData = {
+  Modules: {
+    tag: 'NEW MODULE RELEASE',
+    tagBg: 'bg-black',
+    tagColor: 'text-white',
+    headline: 'Continuous API Fuzzing',
+    desc: 'Deep API vulnerability scanning and automated testing. Discover hidden API endpoints and validate security controls.',
+    link: 'https://docs.snapsec.co',
+    linkLabel: 'Explore API security',
+    graphic: (
+      <div className="relative w-full h-[90px] rounded-lg bg-gradient-to-br from-[#111111] to-[#222222] overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+        <div className="flex items-center gap-[8px] text-white">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+            <line x1="6" y1="6" x2="6.01" y2="6"/>
+            <line x1="6" y1="18" x2="6.01" y2="18"/>
+          </svg>
+          <span className="font-mono text-[10px] tracking-wider uppercase font-bold text-white/95">API SCANNER v2.0</span>
+        </div>
+      </div>
+    )
+  },
+  Usecases: {
+    tag: 'SECURITY CASE STUDY',
+    tagBg: 'bg-black',
+    tagColor: 'text-white',
+    headline: 'Enforcing SLAs Automatically',
+    desc: 'Learn how modern AppSec teams use Snapsec to enforce remediation policies, lowering time-to-fix metrics by 85%.',
+    link: 'https://docs.snapsec.co/usecases/introduction',
+    linkLabel: 'Read case study',
+    graphic: (
+      <div className="relative w-full h-[90px] rounded-lg bg-gradient-to-br from-[#111111] to-[#222222] overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+        <div className="flex items-center gap-[8px] text-white">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span className="font-mono text-[10px] tracking-wider uppercase font-bold text-white/95">SLA COMPLIANCE</span>
+        </div>
+      </div>
+    )
+  },
+  Resources: {
+    tag: 'DOCUMENTATION',
+    tagBg: 'bg-black',
+    tagColor: 'text-white',
+    headline: 'Quickstart Integration Guide',
+    desc: 'Connect Snapsec to your AWS account, GitHub actions, and Jira instances in under 5 minutes.',
+    link: 'https://docs.snapsec.co',
+    linkLabel: 'View quickstart guides',
+    graphic: (
+      <div className="relative w-full h-[90px] rounded-lg bg-gradient-to-br from-[#111111] to-[#222222] overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+        <div className="flex items-center gap-[8px] text-white">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16.5 9.4 7.55 4.24a1.79 1.79 0 0 0-2.5 1.55v12.42a1.79 1.79 0 0 0 2.5 1.55L16.5 14.6a1.79 1.79 0 0 0 0-3.2z"/>
+          </svg>
+          <span className="font-mono text-[10px] tracking-wider uppercase font-bold text-white/95">INTEGRATIONS</span>
+        </div>
+      </div>
+    )
+  },
+  Company: {
+    tag: 'WE\'RE HIRING',
+    tagBg: 'bg-black',
+    tagColor: 'text-white',
+    headline: 'Join the Snapsec Team',
+    desc: 'We are building the future of centralized application security. Explore open roles across engineering and security research.',
+    link: '/about-us',
+    linkLabel: 'View careers',
+    graphic: (
+      <div className="relative w-full h-[90px] rounded-lg bg-gradient-to-br from-[#111111] to-[#222222] overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+        <div className="flex items-center gap-[8px] text-white">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span className="font-mono text-[10px] tracking-wider uppercase font-bold text-white/95">CAREERS</span>
+        </div>
+      </div>
+    )
+  }
+};
+
 // ─── Single dropdown item ───────────────────────────────
 function DropdownItem({ icon, title, desc, link, internal }) {
+  const styles = getIconStyles();
+
   return (
     <a
       href={link}
       target={internal ? undefined : '_blank'}
       rel={internal ? undefined : 'noopener noreferrer'}
-      className="group flex items-start gap-[12px] rounded-lg p-[10px] -mx-[10px] transition-colors duration-150 hover:bg-gray-50"
+      className="group flex items-start gap-[14px] rounded-lg p-[10px] -mx-[10px] transition-all duration-150 hover:bg-[#FAFAFA]"
     >
-      <span className="flex-shrink-0 mt-[2px] text-gray-500 group-hover:text-black transition-colors duration-150">
+      <div className={`flex-shrink-0 w-[36px] h-[36px] rounded-lg ${styles.bg} flex items-center justify-center transition-all duration-150 group-hover:scale-[1.05]`}>
         {icon}
-      </span>
+      </div>
       <div className="flex flex-col gap-[2px] min-w-0">
-        <span className="inline-flex items-center gap-[4px] text-[14px] font-semibold text-gray-900 leading-[1.4] whitespace-nowrap">
+        <span className="inline-flex items-center gap-[4px] text-[14px] font-semibold text-black leading-[1.3] group-hover:text-black transition-colors duration-150">
           {title}
           <LinkArrow />
         </span>
-        <span className="text-[13px] text-gray-500 leading-[1.45] font-normal">
+        <span className="text-[12px] text-gray-900 leading-[1.4] font-normal">
           {desc}
         </span>
       </div>
@@ -457,9 +553,8 @@ function DropdownItem({ icon, title, desc, link, internal }) {
 }
 
 // ─── Mega dropdown panel ────────────────────────────────
-function MegaDropdown({ data, isOpen }) {
-  const columnCount = data.columns.length;
-  const isLarge = columnCount >= 5;
+function MegaDropdown({ data, menuName, isOpen }) {
+  const promo = promoData[menuName];
 
   return (
     <div
@@ -470,60 +565,32 @@ function MegaDropdown({ data, isOpen }) {
       }`}
       style={{ 
         width: 'max-content', 
-        maxWidth: isLarge ? '1140px' : '960px',
         transformOrigin: 'top center'
       }}
     >
       <div
-        className="rounded-xl border border-gray-200 bg-white shadow-lg"
+        className="rounded-xl border border-gray-200 bg-white p-[24px] flex gap-[24px]"
         style={{
-          boxShadow:
-            '0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+          boxShadow: '0 10px 30px -10px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.03)',
         }}
       >
-        <div 
-          className={`flex gap-0 ${
-            isLarge ? 'p-[20px] pb-[16px]' : 'p-[28px] pb-[24px]'
-          }`}
-        >
+        {/* Columns container */}
+        <div className="flex gap-[24px]">
           {data.columns.map((col, ci) => (
             <div
               key={col.badge || ci}
-              className={`flex flex-col gap-[16px] flex-1 ${
-                isLarge
-                  ? ci > 0 
-                    ? 'pl-[12px] border-l border-gray-100' 
-                    : ''
-                  : ci > 0 
-                    ? 'pl-[28px] border-l border-gray-100' 
-                    : ''
-              } ${
-                isLarge
-                  ? ci < data.columns.length - 1 
-                    ? 'pr-[12px]' 
-                    : ''
-                  : ci < data.columns.length - 1 
-                    ? 'pr-[28px]' 
-                    : ''
+              className={`flex flex-col gap-[16px] ${
+                ci > 0 ? 'pl-[24px] border-l border-gray-100' : ''
               }`}
-              style={{ minWidth: isLarge ? '215px' : '260px' }}
+              style={{ width: '250px' }}
             >
-              {/* Badge */}
               {col.badge && (
                 <span
-                  className={`inline-flex items-center self-start rounded-[5px] select-none uppercase font-semibold tracking-[0.06em] ${
-                    isLarge ? 'text-[10px] px-[8px] py-[2.5px]' : 'text-[11px] px-[10px] py-[3px]'
-                  }`}
-                  style={{
-                    backgroundColor: col.badgeBg,
-                    color: col.badgeColor,
-                  }}
+                  className="inline-flex items-center self-start rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.06em] uppercase bg-[#F5F5F5] text-black"
                 >
                   {col.badge}
                 </span>
               )}
-
-              {/* Items */}
               <div className="flex flex-col gap-[4px]">
                 {col.items.map((item) => (
                   <DropdownItem key={item.title} {...item} />
@@ -532,6 +599,35 @@ function MegaDropdown({ data, isOpen }) {
             </div>
           ))}
         </div>
+
+        {/* Promo section */}
+        {promo && (
+          <div className="w-[280px] border-l border-gray-100 pl-[24px] flex flex-col gap-[16px]">
+            {promo.graphic}
+            <div className="flex flex-col gap-[4px]">
+              <span className={`inline-flex items-center self-start rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.06em] ${promo.tagBg} ${promo.tagColor}`}>
+                {promo.tag}
+              </span>
+              <h4 className="text-[14px] font-semibold text-black mt-[4px] leading-[1.3]">
+                {promo.headline}
+              </h4>
+              <p className="text-[12px] text-gray-900 leading-[1.45] font-normal">
+                {promo.desc}
+              </p>
+            </div>
+            <a
+              href={promo.link}
+              target={promo.link.startsWith('http') ? '_blank' : undefined}
+              rel={promo.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+              className="text-[12px] font-semibold text-black hover:underline flex items-center gap-[4px] mt-auto w-fit"
+            >
+              {promo.linkLabel}
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="mt-[0.5px]">
+                <path d="M3.5 1.5L7 5L3.5 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -598,9 +694,9 @@ export default function Header() {
           <div className="flex-1">
             <a href="/" className="inline-flex items-center select-none z-50">
               <img
-                src="/assets/logo-full-black.svg"
+                src="/assets/snapsec-logo.png"
                 alt="Snapsec Suite"
-                className="w-[104px] xl:w-[124px]"
+                className="w-[130px] xl:w-[150px]"
               />
             </a>
           </div>
@@ -652,6 +748,7 @@ export default function Header() {
                 {item.hasDropdown && dropdownData[item.label] && (
                   <MegaDropdown
                     data={dropdownData[item.label]}
+                    menuName={item.label}
                     isOpen={openDropdown === item.label}
                   />
                 )}

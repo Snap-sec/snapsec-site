@@ -62,9 +62,9 @@ export default function Footer() {
             <div className="flex flex-col gap-lg lg:max-w-[280px]">
               <a href="/" className="inline-block">
                 <img
-                  src="/assets/logo-full-black.svg"
+                  src="/assets/snapsec-logo.png"
                   alt="Snapsec Suite"
-                  className="w-[120px] invert"
+                  className="w-[140px] invert"
                 />
               </a>
               <p className="body-text-xs text-gray-500">

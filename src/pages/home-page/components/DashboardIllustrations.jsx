@@ -716,3 +716,283 @@ export function WASDashboard({ inView = true }) {
     </motion.div>
   );
 }
+
+export function VSDiscoveryWidget({ inView = true }) {
+  const assets = [
+    { name: 'api.acme.com',        tag: 'API', isNew: false },
+    { name: '104.21.48.10',        tag: 'IP',  isNew: false },
+    { name: 'dev-portal.acme.net', tag: 'Web', isNew: true  },
+    { name: 's3-backups.acme.io',  tag: 'S3',  isNew: true  },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      style={{
+        width: '200px', background: '#fff', borderRadius: '12px',
+        border: `1px solid ${C.border}`, padding: '14px 16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <motion.div
+            animate={inView ? { scale: [1, 1.4, 1] } : {}}
+            transition={{ duration: 2, repeat: Infinity }}
+            style={{ width: '6px', height: '6px', borderRadius: '50%', background: C.success }}
+          />
+          <span style={{ fontSize: '10px', fontWeight: 600, color: C.text, letterSpacing: '0.03em', textTransform: 'uppercase' }}>Assets Found</span>
+        </div>
+        <span style={{ fontSize: '18px', fontWeight: 700, color: C.primary, fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1 }}>1,284</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+        {assets.map((a, i) => (
+          <motion.div key={a.name}
+            initial={{ opacity: 0, x: -6 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.35 + i * 0.07, duration: 0.25 }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 7px', borderRadius: '6px', background: a.isNew ? C.bgHighlight : C.bgCard }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', overflow: 'hidden', flex: 1 }}>
+              <div style={{ width: '4px', height: '4px', borderRadius: '50%', flexShrink: 0, background: a.isNew ? C.primary : C.success }} />
+              <span style={{ fontSize: '9.5px', color: '#333', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{a.name}</span>
+            </div>
+            <span style={{ fontSize: '7px', fontWeight: 600, padding: '1px 4px', borderRadius: '3px', flexShrink: 0, marginLeft: '4px', background: a.isNew ? '#DBEAFE' : '#E5E7EB', color: a.isNew ? '#1D4ED8' : '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{a.tag}</span>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+export function VSScanningWidget({ inView = true }) {
+  const vulns = [
+    { label: 'Critical', count: 4,   pct: 14,  color: C.critical },
+    { label: 'High',     count: 18,  pct: 45,  color: C.high     },
+    { label: 'Medium',   count: 41,  pct: 80,  color: C.medium   },
+    { label: 'Low',      count: 112, pct: 100, color: C.low      },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: 0.25 }}
+      style={{
+        width: '200px', background: '#fff', borderRadius: '12px',
+        border: `1px solid ${C.border}`, padding: '14px 16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <span style={{ fontSize: '10px', fontWeight: 600, color: C.text, letterSpacing: '0.03em', textTransform: 'uppercase' }}>CVE Scan</span>
+        <span style={{ fontSize: '18px', fontWeight: 700, color: C.primary, fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1 }}>175</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
+        {vulns.map((item, i) => (
+          <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '42px', fontSize: '9px', color: C.textSec, fontWeight: 500 }}>{item.label}</span>
+            <div style={{ flex: 1, height: '5px', background: C.borderLight, borderRadius: '3px', overflow: 'hidden' }}>
+              <motion.div style={{ height: '100%', background: item.color, borderRadius: '3px' }}
+                initial={{ width: '0%' }} animate={inView ? { width: `${item.pct}%` } : {}}
+                transition={{ duration: 0.6, delay: 0.4 + i * 0.08 }}
+              />
+            </div>
+            <span style={{ width: '16px', fontSize: '9px', fontWeight: 600, color: C.text, textAlign: 'right' }}>{item.count}</span>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+export function VSReportingWidget({ inView = true }) {
+  const statuses = [
+    { label: 'Resolved',  count: 38,  color: C.success  },
+    { label: 'In Review', count: 21,  color: '#F59E0B'  },
+    { label: 'Open',      count: 116, color: C.critical },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: 0.3 }}
+      style={{
+        width: '200px', background: '#fff', borderRadius: '12px',
+        border: `1px solid ${C.border}`, padding: '14px 16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <span style={{ fontSize: '10px', fontWeight: 600, color: C.text, letterSpacing: '0.03em', textTransform: 'uppercase' }}>Report</span>
+        <span style={{ fontSize: '18px', fontWeight: 700, color: C.success, fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1 }}>94%</span>
+      </div>
+      <div style={{ height: '6px', background: C.borderLight, borderRadius: '3px', overflow: 'hidden', marginBottom: '12px' }}>
+        <motion.div
+          style={{ height: '100%', background: `linear-gradient(90deg, ${C.success}, #34D399)`, borderRadius: '3px' }}
+          initial={{ width: '0%' }} animate={inView ? { width: '94%' } : {}}
+          transition={{ duration: 0.8, delay: 0.35 }}
+        />
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        {statuses.map((s, i) => (
+          <motion.div key={s.label}
+            initial={{ opacity: 0, x: -6 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.5 + i * 0.08, duration: 0.25 }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 8px', borderRadius: '6px', background: C.bgCard }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: s.color }} />
+              <span style={{ fontSize: '10px', color: '#333', fontWeight: 500 }}>{s.label}</span>
+            </div>
+            <span style={{ fontSize: '10px', fontWeight: 700, color: C.text, fontFamily: "'Space Grotesk', sans-serif" }}>{s.count}</span>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── ASM mini widgets ────────────────────────────────────────────────────────
+
+export function ASMDiscoveryWidget({ inView = true }) {
+  const assets = [
+    { name: 'staging.acme.com',  source: 'DNS',   isNew: true  },
+    { name: 'cdn-eu.acme.io',    source: 'CT Log', isNew: true  },
+    { name: 'api.acme.com',      source: 'OSINT', isNew: false },
+    { name: '185.220.101.6',     source: 'Scan',  isNew: false },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      style={{
+        width: '200px', background: '#fff', borderRadius: '12px',
+        border: `1px solid ${C.border}`, padding: '14px 16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <motion.div
+            animate={inView ? { scale: [1, 1.4, 1] } : {}}
+            transition={{ duration: 2, repeat: Infinity }}
+            style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#8B5CF6' }}
+          />
+          <span style={{ fontSize: '10px', fontWeight: 600, color: C.text, letterSpacing: '0.03em', textTransform: 'uppercase' }}>Surface Found</span>
+        </div>
+        <span style={{ fontSize: '18px', fontWeight: 700, color: '#8B5CF6', fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1 }}>342</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+        {assets.map((a, i) => (
+          <motion.div key={a.name}
+            initial={{ opacity: 0, x: -6 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.35 + i * 0.07, duration: 0.25 }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 7px', borderRadius: '6px', background: a.isNew ? '#F5F3FF' : C.bgCard }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', overflow: 'hidden', flex: 1 }}>
+              <div style={{ width: '4px', height: '4px', borderRadius: '50%', flexShrink: 0, background: a.isNew ? '#8B5CF6' : C.success }} />
+              <span style={{ fontSize: '9.5px', color: '#333', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{a.name}</span>
+            </div>
+            <span style={{ fontSize: '7px', fontWeight: 600, padding: '1px 4px', borderRadius: '3px', flexShrink: 0, marginLeft: '4px', background: a.isNew ? '#EDE9FE' : '#E5E7EB', color: a.isNew ? '#6D28D9' : '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{a.source}</span>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+export function ASMClassificationWidget({ inView = true }) {
+  const risks = [
+    { label: 'Exposed',   count: 23, pct: 60, color: C.critical  },
+    { label: 'Shadow IT', count: 11, pct: 30, color: C.high       },
+    { label: 'Miscfg',    count: 18, pct: 47, color: C.medium     },
+    { label: 'Monitored', count: 290, pct: 100, color: C.success  },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: 0.25 }}
+      style={{
+        width: '200px', background: '#fff', borderRadius: '12px',
+        border: `1px solid ${C.border}`, padding: '14px 16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <span style={{ fontSize: '10px', fontWeight: 600, color: C.text, letterSpacing: '0.03em', textTransform: 'uppercase' }}>Risk Map</span>
+        <span style={{ fontSize: '18px', fontWeight: 700, color: C.primary, fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1 }}>342</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
+        {risks.map((item, i) => (
+          <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '52px', fontSize: '9px', color: C.textSec, fontWeight: 500 }}>{item.label}</span>
+            <div style={{ flex: 1, height: '5px', background: C.borderLight, borderRadius: '3px', overflow: 'hidden' }}>
+              <motion.div
+                style={{ height: '100%', background: item.color, borderRadius: '3px' }}
+                initial={{ width: '0%' }}
+                animate={inView ? { width: `${item.pct}%` } : {}}
+                transition={{ duration: 0.6, delay: 0.4 + i * 0.08 }}
+              />
+            </div>
+            <span style={{ width: '22px', fontSize: '9px', fontWeight: 600, color: C.text, textAlign: 'right' }}>{item.count}</span>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+export function ASMRemediationWidget({ inView = true }) {
+  const items = [
+    { label: 'Verified Fixed', count: 19, color: C.success  },
+    { label: 'In Progress',    count: 14, color: '#F59E0B'  },
+    { label: 'Unassigned',     count: 9,  color: C.critical },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: 0.3 }}
+      style={{
+        width: '200px', background: '#fff', borderRadius: '12px',
+        border: `1px solid ${C.border}`, padding: '14px 16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <span style={{ fontSize: '10px', fontWeight: 600, color: C.text, letterSpacing: '0.03em', textTransform: 'uppercase' }}>Remediation</span>
+        <span style={{ fontSize: '18px', fontWeight: 700, color: C.success, fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1 }}>91%</span>
+      </div>
+      <div style={{ height: '6px', background: C.borderLight, borderRadius: '3px', overflow: 'hidden', marginBottom: '12px' }}>
+        <motion.div
+          style={{ height: '100%', background: `linear-gradient(90deg, ${C.success}, #34D399)`, borderRadius: '3px' }}
+          initial={{ width: '0%' }} animate={inView ? { width: '91%' } : {}}
+          transition={{ duration: 0.8, delay: 0.35 }}
+        />
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        {items.map((s, i) => (
+          <motion.div key={s.label}
+            initial={{ opacity: 0, x: -6 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.5 + i * 0.08, duration: 0.25 }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 8px', borderRadius: '6px', background: C.bgCard }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: s.color }} />
+              <span style={{ fontSize: '10px', color: '#333', fontWeight: 500 }}>{s.label}</span>
+            </div>
+            <span style={{ fontSize: '10px', fontWeight: 700, color: C.text, fontFamily: "'Space Grotesk', sans-serif" }}>{s.count}</span>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}

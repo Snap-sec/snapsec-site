@@ -8,7 +8,7 @@ const CTASection = () => {
           <div className="relative flex w-full flex-col items-center gap-lg lg:gap-lg">
             <div className="relative z-2 flex flex-col gap-sm lg:gap-lg">
               <h3 className="heading-h1 mx-auto w-full max-w-[650px]">
-                One Platform to Secure Your Entire Attack Surface
+                One Platform to Replace your fragmental toolset
               </h3>
               <p
                 className="subtitle-m mx-auto w-full max-w-[480px]"

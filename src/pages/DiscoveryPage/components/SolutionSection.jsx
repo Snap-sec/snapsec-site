@@ -1,5 +1,7 @@
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useEffect } from 'react';
+import { VSDiscoveryWidget, VSScanningWidget, VSReportingWidget, ASMDiscoveryWidget, ASMClassificationWidget, ASMRemediationWidget } from '../../home-page/components/DashboardIllustrations';
 
 function FadeInBlock({ children, delay = 0 }) {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
@@ -15,27 +17,27 @@ function FadeInBlock({ children, delay = 0 }) {
 // Asset Catalog mockup showing real columns
 function AssetCatalogMockup({ slug }) {
   const assets = [
-    { host: 'api.acme.com',        type: 'Subdomain',  waf: 'Cloudflare', ports: '443, 80',  exposed: true,  signals: 4 },
-    { host: '104.21.48.10',        type: 'IP Address', waf: 'AWS',        ports: '443',       exposed: true,  signals: 2 },
-    { host: 'dev-portal.acme.net', type: 'Subdomain',  waf: '—',          ports: '22, 3000',  exposed: true,  signals: 7 },
-    { host: 'mail.acme.com',       type: 'Subdomain',  waf: '—',          ports: '25, 587',   exposed: false, signals: 1 },
-    { host: 'cdn.assets.acme.io',  type: 'Web Server', waf: 'Fastly',     ports: '443',       exposed: false, signals: 0 },
+    { host: 'api.acme.com', type: 'Subdomain', waf: 'Cloudflare', ports: '443, 80', exposed: true, signals: 4 },
+    { host: '104.21.48.10', type: 'IP Address', waf: 'AWS', ports: '443', exposed: true, signals: 2 },
+    { host: 'dev-portal.acme.net', type: 'Subdomain', waf: '—', ports: '22, 3000', exposed: true, signals: 7 },
+    { host: 'mail.acme.com', type: 'Subdomain', waf: '—', ports: '25, 587', exposed: false, signals: 1 },
+    { host: 'cdn.assets.acme.io', type: 'Web Server', waf: 'Fastly', ports: '443', exposed: false, signals: 0 },
   ];
   return (
     <div style={{ background: '#fff', borderRadius: '8px', border: '0.5px solid #D9D9D9', boxShadow: '0px 2px 2px 0px rgba(0,0,0,0.04)', overflow: 'hidden', fontFamily: "'Inter', sans-serif" }}>
       {/* Browser bar */}
       <div style={{ display: 'flex', alignItems: 'center', height: '32px', padding: '0 12px', borderBottom: '0.5px solid #D9D9D9', background: '#FAFAFA', position: 'relative' }}>
         <div style={{ display: 'flex', gap: '4px' }}>
-          {['#D9D9D9','#D9D9D9','#D9D9D9'].map((c,i) => <div key={i} style={{ width:6,height:6,borderRadius:'50%',background:c }} />)}
+          {['#D9D9D9', '#D9D9D9', '#D9D9D9'].map((c, i) => <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: c }} />)}
         </div>
         <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', gap: 4 }}>
-          <svg width="11" height="12" viewBox="0 0 11 12" fill="none"><circle cx="5.5" cy="6" r="5" stroke="#6E6E6E" strokeWidth="1"/><path d="M5.5 2V6L7.5 8" stroke="#6E6E6E" strokeWidth="1" strokeLinecap="round"/></svg>
+          <svg width="11" height="12" viewBox="0 0 11 12" fill="none"><circle cx="5.5" cy="6" r="5" stroke="#6E6E6E" strokeWidth="1" /><path d="M5.5 2V6L7.5 8" stroke="#6E6E6E" strokeWidth="1" strokeLinecap="round" /></svg>
           <span style={{ fontSize: '11px', color: '#6E6E6E' }}>suite.snapsec.co / {slug} / assets</span>
         </div>
       </div>
       {/* Table header */}
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 0.8fr 0.7fr 1fr 0.6fr 0.5fr', padding: '9px 16px', background: '#FAFAFA', borderBottom: '0.5px solid #EEEEEE' }}>
-        {['HOST','TYPE','WAF','OPEN PORTS','EXPOSED','SIGNALS'].map(h => (
+        {['HOST', 'TYPE', 'WAF', 'OPEN PORTS', 'EXPOSED', 'SIGNALS'].map(h => (
           <span key={h} style={{ fontSize: '10px', fontWeight: 600, color: '#9CA3AF', letterSpacing: '0.06em' }}>{h}</span>
         ))}
       </div>
@@ -43,7 +45,7 @@ function AssetCatalogMockup({ slug }) {
         <motion.div key={i}
           initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 + i * 0.07 }}
-          style={{ display: 'grid', gridTemplateColumns: '2fr 0.8fr 0.7fr 1fr 0.6fr 0.5fr', padding: '10px 16px', borderBottom: i < assets.length-1 ? '0.5px solid #F5F5F5' : 'none', alignItems: 'center', background: '#fff' }}>
+          style={{ display: 'grid', gridTemplateColumns: '2fr 0.8fr 0.7fr 1fr 0.6fr 0.5fr', padding: '10px 16px', borderBottom: i < assets.length - 1 ? '0.5px solid #F5F5F5' : 'none', alignItems: 'center', background: '#fff' }}>
           <span style={{ fontSize: '12px', fontWeight: 600, color: '#111827', fontFamily: "'SF Mono','Fira Code',monospace", letterSpacing: '-0.01em' }}>{a.host}</span>
           <span style={{ fontSize: '11px', color: '#6E6E6E' }}>{a.type}</span>
           <span style={{ fontSize: '11px', color: '#6E6E6E' }}>{a.waf}</span>
@@ -56,23 +58,174 @@ function AssetCatalogMockup({ slug }) {
   );
 }
 
+// ─── VS-specific 3-step process mockup (ExistSection style) ─────────────────
+const VS_ITEMS = [
+  { title: 'Discovery',  sub: 'HOSTS & CLOUD ASSETS',    stepText: 'flows to',   Widget: VSDiscoveryWidget  },
+  { title: 'Scanning',   sub: 'CVEs & MISCONFIGURATIONS', stepText: 'syncs to',   Widget: VSScanningWidget   },
+  { title: 'Reporting',  sub: 'SEVERITY & REMEDIATION',  stepText: '',           Widget: VSReportingWidget  },
+];
+
+function VSCard({ item, index, isLast }) {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ threshold: 0.4, triggerOnce: true });
+  const delay = 0.25 * index;
+
+  useEffect(() => {
+    if (inView) controls.start('visible');
+  }, [controls, inView]);
+
+  return (
+    <div
+      ref={ref}
+      className="group relative flex flex-col items-center justify-between gap-md px-xs pb-md pt-sm last:pb-0 lg:px-md lg:pb-xs lg:last:pb-xs"
+    >
+      {/* Step connector */}
+      {!isLast && (
+        <div className="pointer-events-none absolute bottom-[-16px] left-1/2 z-[2] flex w-full -translate-x-1/2 items-center lg:bottom-1/2 lg:left-auto lg:right-[-54px] lg:h-full lg:w-[108px] lg:translate-x-0 lg:translate-y-1/2 lg:flex-col lg:py-0">
+          <div className="h-[0.5px] w-full grow bg-gray-600 lg:h-full lg:w-[0.5px]" />
+          <motion.div
+            animate={controls}
+            initial="hidden"
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+            transition={{ duration: 0.5, delay: delay + 0.2 }}
+            className="bg-white px-xs lg:px-0 lg:py-xs"
+          >
+            <div className="mx-auto flex h-lg w-max shrink-0 items-center justify-center gap-[6px] rounded-[80px] border-[0.5px] border-black bg-white px-[10px]">
+              <span className="subtitle-xs">{item.stepText}</span>
+              <img src="/assets/vector-arrow-right.svg" alt="→" className="w-[5px] rotate-90 lg:rotate-0" />
+            </div>
+          </motion.div>
+          <div className="h-[0.5px] w-full grow bg-gray-600 lg:h-full lg:w-[0.5px]" />
+        </div>
+      )}
+
+      {/* Widget */}
+      <div className="flex flex-col items-center gap-midsm text-center lg:gap-sm">
+        <motion.div
+          animate={controls}
+          initial="hidden"
+          variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+          transition={{ duration: 0.5, delay }}
+          className="shrink-0"
+        >
+          <item.Widget inView={inView} />
+        </motion.div>
+        <motion.div
+          animate={controls}
+          initial="hidden"
+          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+          transition={{ duration: 0.5, delay }}
+        >
+          <p className="body-heading-m">{item.title}</p>
+        </motion.div>
+      </div>
+
+      {/* Bottom tag */}
+      <motion.div
+        animate={controls}
+        initial="hidden"
+        variants={{ hidden: { opacity: 0, y: -20 }, visible: { opacity: 1, y: 0 } }}
+        transition={{ duration: 0.5, delay }}
+        className="w-full"
+      >
+        <div className="mb-lg flex min-h-md w-full select-none items-center justify-center rounded-[5px] bg-gray-300 px-sm py-[10px] last:mb-0 lg:mb-0">
+          <span className="label-text-m text-center text-black">{item.sub}</span>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function VSProcessMockup() {
+  return (
+    <div className="w-full">
+      <div className="grid w-full grid-cols-1 gap-lg lg:grid-cols-3 lg:gap-0">
+        {VS_ITEMS.map((item, i) => (
+          <VSCard key={item.title} item={item} index={i} isLast={i === VS_ITEMS.length - 1} />
+        ))}
+      </div>
+    </div>
+  );
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── ASM-specific 3-step process mockup ──────────────────────────────────────
+const ASM_ITEMS = [
+  { title: 'Discovery',     sub: 'OSINT & DNS INTELLIGENCE',   stepText: 'flows to', Widget: ASMDiscoveryWidget     },
+  { title: 'Classification', sub: 'RISK & SHADOW IT MAPPING',  stepText: 'drives',   Widget: ASMClassificationWidget },
+  { title: 'Remediation',   sub: 'OWNERSHIP & RETEST TRACKING', stepText: '',         Widget: ASMRemediationWidget    },
+];
+
+function ASMCard({ item, index, isLast }) {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ threshold: 0.4, triggerOnce: true });
+  const delay = 0.25 * index;
+
+  useEffect(() => {
+    if (inView) controls.start('visible');
+  }, [controls, inView]);
+
+  return (
+    <div ref={ref} className="group relative flex flex-col items-center justify-between gap-md px-xs pb-md pt-sm last:pb-0 lg:px-md lg:pb-xs lg:last:pb-xs">
+      {!isLast && (
+        <div className="pointer-events-none absolute bottom-[-16px] left-1/2 z-[2] flex w-full -translate-x-1/2 items-center lg:bottom-1/2 lg:left-auto lg:right-[-54px] lg:h-full lg:w-[108px] lg:translate-x-0 lg:translate-y-1/2 lg:flex-col lg:py-0">
+          <div className="h-[0.5px] w-full grow bg-gray-600 lg:h-full lg:w-[0.5px]" />
+          <motion.div animate={controls} initial="hidden" variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} transition={{ duration: 0.5, delay: delay + 0.2 }} className="bg-white px-xs lg:px-0 lg:py-xs">
+            <div className="mx-auto flex h-lg w-max shrink-0 items-center justify-center gap-[6px] rounded-[80px] border-[0.5px] border-black bg-white px-[10px]">
+              <span className="subtitle-xs">{item.stepText}</span>
+              <img src="/assets/vector-arrow-right.svg" alt="→" className="w-[5px] rotate-90 lg:rotate-0" />
+            </div>
+          </motion.div>
+          <div className="h-[0.5px] w-full grow bg-gray-600 lg:h-full lg:w-[0.5px]" />
+        </div>
+      )}
+      <div className="flex flex-col items-center gap-midsm text-center lg:gap-sm">
+        <motion.div animate={controls} initial="hidden" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.5, delay }} className="shrink-0">
+          <item.Widget inView={inView} />
+        </motion.div>
+        <motion.div animate={controls} initial="hidden" variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }} transition={{ duration: 0.5, delay }}>
+          <p className="body-heading-m">{item.title}</p>
+        </motion.div>
+      </div>
+      <motion.div animate={controls} initial="hidden" variants={{ hidden: { opacity: 0, y: -20 }, visible: { opacity: 1, y: 0 } }} transition={{ duration: 0.5, delay }} className="w-full">
+        <div className="mb-lg flex min-h-md w-full select-none items-center justify-center rounded-[5px] bg-gray-300 px-sm py-[10px] last:mb-0 lg:mb-0">
+          <span className="label-text-m text-center text-black">{item.sub}</span>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function ASMProcessMockup() {
+  return (
+    <div className="w-full">
+      <div className="grid w-full grid-cols-1 gap-lg lg:grid-cols-3 lg:gap-0">
+        {ASM_ITEMS.map((item, i) => (
+          <ASMCard key={item.title} item={item} index={i} isLast={i === ASM_ITEMS.length - 1} />
+        ))}
+      </div>
+    </div>
+  );
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 const solutionData = {
   aim: {
-    title: 'The Snapsec AIM Solution',
+    title: 'How Snapsec AIM works',
     desc: 'AIM continuously discovers assets, identities, secrets, applications, and infrastructure across your environment. It builds a centralized inventory enriched with ownership, relationships, and context, giving security teams complete visibility into what exists, who owns it, and how it connects.',
     btnText: 'Explore AIM Live',
     cards: [
       {
-        title: 'Identity & Secrets Mapping',
-        text: 'Trace active credentials, API keys, and certificates to their hosting resources to prevent token leakage.'
+        "title": "Discovery",
+        "text": "Connect cloud providers, repositories, identity platforms, infrastructure, and security tools to continuously discover assets, identities, applications, secrets, and services."
       },
       {
-        title: 'Cloud Adapter Sync',
-        text: 'Connect with AWS, Azure, GCP, and Kubernetes automatically to sync asset logs in real time.'
+        "title": "Inventory",
+        "text": "Normalize and classify discovered resources into a centralized inventory with ownership, criticality, business context, and security metadata."
       },
       {
-        title: 'Relationship Mapping',
-        text: 'Identify direct dependencies between infrastructure entities and high-value codebases.'
+        "title": "Mapping",
+        "text": "Build a dynamic relationship graph that maps assets, identities, secrets, permissions, and dependencies to provide complete visibility across the environment."
       }
     ]
   },
@@ -82,16 +235,16 @@ const solutionData = {
     btnText: 'Explore VS Live',
     cards: [
       {
-        title: 'Agentless Scanning',
-        text: 'Scan ports, protocols, and services without deploying heavyweight local agents.'
+        "title": "Discovery",
+        "text": "Automatically discover hosts, applications, cloud resources, containers, network services, and external assets that require continuous vulnerability assessment."
       },
       {
-        title: 'Continuous Compliance',
-        text: 'Maintain audit readiness for SOC2, ISO27001, and PCI-DSS requirements via daily scans.'
+        "title": "Scanning",
+        "text": "Perform continuous vulnerability scans across discovered assets to identify known vulnerabilities, missing patches, insecure configurations, and exploitable weaknesses."
       },
       {
-        title: 'Internal & External Coverage',
-        text: 'Triage exposures on both public domains and internal corporate network environments.'
+        "title": "Reporting",
+        "text": "Generate actionable reports with severity ratings, affected assets, remediation guidance, and trend analysis to help teams understand and address security risks."
       }
     ]
   },
@@ -101,16 +254,16 @@ const solutionData = {
     btnText: 'Explore ASM Live',
     cards: [
       {
-        title: 'Continuous Discovery',
-        text: 'Automatically discover every external-facing asset — subdomains, IPs, ports, web servers, certificates, DNS records — with no blind spots.'
+        "title": "Discovery",
+        "text": "Leverage OSINT, DNS intelligence, certificate transparency logs, cloud integrations, and active scanning techniques to continuously discover domains, subdomains, applications, APIs, IPs, and internet-facing assets."
       },
       {
-        title: 'Unified Asset Catalog',
-        text: 'Explore and manage all discovered assets in one place. Filter by type, WAF, exposure status, network scope, or signal presence.'
+        "title": "Classification",
+        "text": "Classify discovered assets, identify shadow IT, detect vulnerabilities and misconfigurations, and prioritize exposures based on severity, exploitability, business impact, and internet accessibility."
       },
       {
-        title: 'Risk Signals',
-        text: 'Continuously detect exposures using rule-based intelligence. Signals evaluate assets after each scan and surface violations with severity and trends.'
+        "title": "Remediation",
+        "text": "Assign ownership, create remediation workflows, track fixes through integrations, and continuously retest assets to verify exposures have been eliminated and risks remain under control."
       }
     ]
   },
@@ -120,16 +273,16 @@ const solutionData = {
     btnText: 'Explore WAS Live',
     cards: [
       {
-        title: 'DAST Security Engine',
-        text: 'Simulate real-world attacks to find business logic flaws and OWASP Top 10 vulnerabilities.'
+        "title": "Configure",
+        "text": "Perform a one-time setup by defining application scope, authentication methods, user roles, API specifications, and crawling preferences to ensure accurate testing coverage."
       },
       {
-        title: 'API Security Auditing',
-        text: 'Upload OpenAPI specifications to scan REST and GraphQL endpoints for authorization flaws.'
+        "title": "Crawling",
+        "text": "AI-powered crawling automatically explores applications, APIs, workflows, forms, and authenticated areas to discover features, endpoints, and attack surfaces that require testing."
       },
       {
-        title: 'Developer Integration',
-        text: 'Generate copy-pasteable curl commands and Remediation recipes to accelerate dev fixes.'
+        "title": "Scanning",
+        "text": "Every discovered request, endpoint, and application feature is automatically tested for vulnerabilities, misconfigurations, authentication weaknesses, and security flaws with continuous validation."
       }
     ]
   },
@@ -139,16 +292,16 @@ const solutionData = {
     btnText: 'Explore VM Live',
     cards: [
       {
-        title: 'Scanner Aggregation',
-        text: 'Merge findings from Qualys, Trivy, Snyk, and 56+ third-party tools into a single pane of glass.'
+        "title": "Aggregate",
+        "text": "Collect vulnerability findings from scanners, cloud security tools, code analysis platforms, penetration tests, and third-party security solutions into a single platform."
       },
       {
-        title: 'Risk Prioritization',
-        text: 'Determine business critical impact by correlating threat intelligence with asset criticality.'
+        "title": "Prioritize",
+        "text": "Eliminate duplicates, identify false positives, correlate related findings, and prioritize vulnerabilities based on true risk, exploitability, asset criticality, and business impact."
       },
       {
-        title: 'Workflow Orchestration',
-        text: 'Auto-create JIRA tickets and track SLA breach deadlines with real-time slack alerts.'
+        "title": "Remediate",
+        "text": "Assign ownership, create tickets, track remediation progress, monitor SLAs, and validate fixes to ensure vulnerabilities are resolved efficiently across teams."
       }
     ]
   }
@@ -158,30 +311,30 @@ const cardIcons = [
   // Icon 1
   (
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-      <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1"/>
-      <circle cx="24" cy="24" r="8" fill="none" stroke="#000" strokeWidth="1.5"/>
-      <line x1="24" y1="8" x2="24" y2="16" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
-      <line x1="24" y1="32" x2="24" y2="40" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
-      <line x1="8" y1="24" x2="16" y2="24" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
-      <line x1="32" y1="24" x2="40" y2="24" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
+      <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1" />
+      <circle cx="24" cy="24" r="8" fill="none" stroke="#000" strokeWidth="1.5" />
+      <line x1="24" y1="8" x2="24" y2="16" stroke="#000" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="24" y1="32" x2="24" y2="40" stroke="#000" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="8" y1="24" x2="16" y2="24" stroke="#000" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="32" y1="24" x2="40" y2="24" stroke="#000" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   ),
   // Icon 2
   (
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-      <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1"/>
-      <rect x="12" y="14" width="24" height="20" rx="2" stroke="#000" strokeWidth="1.5"/>
-      <line x1="16" y1="20" x2="32" y2="20" stroke="#000" strokeWidth="1"/>
-      <line x1="16" y1="24" x2="28" y2="24" stroke="#000" strokeWidth="1"/>
-      <line x1="16" y1="28" x2="24" y2="28" stroke="#000" strokeWidth="1"/>
+      <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1" />
+      <rect x="12" y="14" width="24" height="20" rx="2" stroke="#000" strokeWidth="1.5" />
+      <line x1="16" y1="20" x2="32" y2="20" stroke="#000" strokeWidth="1" />
+      <line x1="16" y1="24" x2="28" y2="24" stroke="#000" strokeWidth="1" />
+      <line x1="16" y1="28" x2="24" y2="28" stroke="#000" strokeWidth="1" />
     </svg>
   ),
   // Icon 3
   (
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-      <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1"/>
-      <path d="M16 20L24 28L32 20" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="24" cy="16" r="3" stroke="#000" strokeWidth="1.5"/>
+      <circle cx="24" cy="24" r="23" stroke="#D9D9D9" strokeWidth="1" />
+      <path d="M16 20L24 28L32 20" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="24" cy="16" r="3" stroke="#000" strokeWidth="1.5" />
     </svg>
   )
 ];
@@ -220,7 +373,7 @@ export default function SolutionSection({ moduleSlug }) {
             </div>
 
             <FadeInBlock delay={0.2}>
-              <AssetCatalogMockup slug={slug} />
+              {slug === 'vs' ? <VSProcessMockup /> : slug === 'asm' ? <ASMProcessMockup /> : <AssetCatalogMockup slug={slug} />}
             </FadeInBlock>
 
             <FadeInBlock delay={0.3}>
