@@ -211,25 +211,25 @@ const dropdownData = {
           {
             icon: Icons.layers,
             title: 'Complete Asset Inventory',
-            desc: 'Continuously discover and inventory all cloud assets, applications, domains, APIs, containers, and infrastructure.',
+            desc: 'Continuously inventory cloud assets, domains, APIs, and containers.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
             icon: Icons.cpu,
             title: 'Non-Human Identity Discovery',
-            desc: 'Identify service accounts, API keys, secrets, AI agents, and machine identities with their owners and permissions.',
+            desc: 'Identify service accounts, API keys, secrets, and machine identities.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
             icon: Icons.eye,
             title: 'Shadow IT Identification',
-            desc: 'Find unmanaged, forgotten, or unauthorized assets that increase security risk and expand the attack surface.',
+            desc: 'Find unmanaged or unauthorized assets that expand the attack surface.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
             icon: Icons.map,
             title: 'Attack Surface Mapping',
-            desc: 'Map relationships between assets, identities, applications, and external exposures to understand organizational risk.',
+            desc: 'Map connections between assets, identities, and external exposures.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
         ],
@@ -242,25 +242,25 @@ const dropdownData = {
           {
             icon: Icons.bug,
             title: 'Vulnerability Detection',
-            desc: 'Detect vulnerabilities across infrastructure, applications, containers, cloud resources, and code repositories.',
+            desc: 'Detect vulnerabilities across infrastructure, applications, and code.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
             icon: Icons.alertTriangle,
             title: 'Misconfiguration Detection',
-            desc: 'Identify insecure configurations in cloud environments, IAM policies, networks, and applications.',
+            desc: 'Identify misconfigured cloud resources, IAM policies, and networks.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
             icon: Icons.key,
             title: 'Secret Exposure Detection',
-            desc: 'Discover leaked credentials, API keys, certificates, and sensitive information before they can be exploited.',
+            desc: 'Discover leaked credentials, API keys, and certificates.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
             icon: Icons.radar,
             title: 'Risk-Based Threat Detection',
-            desc: 'Correlate findings across multiple security layers to identify the risks that matter most to the business.',
+            desc: 'Correlate findings across layers to prioritize critical risks.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
         ],
@@ -273,25 +273,25 @@ const dropdownData = {
           {
             icon: Icons.crosshair,
             title: 'Root Cause Remediation',
-            desc: 'Eliminate thousands of related findings by fixing the underlying issue responsible for multiple vulnerabilities.',
+            desc: 'Fix underlying issues to eliminate thousands of related findings.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
             icon: Icons.wrench,
             title: 'Automated Remediation Guidance',
-            desc: 'Provide actionable fix recommendations, upgrade paths, configuration changes, and mitigation steps.',
+            desc: 'Get actionable fix recommendations and configuration guides.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
             icon: Icons.chart,
             title: 'Risk-Based Prioritization',
-            desc: 'Prioritize remediation efforts using exploitability, asset criticality, exposure level, and business impact.',
+            desc: 'Prioritize fixes by exploitability and asset criticality.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
           {
             icon: Icons.clipboard,
             title: 'Remediation Tracking & Governance',
-            desc: 'Track ownership, progress, SLAs, and remediation outcomes across teams from a centralized platform.',
+            desc: 'Track ownership, progress, and SLAs across engineering teams.',
             link: 'https://docs.snapsec.co/usecases/introduction',
           },
         ],
@@ -436,50 +436,6 @@ const getIconStyles = () => {
 };
 
 const promoData = {
-  Modules: {
-    tag: 'NEW MODULE RELEASE',
-    tagBg: 'bg-black',
-    tagColor: 'text-white',
-    headline: 'Continuous API Fuzzing',
-    desc: 'Deep API vulnerability scanning and automated testing. Discover hidden API endpoints and validate security controls.',
-    link: 'https://docs.snapsec.co',
-    linkLabel: 'Explore API security',
-    graphic: (
-      <div className="relative w-full h-[90px] rounded-lg bg-gradient-to-br from-[#111111] to-[#222222] overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
-        <div className="flex items-center gap-[8px] text-white">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
-            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
-            <line x1="6" y1="6" x2="6.01" y2="6"/>
-            <line x1="6" y1="18" x2="6.01" y2="18"/>
-          </svg>
-          <span className="font-mono text-[10px] tracking-wider uppercase font-bold text-white/95">API SCANNER v2.0</span>
-        </div>
-      </div>
-    )
-  },
-  Usecases: {
-    tag: 'SECURITY CASE STUDY',
-    tagBg: 'bg-black',
-    tagColor: 'text-white',
-    headline: 'Enforcing SLAs Automatically',
-    desc: 'Learn how modern AppSec teams use Snapsec to enforce remediation policies, lowering time-to-fix metrics by 85%.',
-    link: 'https://docs.snapsec.co/usecases/introduction',
-    linkLabel: 'Read case study',
-    graphic: (
-      <div className="relative w-full h-[90px] rounded-lg bg-gradient-to-br from-[#111111] to-[#222222] overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
-        <div className="flex items-center gap-[8px] text-white">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-            <polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-          <span className="font-mono text-[10px] tracking-wider uppercase font-bold text-white/95">SLA COMPLIANCE</span>
-        </div>
-      </div>
-    )
-  },
   Resources: {
     tag: 'DOCUMENTATION',
     tagBg: 'bg-black',
@@ -582,7 +538,7 @@ function MegaDropdown({ data, menuName, isOpen }) {
               className={`flex flex-col gap-[16px] ${
                 ci > 0 ? 'pl-[24px] border-l border-gray-100' : ''
               }`}
-              style={{ width: '250px' }}
+              style={{ width: menuName === 'Usecases' ? '300px' : '260px' }}
             >
               {col.badge && (
                 <span
