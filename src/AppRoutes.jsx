@@ -5,6 +5,7 @@ import DiscoveryPage from './pages/DiscoveryPage/index.jsx';
 import PlatformPage from './pages/PlatformPage/index.js';
 import AboutUsPage from './pages/AboutUsPage/index.jsx';
 import ContactUsPage from './pages/ContactUsPage/index.jsx';
+import NotFoundPage from './pages/NotFoundPage/index.jsx';
 
 export default function AppRoutes() {
   return (
@@ -16,6 +17,7 @@ export default function AppRoutes() {
       <Route path="/platform" element={<PlatformPage />} />
       <Route path="/about-us" element={<AboutUsPage />} />
       <Route path="/contact-us" element={<ContactUsPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
