@@ -17,6 +17,444 @@ function FadeInBlock({ children, delay = 0, className = 'w-full' }) {
   );
 }
 
+// Normalization Engine Animation for VM (Feature 1)
+function VMNormalizationEngine() {
+  const [pulse, setPulse] = useState(0);
+  const [normalizedItems, setNormalizedItems] = useState([
+    { id: "VM-201", title: "SQLi in /api/v1/checkout", sev: "CRITICAL", cvss: "9.8", source: "WAS Scanner" },
+    { id: "VM-202", title: "Port 22 SSH exposed", sev: "HIGH", cvss: "8.4", source: "VS Scanner" },
+    { id: "VM-203", title: "Outdated OpenSSL package", sev: "MEDIUM", cvss: "5.3", source: "Snyk Ingestion" }
+  ]);
+
+  useEffect(() => {
+    const sources = ["WAS Scanner", "VS Scanner", "Snyk Ingestion", "Qualys API", "Bug Bounty Feed"];
+    const titles = [
+      { t: "Exposed S3 backups bucket", s: "HIGH", c: "8.1" },
+      { t: "RCE in Log4j library version", s: "CRITICAL", c: "9.8" },
+      { t: "XSS vulnerable parameter 'q'", s: "MEDIUM", c: "6.1" },
+      { t: "CSRF token bypass in checkout", s: "HIGH", c: "7.5" }
+    ];
+
+    const interval = setInterval(() => {
+      setPulse(prev => (prev + 1) % 3);
+      
+      // Add a normalized item periodically
+      const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+      const randomSrc = sources[Math.floor(Math.random() * sources.length)];
+      const newItem = {
+        id: `VM-${Math.floor(Math.random() * 800) + 204}`,
+        title: randomTitle.t,
+        sev: randomTitle.s,
+        cvss: randomTitle.c,
+        source: randomSrc
+      };
+
+      setNormalizedItems(prev => [newItem, prev[0], prev[1]].slice(0, 3));
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      
+      {/* Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+        <div className="flex items-center gap-[6px]">
+          <span className="w-[8px] h-[8px] rounded-full bg-blue-500 animate-pulse" />
+          <span className="text-gray-900 font-semibold text-[10px] ml-xs tracking-wider uppercase">
+            Normalization Engine v1.2
+          </span>
+        </div>
+        <div className="text-[9px] font-bold text-green-600 bg-green-50 border border-green-200 px-xs py-xxs rounded">
+          NORMALIZING FEEDS
+        </div>
+      </div>
+
+      {/* SVG Container */}
+      <div className="flex-1 bg-[#FAFAFA] relative overflow-hidden flex flex-col p-sm justify-between">
+        
+        {/* Top visual representation */}
+        <div className="h-[120px] relative border border-gray-200 rounded bg-white overflow-hidden">
+          <svg className="w-full h-full" viewBox="0 0 500 100">
+            {/* Source logos/nodes on left */}
+            <g transform="translate(30, 10)">
+              <rect x="0" y="0" width="70" height="20" rx="4" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="1" />
+              <text x="35" y="13" textAnchor="middle" className="font-mono text-[8px] font-bold fill-gray-600 uppercase">Qualys</text>
+            </g>
+            <g transform="translate(30, 40)">
+              <rect x="0" y="0" width="70" height="20" rx="4" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="1" />
+              <text x="35" y="13" textAnchor="middle" className="font-mono text-[8px] font-bold fill-gray-600 uppercase">Snyk</text>
+            </g>
+            <g transform="translate(30, 70)">
+              <rect x="0" y="0" width="70" height="20" rx="4" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="1" />
+              <text x="35" y="13" textAnchor="middle" className="font-mono text-[8px] font-bold fill-gray-600 uppercase">WAS/VS</text>
+            </g>
+
+            {/* Central Normalizer Core */}
+            <g transform="translate(250, 50)">
+              <circle cx="0" cy="0" r="24" fill={pulse === 1 ? "#3B82F6" : "#4F46E5"} fillOpacity="0.1" className="animate-pulse" />
+              <circle cx="0" cy="0" r="14" fill="#4F46E5" stroke="#3730A3" strokeWidth="1.5" />
+              <text x="0" y="3" textAnchor="middle" className="font-mono text-[8px] font-bold fill-white">CORE</text>
+            </g>
+
+            {/* Ingestion Arrows */}
+            <path d="M 110 20 L 220 40" stroke="#9CA3AF" strokeWidth="1" strokeDasharray="3 3" fill="none" />
+            <path d="M 110 50 L 220 50" stroke="#9CA3AF" strokeWidth="1" strokeDasharray="3 3" fill="none" />
+            <path d="M 110 80 L 220 60" stroke="#9CA3AF" strokeWidth="1" strokeDasharray="3 3" fill="none" />
+
+            {/* Output Lines to the standard feed */}
+            <path d="M 280 50 L 380 50" stroke="#10B981" strokeWidth="1.5" strokeDasharray={pulse === 0 ? "4 4" : "none"} fill="none" className="transition-all duration-300" />
+            <circle cx={pulse === 0 ? "300" : pulse === 1 ? "340" : "370"} cy="50" r="3" fill="#10B981" />
+
+            <g transform="translate(390, 35)">
+              <rect x="0" y="0" width="80" height="30" rx="4" fill="#ECFDF5" stroke="#A7F3D0" strokeWidth="1" />
+              <text x="40" y="14" textAnchor="middle" className="font-mono text-[8px] font-extrabold fill-green-800">NORMALIZED</text>
+              <text x="40" y="24" textAnchor="middle" className="font-mono text-[7px] fill-green-600">SCHEMA V1</text>
+            </g>
+          </svg>
+        </div>
+
+        {/* Real-time normalized output list */}
+        <div className="flex-1 flex flex-col gap-xs justify-end mt-sm select-text">
+          <div className="text-[9px] font-bold text-gray-500 uppercase tracking-wider select-none">Normalized Vulnerability Registry</div>
+          {normalizedItems.map((item, idx) => (
+            <div key={idx} className="flex items-center justify-between bg-white border border-gray-200 rounded px-xs py-xxs text-[10px] font-mono shadow-sm">
+              <div className="flex items-center gap-xs truncate">
+                <span className="text-gray-400 font-bold">{item.id}</span>
+                <span className="font-bold text-gray-900 truncate">{item.title}</span>
+              </div>
+              <div className="flex items-center gap-xs shrink-0 pl-xs">
+                <span className="text-gray-400 text-[8px]">{item.source}</span>
+                <span className={`text-[8px] font-extrabold px-[5px] py-[1.5px] rounded ${
+                  item.sev === "CRITICAL" ? "bg-red-100 text-red-700" :
+                  item.sev === "HIGH" ? "bg-orange-100 text-orange-700" : "bg-yellow-100 text-yellow-700"
+                }`}>
+                  CVSS {item.cvss}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// Unified Asset map representation for AIM (Feature 1)
+function AIMUnifiedAssetMap() {
+  const [pulse, setPulse] = useState(0);
+  const [counts, setCounts] = useState({ subdomains: 130, apis: 72, repos: 30, certs: 18 });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPulse(p => (p + 1) % 4);
+      setCounts(c => ({
+        subdomains: c.subdomains + (Math.random() > 0.7 ? 1 : 0),
+        apis: c.apis + (Math.random() > 0.8 ? 1 : 0),
+        repos: c.repos + (Math.random() > 0.9 ? 1 : 0),
+        certs: c.certs + (Math.random() > 0.95 ? 1 : 0)
+      }));
+    }, 1500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      
+      {/* Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+        <div className="flex items-center gap-[6px]">
+          <span className="w-[8px] h-[8px] rounded-full bg-blue-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-indigo-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-green-400" />
+          <span className="text-gray-900 font-semibold text-[10px] ml-xs tracking-wider uppercase">
+            Asset Ingestion Core
+          </span>
+        </div>
+        <div className="flex items-center gap-xs text-[10px] font-bold text-blue-600">
+          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse inline-block" />
+          <span>INGESTING DATAFEED</span>
+        </div>
+      </div>
+
+      {/* SVG Container */}
+      <div className="flex-1 bg-white relative overflow-hidden flex items-center justify-center">
+        <svg className="w-full h-full" viewBox="0 0 600 240">
+          {/* Grid background */}
+          <pattern id="aimGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#F3F4F6" strokeWidth="0.5" />
+          </pattern>
+          <rect width="600" height="240" fill="url(#aimGrid)" />
+
+          {/* Connection Lines from perimeter to center */}
+          <path d="M 120 70 L 300 120" stroke={pulse === 0 ? "#3B82F6" : "#E5E7EB"} strokeWidth={pulse === 0 ? "2" : "1.2"} fill="none" className="transition-all duration-300" />
+          <path d="M 120 170 L 300 120" stroke={pulse === 1 ? "#6366F1" : "#E5E7EB"} strokeWidth={pulse === 1 ? "2" : "1.2"} fill="none" className="transition-all duration-300" />
+          <path d="M 480 70 L 300 120" stroke={pulse === 2 ? "#10B981" : "#E5E7EB"} strokeWidth={pulse === 2 ? "2" : "1.2"} fill="none" className="transition-all duration-300" />
+          <path d="M 480 170 L 300 120" stroke={pulse === 3 ? "#EC4899" : "#E5E7EB"} strokeWidth={pulse === 3 ? "2" : "1.2"} fill="none" className="transition-all duration-300" />
+
+          {/* Central Hub Node */}
+          <g transform="translate(300, 120)">
+            <circle cx="0" cy="0" r="32" fill="#3B82F6" fillOpacity="0.05" stroke="#3B82F6" strokeWidth="1" strokeDasharray="3 3" />
+            <circle cx="0" cy="0" r="20" fill="#3B82F6" stroke="#1D4ED8" strokeWidth="1.5" />
+            <text x="0" y="3" textAnchor="middle" className="font-mono text-[9px] font-bold fill-white select-none">AIM</text>
+          </g>
+
+          {/* Category Cards */}
+          <g transform="translate(40, 40)">
+            <rect x="0" y="0" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1.5" />
+            <rect x="0" y="0" width="100" height="5" rx="2" fill="#3B82F6" />
+            <text x="8" y="20" className="font-sans text-[8px] font-bold fill-gray-500 uppercase select-none">SUBDOMAINS</text>
+            <text x="8" y="32" className="font-mono text-[11px] font-extrabold fill-black">{counts.subdomains}</text>
+          </g>
+
+          <g transform="translate(40, 140)">
+            <rect x="0" y="0" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1.5" />
+            <rect x="0" y="0" width="100" height="5" rx="2" fill="#6366F1" />
+            <text x="8" y="20" className="font-sans text-[8px] font-bold fill-gray-500 uppercase select-none">API ENDPOINTS</text>
+            <text x="8" y="32" className="font-mono text-[11px] font-extrabold fill-black">{counts.apis}</text>
+          </g>
+
+          <g transform="translate(460, 40)">
+            <rect x="0" y="0" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1.5" />
+            <rect x="0" y="0" width="100" height="5" rx="2" fill="#10B981" />
+            <text x="8" y="20" className="font-sans text-[8px] font-bold fill-gray-500 uppercase select-none">REPOSITORIES</text>
+            <text x="8" y="32" className="font-mono text-[11px] font-extrabold fill-black">{counts.repos}</text>
+          </g>
+
+          <g transform="translate(460, 140)">
+            <rect x="0" y="0" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1.5" />
+            <rect x="0" y="0" width="100" height="5" rx="2" fill="#EC4899" />
+            <text x="8" y="20" className="font-sans text-[8px] font-bold fill-gray-500 uppercase select-none">CERTIFICATES</text>
+            <text x="8" y="32" className="font-mono text-[11px] font-extrabold fill-black">{counts.certs}</text>
+          </g>
+        </svg>
+
+        {/* Real-time Ticker */}
+        <div className="absolute bottom-xs left-xs right-xs bg-white border border-gray-600 rounded-[4px] px-sm py-[6px] text-[10px] font-mono text-gray-500 flex justify-between select-none">
+          <span>&gt; Ingesting cloud boundary log feeds...</span>
+          <span className="font-bold text-green-600">SYNC ACTIVE</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Web Application UI Bug Map for WAS (Feature 1 and Final Benefits)
+function WASWebUiBugMap() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [hoveredBug, setHoveredBug] = useState(null);
+
+  const bugs = [
+    {
+      id: 0,
+      x: 315,
+      y: 102,
+      title: "SQL Injection (SQLi)",
+      parameter: "invoice_id",
+      payload: "10023' OR 1=1 --",
+      severity: "Critical",
+      desc: "Allows database manipulation and sensitive data exposure via unvalidated search parameters."
+    },
+    {
+      id: 1,
+      x: 315,
+      y: 147,
+      title: "Stored Cross-Site Scripting (XSS)",
+      parameter: "display_name",
+      payload: "<script>alert('XSS')</script>",
+      severity: "High",
+      desc: "Executes arbitrary Javascript in the browser of users accessing this profile page."
+    },
+    {
+      id: 2,
+      x: 315,
+      y: 192,
+      title: "Broken Object Level Auth (IDOR)",
+      parameter: "user_id",
+      payload: "?user_id=1001",
+      severity: "High",
+      desc: "Permits unauthorized reading/modification of other profiles by swapping resource IDs."
+    },
+    {
+      id: 3,
+      x: 520,
+      y: 102,
+      title: "Server-Side Request Forgery (SSRF)",
+      parameter: "webhook_url",
+      payload: "http://169.254.169.254/latest/",
+      severity: "Critical",
+      desc: "Tricks the server into routing scan requests to internal local networks and instance metadata."
+    },
+    {
+      id: 4,
+      x: 520,
+      y: 147,
+      title: "Local File Inclusion (LFI)",
+      parameter: "xml_path",
+      payload: "file:///etc/passwd",
+      severity: "High",
+      desc: "Forces server to read system files or environment configuration parameters."
+    },
+    {
+      id: 5,
+      x: 520,
+      y: 192,
+      title: "Cross-Site Request Forgery (CSRF)",
+      parameter: "action_token",
+      payload: "No CSRF Token Supplied",
+      severity: "Medium",
+      desc: "Enables execution of malicious setting updates via unauthorized third-party user sessions."
+    }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex(prev => (prev + 1) % bugs.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const activeBug = hoveredBug || bugs[activeIndex];
+
+  return (
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[400px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      
+      {/* Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+        <div className="flex items-center gap-[6px]">
+          <span className="w-[8px] h-[8px] rounded-full bg-red-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-yellow-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-green-400" />
+          <span className="text-gray-900 font-semibold text-[10px] ml-xs tracking-wider uppercase">
+            WAS Vulnerability Analyzer
+          </span>
+        </div>
+        <div className="flex items-center gap-xs text-gray-900 text-[10px] font-semibold">
+          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse inline-block" />
+          <span className="text-red-600 uppercase">
+            {bugs.length} Bugs Found
+          </span>
+        </div>
+      </div>
+
+      {/* SVG Container */}
+      <div className="flex-1 relative overflow-hidden bg-white flex items-center justify-center">
+        <svg className="w-full h-full" viewBox="0 0 600 240">
+          {/* Grid background */}
+          <pattern id="wasGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#F3F4F6" strokeWidth="0.5" />
+          </pattern>
+          <rect width="600" height="240" fill="url(#wasGrid)" />
+
+          {/* Browser Window Mock */}
+          <rect x="30" y="20" width="540" height="200" rx="8" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1.5" />
+          <rect x="30" y="20" width="540" height="24" rx="8" fill="#FAFAFA" />
+          <line x1="30" y1="44" x2="570" y2="44" stroke="#E5E7EB" strokeWidth="1" />
+          
+          {/* Controls */}
+          <circle cx="45" cy="32" r="3" fill="#EF4444" />
+          <circle cx="55" cy="32" r="3" fill="#F59E0B" />
+          <circle cx="65" cy="32" r="3" fill="#10B981" />
+          <rect x="100" y="24" width="380" height="15" rx="4" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1" />
+          <text x="110" y="34" className="font-mono text-[7px] fill-gray-400 select-none">https://app.corp.internal/settings/profile</text>
+
+          {/* Sidebar */}
+          <rect x="30" y="44" width="100" height="176" fill="#FAFAFA" />
+          <line x1="130" y1="44" x2="130" y2="220" stroke="#E5E7EB" strokeWidth="1" />
+          <rect x="40" y="60" width="80" height="8" rx="2" fill="#E5E7EB" />
+          <rect x="40" y="76" width="80" height="8" rx="2" fill="#E5E7EB" />
+          <rect x="40" y="92" width="80" height="8" rx="2" fill="#E5E7EB" />
+          <rect x="40" y="108" width="80" height="8" rx="2" fill="#E5E7EB" />
+
+          {/* Content Headings */}
+          <text x="145" y="70" className="font-sans text-[11px] font-bold fill-black select-none">Account Settings</text>
+          <text x="145" y="80" className="font-sans text-[7px] fill-gray-400 select-none">Configure API endpoints and check parameters</text>
+
+          {/* Input Fields */}
+          {/* SQLi */}
+          <text x="145" y="98" className="font-sans text-[7px] font-bold fill-gray-500 select-none">Search Invoices (ID)</text>
+          <rect x="145" y="102" width="180" height="18" rx="4" fill="#FFFFFF" stroke={activeBug.id === 0 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 0 ? 1.5 : 1} />
+          <text x="150" y="113" className="font-mono text-[7px] fill-gray-700 select-none">10023' OR 1=1 --</text>
+
+          {/* XSS */}
+          <text x="145" y="143" className="font-sans text-[7px] font-bold fill-gray-500 select-none">User Display Name</text>
+          <rect x="145" y="147" width="180" height="18" rx="4" fill="#FFFFFF" stroke={activeBug.id === 1 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 1 ? 1.5 : 1} />
+          <text x="150" y="158" className="font-mono text-[7px] fill-gray-700 select-none">&lt;script&gt;alert('XSS')&lt;/script&gt;</text>
+
+          {/* IDOR */}
+          <text x="145" y="188" className="font-sans text-[7px] font-bold fill-gray-500 select-none">Endpoint Identifier (IDOR)</text>
+          <rect x="145" y="192" width="180" height="18" rx="4" fill="#FFFFFF" stroke={activeBug.id === 2 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 2 ? 1.5 : 1} />
+          <text x="150" y="203" className="font-mono text-[7px] fill-gray-700 select-none">?user_id=1001</text>
+
+          {/* SSRF */}
+          <text x="350" y="98" className="font-sans text-[7px] font-bold fill-gray-500 select-none">Outbound Webhook URL (SSRF)</text>
+          <rect x="350" y="102" width="180" height="18" rx="4" fill="#FFFFFF" stroke={activeBug.id === 3 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 3 ? 1.5 : 1} />
+          <text x="355" y="113" className="font-mono text-[7px] fill-gray-700 select-none">http://169.254.169.254/latest/</text>
+
+          {/* LFI */}
+          <text x="350" y="143" className="font-sans text-[7px] font-bold fill-gray-500 select-none">XML Report Path (LFI)</text>
+          <rect x="350" y="147" width="180" height="18" rx="4" fill="#FFFFFF" stroke={activeBug.id === 4 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 4 ? 1.5 : 1} />
+          <text x="355" y="158" className="font-mono text-[7px] fill-gray-700 select-none">file:///etc/passwd</text>
+
+          {/* CSRF */}
+          <text x="350" y="188" className="font-sans text-[7px] font-bold fill-gray-500 select-none">CSRF Policy</text>
+          <rect x="350" y="192" width="180" height="18" rx="4" fill={activeBug.id === 5 ? "#FEF2F2" : "#F9FAFB"} stroke={activeBug.id === 5 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 5 ? 1.5 : 1} />
+          <text x="355" y="203" className="font-sans text-[7px] font-bold fill-red-600 select-none">Update Settings (No Token)</text>
+
+          {/* Active target scanner overlay */}
+          {activeBug && (
+            <g>
+              <circle cx={activeBug.x} cy={activeBug.y} r="8" fill="none" stroke="#EF4444" strokeWidth="1.2" className="animate-ping" />
+              <line x1="300" y1="240" x2={activeBug.x} y2={activeBug.y} stroke="rgba(239, 68, 68, 0.2)" strokeWidth="1.5" strokeDasharray="3 3" />
+            </g>
+          )}
+
+          {/* Nodes */}
+          {bugs.map((bug) => {
+            const isActive = activeBug?.id === bug.id;
+            return (
+              <g
+                key={bug.id}
+                className="cursor-pointer"
+                onMouseEnter={() => setHoveredBug(bug)}
+                onMouseLeave={() => setHoveredBug(null)}
+              >
+                {isActive && (
+                  <circle cx={bug.x} cy={bug.y} r="6" fill="#EF4444" fillOpacity="0.3" className="animate-pulse" />
+                )}
+                <circle cx={bug.x} cy={bug.y} r={isActive ? 4 : 3} fill="#EF4444" stroke="#FFF" strokeWidth="1" />
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* Tooltip description drawer */}
+        <div className="absolute bottom-xs left-xs right-xs bg-white border border-gray-600 rounded-[6px] p-xs shadow-md flex items-center justify-between text-[11px] min-h-[46px] select-none">
+          {activeBug && (
+            <>
+              <div className="flex flex-col min-w-0 pr-sm">
+                <span className="font-bold text-black flex items-center gap-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                  {activeBug.title}
+                </span>
+                <span className="text-[10px] text-gray-500 mt-[2px] leading-snug">{activeBug.desc}</span>
+              </div>
+              <div className="flex flex-col items-end shrink-0 text-right">
+                <span className="text-[9px] uppercase font-bold tracking-wider px-[6px] py-[2.5px] rounded bg-red-100 text-red-700 border border-red-200">
+                  {activeBug.severity}
+                </span>
+                <span className="font-mono text-[8px] text-gray-400 mt-xxs truncate max-w-[120px]">param: {activeBug.parameter}</span>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Interactive Radar Scanner Map for VS
 function VSRadarScannerMap({ moduleSlug }) {
   const [hoveredNode, setHoveredNode] = useState(null);
@@ -501,6 +939,9 @@ function DiscoveryNetworkMap({ moduleSlug }) {
 
 export default function Feature1({ moduleSlug }) {
   const isVS = moduleSlug === 'vs';
+  const isWAS = moduleSlug === 'was';
+  const isAIM = moduleSlug === 'aim';
+  const isVM = moduleSlug === 'vm';
 
   return (
     <section className="section-visibility-integration bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -513,19 +954,25 @@ export default function Feature1({ moduleSlug }) {
             <div className="flex flex-col items-start gap-sm w-full">
               {/* Badge */}
               <span className="inline-flex items-center rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.16em] uppercase bg-[#F5F5F5] text-black border border-gray-300">
-                {isVS ? "Continuous Assessment" : "Multi-Source Discovery"}
+                {isVM ? "Data Aggregation" : isAIM ? "Asset Discovery" : isWAS ? "Dynamic Scan Engine" : isVS ? "Continuous Assessment" : "Multi-Source Discovery"}
               </span>
 
               {/* Heading / Value */}
               <h2 className="text-[28px] sm:text-[36px] font-semibold leading-[1.2] text-black tracking-tight mt-xs">
-                {isVS ? "Comprehensive Asset Coverage" : "See every asset exposed to the internet."}
+                {isVM ? "Unified Vulnerability Aggregation & Normalization" : isAIM ? "Unified Asset Inventory & Visibility" : isWAS ? "Comprehensive Web Application & API scanning" : isVS ? "Comprehensive Asset Coverage" : "See every asset exposed to the internet."}
               </h2>
 
               {/* Description */}
               <p className="text-[14px] sm:text-[15px] text-gray-900 leading-[1.5] mt-sm">
-                {isVS 
-                  ? "Scan assets like internal IPs, subdomains, external IPs, and IT assets all in one place."
-                  : "Discover domains, subdomains, IPs, applications, APIs, cloud resources, and shadow IT assets across your organization to maintain a complete and continuously updated view of your external attack surface."}
+                {isVM
+                  ? "Ingest vulnerabilities from multiple sources (scanners, pentests, bug bounties) and normalize them into a single, standardized registry."
+                  : isAIM
+                    ? "Discover and catalog your entire digital footprint including subdomains, API endpoints, SSL certificates, code repositories, and cloud resources."
+                    : isWAS
+                      ? "It scans more than 1000 vulnerabilities, including the OWASP Top 10 and other advanced web attacks on your web application."
+                      : isVS 
+                        ? "Scan assets like internal IPs, subdomains, external IPs, and IT assets all in one place."
+                        : "Discover domains, subdomains, IPs, applications, APIs, cloud resources, and shadow IT assets across your organization to maintain a complete and continuously updated view of your external attack surface."}
               </p>
             </div>
 
@@ -535,12 +982,18 @@ export default function Feature1({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVS ? "Automated CVE Mapping" : "Continuous Mapping"}
+                    {isVM ? "Multi-Source Aggregation" : isAIM ? "Complete Asset Coverage" : isWAS ? "OWASP Top 10 Audits" : isVS ? "Automated CVE Mapping" : "Continuous Mapping"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
-                    {isVS 
-                      ? "Automatically match discovered services against the latest NVD vulnerability database."
-                      : "Automatic monitoring of DNS records, CT logs, and cloud catalogs."}
+                    {isVM
+                      ? "Consolidate active inputs from WAS, VS, Snyk, and external API feeds automatically."
+                      : isAIM
+                        ? "Map subdomains, internal and external IP addresses, employee identities, and object storage buckets."
+                        : isWAS
+                          ? "Detect injection attacks, cross-site scripting, broken authentication, and security misconfigurations."
+                          : isVS 
+                            ? "Automatically match discovered services against the latest NVD vulnerability database."
+                            : "Automatic monitoring of DNS records, CT logs, and cloud catalogs."}
                   </p>
                 </div>
               </div>
@@ -548,12 +1001,18 @@ export default function Feature1({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVS ? "Package Version Audits" : "Shadow IT Detection"}
+                    {isVM ? "Normalization Engine" : isAIM ? "Dynamic Continuous Sync" : isWAS ? "API & Input Exposure" : isVS ? "Package Version Audits" : "Shadow IT Detection"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
-                    {isVS 
-                      ? "Identify vulnerable third-party dependencies, open ports, and unpatched infrastructure."
-                      : "Uncover rogue environments, unmanaged APIs, and forgotten cloud storage."}
+                    {isVM
+                      ? "Re-evaluate different scanner outputs and align them under a unified risk classification metric."
+                      : isAIM
+                        ? "Instantly sync with active agent logs, cloud metadata, and domain registries to keep inventory current."
+                        : isWAS
+                          ? "Verify forms, outbound webhook integrations, XML inputs, and API parameters against bypasses."
+                          : isVS 
+                            ? "Identify vulnerable third-party dependencies, open ports, and unpatched infrastructure."
+                            : "Uncover rogue environments, unmanaged APIs, and forgotten cloud storage."}
                   </p>
                 </div>
               </div>
@@ -563,7 +1022,13 @@ export default function Feature1({ moduleSlug }) {
           {/* Right Column: Constellation network visual (Span 7) */}
           <div className="lg:col-span-7 px-sm sm:px-xl lg:px-64px py-lg lg:py-88px bg-[#FAFAFA] flex items-center justify-center">
             <FadeInBlock delay={0.2} className="w-full">
-              {isVS ? (
+              {isVM ? (
+                <VMNormalizationEngine />
+              ) : isAIM ? (
+                <AIMUnifiedAssetMap />
+              ) : isWAS ? (
+                <WASWebUiBugMap />
+              ) : isVS ? (
                 <VSRadarScannerMap moduleSlug={moduleSlug} />
               ) : (
                 <DiscoveryNetworkMap moduleSlug={moduleSlug} />

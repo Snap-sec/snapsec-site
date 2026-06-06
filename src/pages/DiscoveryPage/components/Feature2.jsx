@@ -15,6 +15,132 @@ function FadeInBlock({ children, className = 'w-full' }) {
   );
 }
 
+// Interactive SLA & Change Management Workflow for VM (Feature 2)
+function VMChangeSLAControl() {
+  const [accepted, setAccepted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(14); // 14 days SLA
+
+  const handleAccept = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setAccepted(true);
+    }, 1200);
+  };
+
+  const handleReset = () => {
+    setAccepted(false);
+  };
+
+  return (
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      
+      {/* Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+        <div className="flex items-center gap-[6px]">
+          <span className="w-[8px] h-[8px] rounded-full bg-amber-500" />
+          <span className="text-gray-900 font-semibold text-[10px] tracking-wider uppercase">
+            Change & Risk Review Board
+          </span>
+        </div>
+        <div className="text-[8px] font-bold text-gray-500 border border-gray-300 px-xs py-xxs rounded">
+          SLA POLICY: 30 DAYS RESOLUTION
+        </div>
+      </div>
+
+      {/* Main Container */}
+      <div className="flex-1 p-sm bg-[#FAFAFA] flex flex-col justify-between">
+        
+        {/* Vulnerability details */}
+        <div className="bg-white border border-gray-200 rounded p-sm shadow-sm flex flex-col gap-xs select-text">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-bold text-gray-400">CVE-2024-38472</span>
+            <span className="text-[9px] uppercase font-bold tracking-wider px-[6px] py-[2.5px] rounded bg-red-100 text-red-700 border border-red-200">
+              Critical (CVSS 9.8)
+            </span>
+          </div>
+          <h4 className="text-[12px] font-bold text-black leading-tight">
+            Apache HTTP Server source code disclosure via malicious redirect mapping
+          </h4>
+          <div className="flex items-center gap-md text-[10px] text-gray-500 mt-xxs">
+            <div>
+              <span>Owner: </span>
+              <span className="font-bold text-gray-800">Platform Eng Unit</span>
+            </div>
+            <div>
+              <span>Source: </span>
+              <span className="font-bold text-gray-800">WAS Module</span>
+            </div>
+          </div>
+        </div>
+
+        {/* SLA and Decision Status */}
+        <div className="grid grid-cols-2 gap-sm select-none">
+          {/* Left panel: SLA timer */}
+          <div className="bg-white border border-gray-200 rounded p-sm shadow-sm flex flex-col justify-center items-center text-center">
+            <span className="text-[9px] text-gray-400 font-bold uppercase">SLA Status</span>
+            {accepted ? (
+              <span className="text-[14px] font-bold text-blue-600 mt-xxs">PAUSED</span>
+            ) : (
+              <span className="text-[14px] font-bold text-amber-600 mt-xxs">{timeLeft} Days Left</span>
+            )}
+            <span className="text-[8px] text-gray-400 mt-xxs">Limit: 30 Days (Critical)</span>
+          </div>
+
+          {/* Right panel: Acceptance status */}
+          <div className="bg-white border border-gray-200 rounded p-sm shadow-sm flex flex-col justify-center items-center text-center">
+            <span className="text-[9px] text-gray-400 font-bold uppercase">Risk Acceptance</span>
+            {accepted ? (
+              <span className="text-[11px] font-bold text-green-600 mt-xxs uppercase bg-green-50 border border-green-200 px-xs py-xxs rounded">
+                ✓ Active (180d)
+              </span>
+            ) : (
+              <span className="text-[11px] font-bold text-gray-400 mt-xxs uppercase bg-gray-50 border border-gray-200 px-xs py-xxs rounded">
+                Not Requested
+              </span>
+            )}
+            <span className="text-[8px] text-gray-400 mt-xxs">Requires Director Sign-off</span>
+          </div>
+        </div>
+
+        {/* Action Panel */}
+        <div className="bg-white border border-gray-200 rounded p-sm shadow-sm flex items-center justify-between select-none">
+          {loading ? (
+            <span className="text-[11px] text-gray-500 animate-pulse font-medium">Processing risk waiver request...</span>
+          ) : accepted ? (
+            <>
+              <div className="flex flex-col text-[9px] text-gray-500 text-left">
+                <span className="font-bold text-green-700">Waiver approved by Security Director</span>
+                <span>Reason: Active WAF virtual patching active.</span>
+              </div>
+              <button
+                onClick={handleReset}
+                className="px-xs py-xxs bg-gray-100 hover:bg-gray-200 border border-gray-300 text-[10px] font-bold rounded text-gray-700 transition"
+              >
+                Reset
+              </button>
+            </>
+          ) : (
+            <>
+              <span className="text-[10px] text-gray-500 max-w-[200px] leading-tight text-left">
+                Apply compensating control waiver for temporary exemption.
+              </span>
+              <button
+                onClick={handleAccept}
+                className="px-sm py-xs bg-black hover:bg-gray-900 text-[10px] font-bold rounded text-white transition shadow"
+              >
+                Accept Risk
+              </button>
+            </>
+          )}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
 // Multi-Scanner Dashboard for VS
 function VSMultiScannerMap() {
   const [scanIndex, setScanIndex] = useState(0);
@@ -896,8 +1022,226 @@ function StaticComplianceDashboard({ moduleSlug }) {
   );
 }
 
+// Interactive Focused Asset Class Dashboards for AIM (Feature 2)
+function AIMFocusedDashboards() {
+  const [activeTab, setActiveTab] = useState("all");
+
+  const tabs = [
+    { id: "all", label: "All Assets" },
+    { id: "apis", label: "APIs" },
+    { id: "certs", label: "Certificates" },
+    { id: "storage", label: "Object Storage" }
+  ];
+
+  // Auto-rotation of tabs
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveTab(current => {
+        if (current === "all") return "apis";
+        if (current === "apis") return "certs";
+        if (current === "certs") return "storage";
+        return "all";
+      });
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      
+      {/* Navigation tabs */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+        <div className="flex gap-xs overflow-x-auto select-none">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-xs py-[3px] text-[10px] font-bold rounded uppercase tracking-wider transition-all border ${
+                activeTab === tab.id
+                  ? "bg-black text-white border-black"
+                  : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+        <span className="text-[8px] font-bold uppercase tracking-wider px-[6px] py-[2.5px] bg-indigo-50 text-indigo-600 border border-indigo-100 rounded select-none">
+          AIM View Selector
+        </span>
+      </div>
+
+      {/* Tab Content Area */}
+      <div className="flex-1 p-sm bg-white overflow-y-auto flex flex-col justify-between select-text">
+        {activeTab === "all" && (
+          <div className="flex flex-col gap-sm">
+            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider select-none">Global Asset Summary</div>
+            <div className="grid grid-cols-3 gap-xs">
+              <div className="border border-gray-200 rounded p-xs bg-[#FAFAFA]">
+                <div className="text-[9px] text-gray-400 font-bold select-none">TOTAL ASSETS</div>
+                <div className="text-[16px] font-mono font-extrabold text-black">250</div>
+              </div>
+              <div className="border border-gray-200 rounded p-xs bg-[#FAFAFA]">
+                <div className="text-[9px] text-gray-400 font-bold select-none">RESOLVING</div>
+                <div className="text-[16px] font-mono font-extrabold text-green-600">224</div>
+              </div>
+              <div className="border border-gray-200 rounded p-xs bg-[#FAFAFA]">
+                <div className="text-[9px] text-gray-400 font-bold select-none">UNRESOLVED</div>
+                <div className="text-[16px] font-mono font-extrabold text-red-500">26</div>
+              </div>
+            </div>
+            <div className="border border-gray-200 rounded p-sm flex items-center justify-between text-[11px]">
+              <div>
+                <span className="font-bold text-black block">Shadow Infrastructure Found</span>
+                <span className="text-gray-400 text-[10px]">3 unmanaged domains discovered last 24h</span>
+              </div>
+              <span className="text-[8px] font-bold bg-yellow-100 text-yellow-800 px-xs py-xxs rounded uppercase">Warning</span>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "apis" && (
+          <div className="flex flex-col gap-xs">
+            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider pb-xxs border-b border-gray-100 select-none">API Endpoint Classification</div>
+            <div className="flex flex-col gap-[6px]">
+              <div className="flex items-center justify-between border-b border-gray-50 pb-[4px] text-[10px]">
+                <span className="font-mono text-gray-800">GET /api/v1/users</span>
+                <span className="px-xs py-[2px] bg-green-100 text-green-700 rounded text-[8px] font-bold uppercase">Secured</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-gray-50 pb-[4px] text-[10px]">
+                <span className="font-mono text-gray-800">POST /api/v1/checkout</span>
+                <span className="px-xs py-[2px] bg-green-100 text-green-700 rounded text-[8px] font-bold uppercase">Secured</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-gray-50 pb-[4px] text-[10px]">
+                <span className="font-mono text-gray-800">GET /v2/debug-status</span>
+                <span className="px-xs py-[2px] bg-red-100 text-red-700 rounded text-[8px] font-bold uppercase">Unauthenticated</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "certs" && (
+          <div className="flex flex-col gap-xs">
+            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider pb-xxs border-b border-gray-100 select-none">SSL / TLS Certificates</div>
+            <div className="flex flex-col gap-[6px]">
+              <div className="flex items-center justify-between border-b border-gray-50 pb-[4px] text-[10px]">
+                <span className="font-mono text-gray-800">api.snapsec.co</span>
+                <span className="px-xs py-[2px] bg-green-100 text-green-700 rounded text-[8px] font-bold uppercase">Valid (230d)</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-gray-50 pb-[4px] text-[10px]">
+                <span className="font-mono text-gray-800">internal.snapsec.co</span>
+                <span className="px-xs py-[2px] bg-yellow-100 text-yellow-700 rounded text-[8px] font-bold uppercase">Expires in 4d</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-gray-50 pb-[4px] text-[10px]">
+                <span className="font-mono text-gray-800">dev.snapsec.co</span>
+                <span className="px-xs py-[2px] bg-red-100 text-red-700 rounded text-[8px] font-bold uppercase">Expired 2d ago</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "storage" && (
+          <div className="flex flex-col gap-xs">
+            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider pb-xxs border-b border-gray-100 select-none">Object Storage Buckets</div>
+            <div className="flex flex-col gap-[6px]">
+              <div className="flex items-center justify-between border-b border-gray-50 pb-[4px] text-[10px]">
+                <span className="font-mono text-gray-800">s3://prod-backups-bucket</span>
+                <span className="px-xs py-[2px] bg-green-100 text-green-700 rounded text-[8px] font-bold uppercase">Private</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-gray-50 pb-[4px] text-[10px]">
+                <span className="font-mono text-gray-800">s3://snapsec-cdn-assets</span>
+                <span className="px-xs py-[2px] bg-green-100 text-green-700 rounded text-[8px] font-bold uppercase">Public</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-gray-50 pb-[4px] text-[10px]">
+                <span className="font-mono text-gray-800">s3://development-test-data</span>
+                <span className="px-xs py-[2px] bg-red-100 text-red-700 rounded text-[8px] font-bold uppercase">Exposed Publicly</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Action button */}
+        <div className="border-t border-gray-100 pt-sm mt-sm flex items-center justify-between text-[9px] text-gray-400 select-none">
+          <span>Click tabs to swap dashboard perspective</span>
+          <span className="font-bold text-black uppercase cursor-pointer hover:underline">View full catalog &rarr;</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// YAML Rule Editor Mockup for Web Application Scanner (Feature 2)
+function WASYamlRulesEditor() {
+  const yamlLines = [
+    { num: "01", text: "id: ", highlight: true, val: "custom-sqli-payload-check" },
+    { num: "02", text: "info:", highlight: true, val: "" },
+    { num: "03", text: "  name: ", highlight: true, val: "\"SQL Injection Payload Detection\"" },
+    { num: "04", text: "  severity: ", highlight: true, val: "critical" },
+    { num: "05", text: "  description: ", highlight: true, val: "\"Detects SQL injection signatures in query parameters.\"" },
+    { num: "06", text: "", highlight: false, val: "" },
+    { num: "07", text: "conditions:", highlight: true, val: "" },
+    { num: "08", text: "  - ", highlight: true, val: "request.method == 'GET'" },
+    { num: "09", text: "  - ", highlight: true, val: "request.query.parameter matches \"('|\\\"|%27|%22)(.*)(select|union|insert)\"" },
+    { num: "10", text: "  - ", highlight: true, val: "request.headers['user-agent'] contains 'sqlmap'" },
+    { num: "11", text: "", highlight: false, val: "" },
+    { num: "12", text: "actions:", highlight: true, val: "" },
+    { num: "13", text: "  - ", highlight: true, val: "block_request: true" },
+    { num: "14", text: "  - ", highlight: true, val: "notify: '#sec-was-alerts'" }
+  ];
+
+  return (
+    <div className="w-full rounded-[6px] border border-gray-600 bg-white overflow-hidden flex flex-col h-[340px] shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      
+      {/* Editor Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between text-[11px] font-semibold text-gray-900 select-none">
+        <div className="flex items-center gap-xs">
+          <span className="w-1.5 h-1.5 rounded-full bg-black" />
+          <span className="font-mono text-[10px] tracking-tight">
+            custom-sqli-payload-check.yaml
+          </span>
+        </div>
+        <span className="text-[8px] font-bold uppercase tracking-wider px-[6px] py-[2px] bg-gray-100 text-gray-600 rounded">WAS Rule Schema v1</span>
+      </div>
+
+      {/* Editor Code Area */}
+      <div className="flex-1 p-sm bg-[#FAFAFA] overflow-y-auto font-mono text-[11px] leading-relaxed text-gray-900">
+        {yamlLines.map((line, idx) => (
+          <div key={idx} className="flex select-text">
+            <span className="text-gray-400 w-[24px] pr-xs text-right select-none border-r border-gray-200 mr-sm">
+              {line.num}
+            </span>
+            <span className="flex-1 whitespace-pre">
+              {line.highlight ? (
+                <>
+                  <span className="text-purple-700 font-semibold">{line.text}</span>
+                  <span className="text-green-700">{line.val}</span>
+                </>
+              ) : (
+                line.text
+              )}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Editor Footer */}
+      <div className="bg-white border-t border-gray-200 px-sm py-xs flex items-center justify-between text-[9px] text-gray-400 font-semibold select-none">
+        <span>Encoding: UTF-8</span>
+        <span className="text-green-600 flex items-center gap-xxs font-bold">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
+          Rule Validated
+        </span>
+      </div>
+
+    </div>
+  );
+}
+
 export default function Feature2({ moduleSlug }) {
   const isVS = moduleSlug === 'vs';
+  const isWAS = moduleSlug === 'was';
+  const isAIM = moduleSlug === 'aim';
+  const isVM = moduleSlug === 'vm';
 
   return (
     <section className="section-visibility-identity bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -910,19 +1254,25 @@ export default function Feature2({ moduleSlug }) {
             <div className="flex flex-col items-start gap-sm w-full">
               {/* Badge */}
               <span className="inline-flex items-center rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.16em] uppercase bg-[#F5F5F5] text-black border border-gray-300">
-                {isVS ? "Vulnerability Inspection" : "Compliance Auditing"}
+                {isVM ? "Change & SLAs" : isAIM ? "Focused Inquiries" : isWAS ? "Rule Customization" : isVS ? "Vulnerability Inspection" : "Compliance Auditing"}
               </span>
 
               {/* Heading */}
               <h2 className="text-[28px] sm:text-[36px] font-semibold leading-[1.2] text-black tracking-tight mt-xs">
-                {isVS ? "Unlimited Scanner" : "Monitor Asset Compliance Violations"}
+                {isVM ? "Risk-Based SLA & Change Management" : isAIM ? "Context-Specific Views & Isolation" : isWAS ? "Customizable Rule Engine" : isVS ? "Unlimited Scanner" : "Monitor Asset Compliance Violations"}
               </h2>
 
               {/* Description */}
               <p className="text-[14px] sm:text-[15px] text-gray-900 leading-[1.5] mt-sm">
-                {isVS 
-                  ? "Deploy more than one scanner reporting to a single dashboard for multi-zoned networks."
-                  : "Establish continuous guardrails to detect assets that violate security policies, regulatory frameworks, and configuration standards in real time."}
+                {isVM
+                  ? "Set custom SLA response deadlines based on risk severity, track team ownership, handle formal risk acceptance, and monitor exception requests."
+                  : isAIM
+                    ? "Isolate asset analysis by specific classes. Drill down contextually into subdomains, expiring SSL certificates, unauthenticated APIs, or repository states without distracting noise."
+                    : isWAS
+                      ? "Pre-written rules but we allow customization of those rules and adding new rules to match your needs."
+                      : isVS 
+                        ? "Deploy more than one scanner reporting to a single dashboard for multi-zoned networks."
+                        : "Establish continuous guardrails to detect assets that violate security policies, regulatory frameworks, and configuration standards in real time."}
               </p>
             </div>
 
@@ -932,12 +1282,18 @@ export default function Feature2({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVS ? "Continuous CVE Synchronization" : "Continuous Policy Verification"}
+                    {isVM ? "SLA Deadline Tracking" : isAIM ? "Environment Isolation" : isWAS ? "Pre-built Security Rules" : isVS ? "Continuous CVE Synchronization" : "Continuous Policy Verification"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
-                    {isVS 
-                      ? "Automatically evaluate packages and system components against security databases like NVD and GitHub Security Advisory."
-                      : "Assess configurations against SOC2, ISO 27001, and customized corporate security criteria."}
+                    {isVM
+                      ? "Monitor remaining resolution time for active vulnerabilities and prevent SLA policy breaches."
+                      : isAIM
+                        ? "Classify asset networks by target stages (Production, Staging, Development) to isolate external exposures."
+                        : isWAS
+                          ? "Access hundreds of ready-to-run rules covering OWASP Top 10, database bypasses, and file injection checks."
+                          : isVS 
+                            ? "Automatically evaluate packages and system components against security databases like NVD and GitHub Security Advisory."
+                            : "Assess configurations against SOC2, ISO 27001, and customized corporate security criteria."}
                   </p>
                 </div>
               </div>
@@ -945,12 +1301,18 @@ export default function Feature2({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVS ? "Actionable Patch Operations" : "Automatic Remediation Insights"}
+                    {isVM ? "Formal Risk Waivers" : isAIM ? "Type-Specific Insights" : isWAS ? "Tailored Signatures" : isVS ? "Actionable Patch Operations" : "Automatic Remediation Insights"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
-                    {isVS 
-                      ? "Get precise upgrade commands and configuration changes to fix vulnerable package versions immediately."
-                      : "Get precise actionable configuration changes for security groups, TLS layers, and IAM permissions."}
+                    {isVM
+                      ? "Document Compensating Security Controls and execute director-approved risk acceptance flows."
+                      : isAIM
+                        ? "Track certificate expiration warning indicators and locate exposed cloud storage buckets contextually."
+                        : isWAS
+                          ? "Edit existing rules or write custom YAML definitions to target proprietary application flaws."
+                          : isVS 
+                            ? "Get precise upgrade commands and configuration changes to fix vulnerable package versions immediately."
+                            : "Get precise actionable configuration changes for security groups, TLS layers, and IAM permissions."}
                   </p>
                 </div>
               </div>
@@ -960,7 +1322,13 @@ export default function Feature2({ moduleSlug }) {
           {/* Right Column: Interactive Compliance Widget (Span 7) */}
           <div className="lg:col-span-7 px-sm sm:px-xl lg:px-64px py-lg lg:py-88px bg-[#FAFAFA] flex items-center justify-center">
             <FadeInBlock className="w-full">
-              {isVS ? (
+              {isVM ? (
+                <VMChangeSLAControl />
+              ) : isAIM ? (
+                <AIMFocusedDashboards />
+              ) : isWAS ? (
+                <WASYamlRulesEditor />
+              ) : isVS ? (
                 <VSMultiScannerMap />
               ) : (
                 <StaticComplianceDashboard moduleSlug={moduleSlug} />

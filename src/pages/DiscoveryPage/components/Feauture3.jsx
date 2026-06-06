@@ -15,6 +15,124 @@ function FadeInBlock({ children, className = 'w-full' }) {
   );
 }
 
+// Interactive Ownership Assignment & Integration Sync for VM (Feature 3)
+function VMOwnershipTickets() {
+  const [selectedOwner, setSelectedOwner] = useState("platform");
+  const [syncStatus, setSyncStatus] = useState("Synced");
+
+  useEffect(() => {
+    setSyncStatus("Syncing...");
+    const timer = setTimeout(() => {
+      setSyncStatus("Synced");
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [selectedOwner]);
+
+  return (
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      
+      {/* Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+        <div className="flex items-center gap-[6px]">
+          <span className="w-[8px] h-[8px] rounded-full bg-indigo-500" />
+          <span className="text-gray-900 font-semibold text-[10px] tracking-wider uppercase">
+            Delegation & Integration Hub
+          </span>
+        </div>
+        <span className={`text-[8px] font-bold uppercase tracking-wider px-[6px] py-[2.5px] rounded ${
+          syncStatus === "Synced" ? "bg-green-50 text-green-700 border border-green-100" : "bg-blue-50 text-blue-700 border border-blue-100"
+        }`}>
+          {syncStatus}
+        </span>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 p-sm bg-[#FAFAFA] flex flex-col justify-between">
+        
+        {/* Owner Selector */}
+        <div className="bg-white border border-gray-200 rounded p-sm shadow-sm flex flex-col gap-xxs select-none">
+          <label className="text-[9px] font-bold text-gray-400 uppercase">Assign Ownership / Service Vendor</label>
+          <div className="flex gap-xs mt-xxs">
+            <button
+              onClick={() => setSelectedOwner("platform")}
+              className={`flex-1 py-xs text-[10px] font-bold border rounded uppercase transition ${
+                selectedOwner === "platform" ? "bg-black text-white border-black" : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
+              }`}
+            >
+              Platform Team
+            </button>
+            <button
+              onClick={() => setSelectedOwner("secops")}
+              className={`flex-1 py-xs text-[10px] font-bold border rounded uppercase transition ${
+                selectedOwner === "secops" ? "bg-black text-white border-black" : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
+              }`}
+            >
+              SecOps Unit
+            </button>
+            <button
+              onClick={() => setSelectedOwner("vendor")}
+              className={`flex-1 py-xs text-[10px] font-bold border rounded uppercase transition ${
+                selectedOwner === "vendor" ? "bg-black text-white border-black" : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
+              }`}
+            >
+              Service Vendor B
+            </button>
+          </div>
+        </div>
+
+        {/* Integration pipelines */}
+        <div className="flex-1 flex flex-col gap-xs justify-end mt-sm select-text">
+          <div className="text-[9px] font-bold text-gray-500 uppercase tracking-wider select-none">Automated Integration Pipelines</div>
+          
+          {/* Jira Row */}
+          <div className="flex items-center justify-between bg-white border border-gray-200 rounded p-xs text-[10px] shadow-sm">
+            <div className="flex items-center gap-xs">
+              <span className="font-bold text-blue-600 font-mono">JIRA-492</span>
+              <span className="text-gray-500 font-mono">Assignee &rarr; {
+                selectedOwner === "platform" ? "Platform Team Lead" :
+                selectedOwner === "secops" ? "SecOps Queue" : "External Vendor Vendor-B-Dev"
+              }</span>
+            </div>
+            <span className="text-[8px] font-bold uppercase tracking-wider px-[4px] py-[1.5px] rounded bg-green-50 text-green-700 border border-green-200">
+              UPDATED
+            </span>
+          </div>
+
+          {/* Slack Row */}
+          <div className="flex items-center justify-between bg-white border border-gray-200 rounded p-xs text-[10px] shadow-sm">
+            <div className="flex items-center gap-xs">
+              <span className="font-bold text-red-500 font-mono">#slack</span>
+              <span className="text-gray-500 font-mono">Posted to: {
+                selectedOwner === "platform" ? "#infra-alerts" :
+                selectedOwner === "secops" ? "#security-incidents" : "#vendor-b-support"
+              }</span>
+            </div>
+            <span className="text-[8px] font-bold uppercase tracking-wider px-[4px] py-[1.5px] rounded bg-green-50 text-green-700 border border-green-200">
+              DISPATCHED
+            </span>
+          </div>
+
+          {/* ServiceNow / Incident Row */}
+          <div className="flex items-center justify-between bg-white border border-gray-200 rounded p-xs text-[10px] shadow-sm">
+            <div className="flex items-center gap-xs">
+              <span className="font-bold text-purple-700 font-mono">INC-94021</span>
+              <span className="text-gray-500 font-mono">Assigned group: {
+                selectedOwner === "platform" ? "Platform-Svc-Group" :
+                selectedOwner === "secops" ? "SecOps-SOC-L1" : "Vendor-Escalations"
+              }</span>
+            </div>
+            <span className="text-[8px] font-bold uppercase tracking-wider px-[4px] py-[1.5px] rounded bg-green-50 text-green-700 border border-green-200">
+              SYNCED
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
 // Auto-Updating Catalog Illustration for VS
 function VSAutoUpdatingCatalogMap() {
   const [scanIndex, setScanIndex] = useState(0);
@@ -357,8 +475,201 @@ function YamlEditorMockup({ moduleSlug }) {
   );
 }
 
+// Live Risk Insights & Trigger Feeds for AIM (Feature 3)
+function AIMRiskInsights() {
+  const [alerts, setAlerts] = useState([
+    { type: "CRITICAL", text: "SSL certificate expired on dev.snapsec.co", time: "Just now", color: "text-red-600 bg-red-50 border-red-200" },
+    { type: "HIGH", text: "Unauthenticated API: /v2/debug-status", time: "2m ago", color: "text-orange-600 bg-orange-50 border-orange-200" },
+    { type: "HIGH", text: "Public Storage Bucket: snapsec-cdn-assets", time: "10m ago", color: "text-orange-600 bg-orange-50 border-orange-200" }
+  ]);
+
+  useEffect(() => {
+    const alertPool = [
+      { type: "MEDIUM", text: "Open DB port 5432 exposed on 12.84.92.10", color: "text-yellow-600 bg-yellow-50 border-yellow-200" },
+      { type: "CRITICAL", text: "GitHub repository 'internal-auth' set to PUBLIC", color: "text-red-600 bg-red-50 border-red-200" },
+      { type: "INFO", text: "New subdomain ingested: admin-portal.snapsec.co", color: "text-blue-600 bg-blue-50 border-blue-200" },
+      { type: "HIGH", text: "Unencrypted TLS cipher suite found on mail.corp.co", color: "text-orange-600 bg-orange-50 border-orange-200" }
+    ];
+
+    const interval = setInterval(() => {
+      const randomAlert = alertPool[Math.floor(Math.random() * alertPool.length)];
+      setAlerts(prev => [
+        { ...randomAlert, time: "Just now" },
+        ...prev.map(a => {
+          if (a.time === "Just now") return { ...a, time: "1m ago" };
+          if (a.time === "1m ago") return { ...a, time: "5m ago" };
+          return { ...a, time: "10m ago" };
+        })
+      ].slice(0, 3));
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      
+      {/* Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+        <div className="flex items-center gap-[6px]">
+          <span className="w-[8px] h-[8px] rounded-full bg-red-500 animate-pulse" />
+          <span className="text-gray-900 font-semibold text-[10px] tracking-wider uppercase">
+            Risk Monitor & Triggers
+          </span>
+        </div>
+        <span className="text-[8px] font-bold uppercase tracking-wider px-[6px] py-[2.5px] bg-red-50 text-red-600 rounded">
+          3 Critical Exposures
+        </span>
+      </div>
+
+      {/* Main split display */}
+      <div className="flex-1 flex min-h-0 bg-[#FAFAFA]">
+        {/* Left Side: Risk Severity Chart */}
+        <div className="w-[40%] border-r border-gray-200 p-sm flex flex-col justify-between select-none">
+          <span className="text-gray-900 font-bold text-[10px] uppercase pb-xs border-b border-gray-200">Severity</span>
+          <div className="flex-1 flex flex-col justify-center gap-xs">
+            {/* Critical */}
+            <div className="flex flex-col">
+              <div className="flex justify-between text-[8px] font-bold text-gray-500">
+                <span>CRITICAL</span>
+                <span>2</span>
+              </div>
+              <div className="w-full h-1.5 bg-gray-200 rounded-full mt-xxs overflow-hidden">
+                <div className="bg-red-500 h-full rounded-full" style={{ width: "40%" }} />
+              </div>
+            </div>
+            {/* High */}
+            <div className="flex flex-col">
+              <div className="flex justify-between text-[8px] font-bold text-gray-500">
+                <span>HIGH</span>
+                <span>5</span>
+              </div>
+              <div className="w-full h-1.5 bg-gray-200 rounded-full mt-xxs overflow-hidden">
+                <div className="bg-orange-500 h-full rounded-full" style={{ width: "70%" }} />
+              </div>
+            </div>
+            {/* Medium */}
+            <div className="flex flex-col">
+              <div className="flex justify-between text-[8px] font-bold text-gray-500">
+                <span>MEDIUM</span>
+                <span>12</span>
+              </div>
+              <div className="w-full h-1.5 bg-gray-200 rounded-full mt-xxs overflow-hidden">
+                <div className="bg-yellow-500 h-full rounded-full" style={{ width: "90%" }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Streaming alerts */}
+        <div className="flex-1 p-sm bg-white overflow-y-auto flex flex-col gap-xs select-text">
+          <span className="text-gray-900 font-bold text-[10px] uppercase pb-xs border-b border-gray-100 select-none">Live Triggers Stream</span>
+          <div className="flex-1 flex flex-col gap-xs justify-start">
+            {alerts.map((alert, idx) => (
+              <div key={idx} className={`p-xs border rounded flex items-center justify-between text-[10px] ${alert.color}`}>
+                <div className="flex flex-col min-w-0 pr-xs">
+                  <span className="font-extrabold uppercase text-[8px] tracking-wider">{alert.type}</span>
+                  <span className="truncate text-gray-900 font-semibold mt-xxs">{alert.text}</span>
+                </div>
+                <span className="text-[8px] text-gray-400 font-bold shrink-0">{alert.time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// AI Report Writer Illustration for WAS (Feature 3)
+function WASAiReportWriter() {
+  const [timeline, setTimeline] = useState(0);
+  const [typedText, setTypedText] = useState("");
+
+  const fullReportText = [
+    "# AI VULNERABILITY ANALYSIS REPORT",
+    "Target: https://app.corp.internal/api/v1/invoice",
+    "Severity: CRITICAL (9.8/10)",
+    "",
+    "## EXECUTIVE SUMMARY",
+    "AI agent analyzed the 500 DB logs and verified a SQL Injection vulnerability. Query parameter 'id' lacks proper input binding, allowing arbitrary database extraction.",
+    "",
+    "## REMEDIATION SUGGESTION",
+    "Use prepared statements or parameterize inputs:",
+    "  db.Query('SELECT * FROM inv WHERE id = ?', id)"
+  ];
+
+  // Drive animation lifecycle
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeline(t => (t + 1) % 40);
+    }, 150);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Update typed text based on timeline
+  useEffect(() => {
+    // If timeline resets, clear text
+    if (timeline === 0) {
+      setTypedText("");
+    } else {
+      const joined = fullReportText.join("\n");
+      const charactersToDisplay = Math.min(joined.length, timeline * 10);
+      setTypedText(joined.slice(0, charactersToDisplay));
+    }
+  }, [timeline]);
+
+  return (
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      
+      {/* Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+        <div className="flex items-center gap-[6px]">
+          <span className="w-[8px] h-[8px] rounded-full bg-blue-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-purple-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-pink-400" />
+          <span className="text-gray-950 font-semibold text-[10px] ml-xs tracking-wider uppercase">
+            AI Co-Pilot Reporter
+          </span>
+        </div>
+        <div className="flex items-center gap-xs text-[10px] font-bold text-purple-600">
+          <span className="w-2 h-2 rounded-full bg-purple-500 animate-ping inline-block" />
+          <span>WRITING POC REPORT...</span>
+        </div>
+      </div>
+
+      {/* Main split display */}
+      <div className="flex-1 flex min-h-0 bg-[#FAFAFA]">
+        {/* Left Side: Scan Logs */}
+        <div className="w-[40%] border-r border-gray-200 p-sm font-mono text-[9px] text-gray-400 overflow-hidden flex flex-col gap-xs select-none">
+          <div className="text-gray-900 font-bold border-b border-gray-200 pb-[3px]">CRAWLER STREAM</div>
+          <div className="truncate text-green-600 font-semibold">&gt; [GET] /profile - 200 OK</div>
+          <div className="truncate text-green-600 font-semibold">&gt; [GET] /invoices - 200 OK</div>
+          <div className="truncate text-red-500 font-bold animate-pulse">&gt; [GET] /invoice?id=12' OR 1=1 - 500</div>
+          <div className="truncate text-gray-500">&gt; DB Exception: syntax near "'"</div>
+          <div className="truncate text-purple-600 font-bold">&gt; AI Agent crawling nodes...</div>
+          <div className="truncate text-purple-600 font-bold">&gt; Attempting injection validation...</div>
+          <div className="truncate text-red-500 font-bold">&gt; Vulnerability confirmed (SQLi)</div>
+          <div className="truncate text-purple-500">&gt; Triggering AI reporting cycle...</div>
+        </div>
+
+        {/* Right Side: AI Report Preview */}
+        <div className="flex-1 p-sm bg-white overflow-y-auto flex flex-col font-mono text-[9px] text-gray-900 select-text">
+          <div className="flex-1 whitespace-pre-wrap leading-relaxed select-text">
+            {typedText}
+            <span className="w-1.5 h-3 bg-purple-500 inline-block animate-pulse ml-[2px]" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Feauture3({ moduleSlug }) {
   const isVS = moduleSlug === 'vs';
+  const isWAS = moduleSlug === 'was';
+  const isAIM = moduleSlug === 'aim';
+  const isVM = moduleSlug === 'vm';
 
   return (
     <section className="section-visibility-yaml bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -371,19 +682,25 @@ export default function Feauture3({ moduleSlug }) {
             <div className="flex flex-col items-start gap-sm w-full">
               {/* Badge */}
               <span className="inline-flex items-center rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.16em] uppercase bg-[#F5F5F5] text-black border border-gray-300">
-                {isVS ? "Asset Catalog" : "Custom Detection"}
+                {isVM ? "Delegation & Sync" : isAIM ? "Risk Intelligence" : isWAS ? "AI Engine" : isVS ? "Asset Catalog" : "Custom Detection"}
               </span>
 
               {/* Heading */}
               <h2 className="text-[28px] sm:text-[36px] font-semibold leading-[1.2] text-black tracking-tight mt-xs">
-                {isVS ? "Auto Updating Asset Catalog" : "Codify Your Security Policies with Custom YAML Rules"}
+                {isVM ? "Vulnerability Ownership & Integrations" : isAIM ? "Identify Risk Concentration Quickly" : isWAS ? "AI Driven Intelligence" : isVS ? "Auto Updating Asset Catalog" : "Codify Your Security Policies with Custom YAML Rules"}
               </h2>
 
               {/* Description */}
               <p className="text-[14px] sm:text-[15px] text-gray-900 leading-[1.5] mt-sm">
-                {isVS 
-                  ? "The asset catalog automatically detects and brings them to scanning."
-                  : "Don't rely on generic checks. Write simple, declarative YAML rules to instantly target company-specific exposures, enforce strict guardrails, and secure your environment on your own terms."}
+                {isVM
+                  ? "Assign clear ownership of vulnerabilities to specific service vendors or internal business units, and automatically sync tickets with Jira, Slack, and ServiceNow."
+                  : isAIM
+                    ? "Instantly flag critical vulnerabilities, expired SSL certificates, and unauthenticated APIs across all discovered endpoints to prevent security incidents."
+                    : isWAS
+                      ? "We use AI for crawling and finding more vulnerabilities and for reporting."
+                      : isVS 
+                        ? "The asset catalog automatically detects and brings them to scanning."
+                        : "Don't rely on generic checks. Write simple, declarative YAML rules to instantly target company-specific exposures, enforce strict guardrails, and secure your environment on your own terms."}
               </p>
             </div>
 
@@ -393,20 +710,36 @@ export default function Feauture3({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVS ? "Codified Vulnerability Logic" : "Codified Attack Surface"}
+                    {isVM ? "Business Units & Vendors" : isAIM ? "Alerting & Triggers" : isWAS ? "AI-Powered Crawling" : isVS ? "Codified Vulnerability Logic" : "Codified Attack Surface"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
-                    {isVS 
-                      ? "Translate complex library audits and version restrictions into executable files. Target specific package names, running ciphers, or server runtime headers."
-                      : "Translate complex security policies into executable files. Target specific asset subnets, open ports, cloud resource configurations, or host tags."}
+                    {isVM
+                      ? "Segment assets and delegate system ownership to the appropriate engineering or operations team automatically."
+                      : isAIM
+                        ? "Generate dynamic security alerts to notify security teams whenever public storage buckets or unauthenticated endpoints are identified."
+                        : isWAS
+                          ? "Our autonomous agent crawls complex SPAs, authenticated login forms, and API routes to uncover deep, hidden endpoints."
+                          : isVS 
+                            ? "Translate complex library audits and version restrictions into executable files. Target specific package names, running ciphers, or server runtime headers."
+                            : "Translate complex security policies into executable files. Target specific asset subnets, open ports, cloud resource configurations, or host tags."}
                   </p>
                 </div>
               </div>
               <div className="flex gap-sm items-start">
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
-                  <h4 className="text-[13px] font-bold text-black">Instant Action Workflows</h4>
-                  <p className="text-[12px] text-gray-900 mt-[2px]">Trigger immediate remediation. Automatically route policy violations directly to Jira, trigger webhook events, or alert security teams via Slack.</p>
+                  <h4 className="text-[13px] font-bold text-black">
+                    {isVM ? "Developer Ticket Sync" : isAIM ? "Risk Prioritization" : isWAS ? "Automated Reporting" : "Instant Action Workflows"}
+                  </h4>
+                  <p className="text-[12px] text-gray-900 mt-[2px]">
+                    {isVM
+                      ? "Automatically trigger ticketing actions on external platforms to notify developers in their native workflows."
+                      : isAIM
+                        ? "Classify exposures by severity to help security teams prioritize remediation on critical issues first."
+                        : isWAS
+                          ? "Generate detailed vulnerability reports, complete with reproducible proof-of-concept steps and direct remediation code."
+                          : "Trigger immediate remediation. Automatically route policy violations directly to Jira, trigger webhook events, or alert security teams via Slack."}
+                  </p>
                 </div>
               </div>
             </div>
@@ -415,7 +748,13 @@ export default function Feauture3({ moduleSlug }) {
           {/* Right Column: Static YAML Editor Widget (Span 7) */}
           <div className="lg:col-span-7 px-sm sm:px-xl lg:px-64px py-lg lg:py-88px bg-[#FAFAFA] flex items-center justify-center">
             <FadeInBlock className="w-full">
-              {isVS ? (
+              {isVM ? (
+                <VMOwnershipTickets />
+              ) : isAIM ? (
+                <AIMRiskInsights />
+              ) : isWAS ? (
+                <WASAiReportWriter />
+              ) : isVS ? (
                 <VSAutoUpdatingCatalogMap />
               ) : (
                 <YamlEditorMockup moduleSlug={moduleSlug} />

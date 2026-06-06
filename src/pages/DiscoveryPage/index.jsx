@@ -62,7 +62,7 @@ export default function DiscoveryPage() {
   const slug = (moduleSlug || 'asm').toLowerCase();
   const mod = moduleSlug ? moduleData[slug] : null;
 
-  const showFeatures = slug === 'asm' || slug === 'vs';
+  const showFeatures = slug === 'asm' || slug === 'vs' || slug === 'was' || slug === 'aim' || slug === 'vm';
 
   return (
     <>
