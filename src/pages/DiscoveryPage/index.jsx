@@ -3,10 +3,10 @@ import HeroSection from './components/HeroSection.jsx';
 import ChallengeSection from './components/ChallengeSection.jsx';
 import SolutionSection from './components/SolutionSection.jsx';
 import QuoteSection from './components/QuoteSection.jsx';
-import IntegrationSection from './components/IntegrationSection.jsx';
-import IdentitySection from './components/IdentitySection.jsx';
-import ContextSection from './components/ContextSection.jsx';
-import TailoredInsightsSection from './components/TailoredInsightsSection.jsx';
+import Feature1 from './components/Feature1.jsx';
+import Feature2 from './components/Feature2.jsx';
+import Feauture3 from './components/Feauture3.jsx';
+import FinalBenefits from './components/FinalBenefits.jsx';
 import CTABannerSection from './components/CTABannerSection.jsx';
 
 const moduleData = {
@@ -59,19 +59,27 @@ const moduleData = {
 
 export default function DiscoveryPage() {
   const { moduleSlug } = useParams();
-  const mod = moduleSlug ? moduleData[moduleSlug.toLowerCase()] : null;
+  const slug = (moduleSlug || 'asm').toLowerCase();
+  const mod = moduleSlug ? moduleData[slug] : null;
+
+  const showFeatures = slug === 'asm' || slug === 'vs';
 
   return (
     <>
-      <HeroSection moduleSlug={moduleSlug} mod={mod} />
-      <ChallengeSection moduleSlug={moduleSlug} mod={mod} />
-      <SolutionSection moduleSlug={moduleSlug} mod={mod} />
-      <QuoteSection moduleSlug={moduleSlug} mod={mod} />
-      <IntegrationSection />
-      <IdentitySection />
-      <ContextSection />
-      <TailoredInsightsSection />
-      <CTABannerSection />
+      <HeroSection moduleSlug={slug} mod={mod} />
+      <ChallengeSection moduleSlug={slug} mod={mod} />
+      <SolutionSection moduleSlug={slug} mod={mod} />
+      <QuoteSection moduleSlug={slug} mod={mod} />
+      {showFeatures && (
+        <>
+          <Feature1 moduleSlug={slug} />
+          <Feature2 moduleSlug={slug} />
+          <Feauture3 moduleSlug={slug} />
+          <FinalBenefits moduleSlug={slug} />
+        </>
+      )}
+      <CTABannerSection moduleSlug={slug} />
     </>
   );
 }
+

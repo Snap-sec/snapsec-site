@@ -12,7 +12,9 @@ function FadeInBlock({ children, delay = 0 }) {
   );
 }
 
-export default function CTABannerSection() {
+export default function CTABannerSection({ moduleSlug }) {
+  const isVS = moduleSlug === 'vs';
+
   return (
     <section className="cta-banner-small">
       <div className="container">
@@ -36,12 +38,14 @@ export default function CTABannerSection() {
             {/* Content */}
             <div className="relative z-5 mx-auto flex w-full flex-col gap-lg text-center max-w-[800px]">
               <h3 className="heading-h1">
-                <span>Know Your Attack Surface Before Attackers Do</span>
+                <span>
+                  {isVS ? "Know Your Vulnerability Risks Before Attackers Do" : "Know Your Attack Surface Before Attackers Do"}
+                </span>
               </h3>
               <div>
                 <a className="group button-primary-m" href="https://suite.snapsec.co/demo" target="_blank" rel="noopener noreferrer">
                   <span className="block">
-                    Explore ASM Live{' '}
+                    {isVS ? "Explore VS Live" : "Explore ASM Live"}{' '}
                     <span className="inline-block tracking-normal transition-transform duration-300 group-hover:translate-x-[2px]">→</span>
                   </span>
                 </a>
