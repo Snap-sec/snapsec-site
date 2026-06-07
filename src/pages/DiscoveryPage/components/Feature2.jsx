@@ -15,128 +15,225 @@ function FadeInBlock({ children, className = 'w-full' }) {
   );
 }
 
-// Interactive SLA & Change Management Workflow for VM (Feature 2)
-function VMChangeSLAControl() {
-  const [accepted, setAccepted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(14); // 14 days SLA
+// Interactive Rule Driven YAML Engine for VM (Feature 2)
+function VMRuleDrivenEngine() {
+  const [selectedRule, setSelectedRule] = useState("sandbox"); // "sandbox", "escalate", "false_positive"
 
-  const handleAccept = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setAccepted(true);
-    }, 1200);
+  const ruleYamls = {
+    sandbox: `id: auto-triage-sandbox
+on: vulnerability_detected
+conditions:
+  - environment == "sandbox"
+  - cve.severity == "medium"
+actions:
+  - change_state: "closed"
+  - add_label: "auto-triaged"`,
+    escalate: `id: escalate-public-api
+on: vulnerability_detected
+conditions:
+  - asset.exposure == "public"
+  - cve.cvss_score >= 7.0
+actions:
+  - override_severity: "critical"
+  - set_sla: "7_days"`,
+    false_positive: `id: normalize-false-positives
+on: vulnerability_detected
+conditions:
+  - check.name matches "test-key"
+  - file.path contains "test/"
+actions:
+  - change_state: "false_positive"
+  - override_severity: "low"`
   };
 
-  const handleReset = () => {
-    setAccepted(false);
-  };
+  const vulnerabilities = [
+    {
+      id: "vuln-1",
+      cve: "CVE-2024-1928",
+      asset: "dev-sandbox-db",
+      originalSeverity: "Medium",
+      originalState: "Open",
+      ruleType: "sandbox",
+      targetSeverity: "Medium",
+      targetState: "Auto-Triaged",
+      targetStateColor: "text-blue-700 bg-blue-100 border-blue-200",
+      description: "Low-risk sandbox instance exposure."
+    },
+    {
+      id: "vuln-2",
+      cve: "CVE-2024-5510",
+      asset: "api-public-gateway",
+      originalSeverity: "High",
+      originalState: "Open",
+      ruleType: "escalate",
+      targetSeverity: "Critical",
+      targetState: "Escalated SLA",
+      targetStateColor: "text-red-700 bg-red-100 border-red-200",
+      description: "External API exposure of credentials."
+    },
+    {
+      id: "vuln-3",
+      cve: "Secret Leak",
+      asset: "test/dummy_auth.py",
+      originalSeverity: "Critical",
+      originalState: "Open",
+      ruleType: "false_positive",
+      targetSeverity: "Low",
+      targetState: "False Positive",
+      targetStateColor: "text-gray-700 bg-gray-100 border-gray-200",
+      description: "Mock API keys inside test directory."
+    }
+  ];
 
   return (
     <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
       
       {/* Title Bar */}
-      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-[10px] flex items-center justify-between select-none">
         <div className="flex items-center gap-[6px]">
-          <span className="w-[8px] h-[8px] rounded-full bg-amber-500" />
-          <span className="text-gray-900 font-semibold text-[10px] tracking-wider uppercase">
-            Change & Risk Review Board
+          <span className="w-[8px] h-[8px] rounded-full bg-blue-600 animate-pulse" />
+          <span className="text-gray-950 font-bold text-[10px] tracking-tight uppercase">
+            Rule Driven Engine
           </span>
         </div>
-        <div className="text-[8px] font-bold text-gray-500 border border-gray-300 px-xs py-xxs rounded">
-          SLA POLICY: 30 DAYS RESOLUTION
+        <div className="text-[9px] font-bold text-blue-600 bg-blue-50 border border-blue-200 px-xs py-xxs rounded">
+          YAML PARSER ACTIVE
         </div>
       </div>
 
-      {/* Main Container */}
-      <div className="flex-1 p-sm bg-[#FAFAFA] flex flex-col justify-between">
+      {/* Main split */}
+      <div className="flex-1 flex overflow-hidden bg-white">
         
-        {/* Vulnerability details */}
-        <div className="bg-white border border-gray-200 rounded p-sm shadow-sm flex flex-col gap-xs select-text">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-bold text-gray-400">CVE-2024-38472</span>
-            <span className="text-[9px] uppercase font-bold tracking-wider px-[6px] py-[2.5px] rounded bg-red-100 text-red-700 border border-red-200">
-              Critical (CVSS 9.8)
-            </span>
+        {/* Left Side: YAML Rule Editor */}
+        <div className="w-[55%] border-r border-gray-200 flex flex-col bg-[#FAFBFB] p-xs justify-between">
+          <div className="flex flex-col gap-xs flex-1 min-h-0">
+            {/* Rule Selector Header */}
+            <div className="flex gap-[4px] select-none shrink-0">
+              <button
+                onClick={() => setSelectedRule("sandbox")}
+                className={`flex-1 px-[5px] py-[4px] text-[8px] font-bold rounded uppercase tracking-wider transition-all border text-center ${
+                  selectedRule === "sandbox"
+                    ? "bg-black text-white border-black"
+                    : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
+                }`}
+              >
+                Auto-Triage
+              </button>
+              <button
+                onClick={() => setSelectedRule("escalate")}
+                className={`flex-1 px-[5px] py-[4px] text-[8px] font-bold rounded uppercase tracking-wider transition-all border text-center ${
+                  selectedRule === "escalate"
+                    ? "bg-black text-white border-black"
+                    : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
+                }`}
+              >
+                Escalate
+              </button>
+              <button
+                onClick={() => setSelectedRule("false_positive")}
+                className={`flex-1 px-[5px] py-[4px] text-[8px] font-bold rounded uppercase tracking-wider transition-all border text-center ${
+                  selectedRule === "false_positive"
+                    ? "bg-black text-white border-black"
+                    : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
+                }`}
+              >
+                False Positive
+              </button>
+            </div>
+
+            {/* YAML Editor window */}
+            <div className="flex-1 bg-white border border-gray-200 rounded p-xs font-mono text-[9px] leading-relaxed text-gray-900 select-text overflow-y-auto">
+              {ruleYamls[selectedRule].split("\n").map((line, idx) => {
+                const isComment = line.trim().startsWith("#");
+                const parts = line.split(":");
+                const key = parts[0];
+                const value = parts.slice(1).join(":");
+                
+                return (
+                  <div key={idx} className="whitespace-pre">
+                    {isComment ? (
+                      <span className="text-gray-400">{line}</span>
+                    ) : value ? (
+                      <>
+                        <span className="text-purple-700 font-semibold">{key}:</span>
+                        <span className="text-green-700">{value}</span>
+                      </>
+                    ) : (
+                      <span className="text-gray-800">{line}</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <h4 className="text-[12px] font-bold text-black leading-tight">
-            Apache HTTP Server source code disclosure via malicious redirect mapping
-          </h4>
-          <div className="flex items-center gap-md text-[10px] text-gray-500 mt-xxs">
-            <div>
-              <span>Owner: </span>
-              <span className="font-bold text-gray-800">Platform Eng Unit</span>
-            </div>
-            <div>
-              <span>Source: </span>
-              <span className="font-bold text-gray-800">WAS Module</span>
-            </div>
+
+          <div className="text-[8px] text-gray-400 mt-xs pt-xxs border-t border-gray-150 select-none">
+            Rule engine processes policies on ingestion
           </div>
         </div>
 
-        {/* SLA and Decision Status */}
-        <div className="grid grid-cols-2 gap-sm select-none">
-          {/* Left panel: SLA timer */}
-          <div className="bg-white border border-gray-200 rounded p-sm shadow-sm flex flex-col justify-center items-center text-center">
-            <span className="text-[9px] text-gray-400 font-bold uppercase">SLA Status</span>
-            {accepted ? (
-              <span className="text-[14px] font-bold text-blue-600 mt-xxs">PAUSED</span>
-            ) : (
-              <span className="text-[14px] font-bold text-amber-600 mt-xxs">{timeLeft} Days Left</span>
-            )}
-            <span className="text-[8px] text-gray-400 mt-xxs">Limit: 30 Days (Critical)</span>
+        {/* Right Side: Vulnerability States */}
+        <div className="w-[45%] p-xs flex flex-col gap-xs overflow-y-auto bg-white justify-between">
+          <div className="flex flex-col gap-xs flex-1">
+            <span className="text-[9px] font-bold text-gray-900 uppercase tracking-wider select-none">Live Normalization</span>
+            
+            <div className="flex flex-col gap-xs">
+              {vulnerabilities.map(v => {
+                const isActiveRule = selectedRule === v.ruleType;
+                
+                return (
+                  <div 
+                    key={v.id} 
+                    className={`border rounded p-xs transition-all duration-300 ${
+                      isActiveRule 
+                        ? "border-blue-400 bg-blue-50/20 shadow-sm" 
+                        : "border-gray-150 bg-white opacity-70"
+                    }`}
+                  >
+                    {/* Header */}
+                    <div className="flex justify-between items-center">
+                      <span className="text-[9px] font-bold text-gray-900">{v.cve}</span>
+                      <span className="text-[8px] text-gray-400 font-mono font-medium">{v.asset}</span>
+                    </div>
+
+                    {/* States */}
+                    <div className="flex items-center gap-[4px] mt-xs text-[8.5px]">
+                      {isActiveRule ? (
+                        <>
+                          <div className="flex items-center gap-xxs line-through text-gray-400">
+                            <span>{v.originalSeverity}</span>
+                            <span>•</span>
+                            <span>{v.originalState}</span>
+                          </div>
+                          <span className="text-gray-400 select-none">&rarr;</span>
+                          <div className={`px-xs py-[1px] rounded border text-[8px] font-bold uppercase tracking-wider flex items-center gap-[3px] ${v.targetStateColor}`}>
+                            <span>{v.targetSeverity}</span>
+                            <span>•</span>
+                            <span>{v.targetState}</span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="flex items-center gap-xxs text-gray-600">
+                          <span className="font-bold">{v.originalSeverity}</span>
+                          <span>•</span>
+                          <span>{v.originalState}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Right panel: Acceptance status */}
-          <div className="bg-white border border-gray-200 rounded p-sm shadow-sm flex flex-col justify-center items-center text-center">
-            <span className="text-[9px] text-gray-400 font-bold uppercase">Risk Acceptance</span>
-            {accepted ? (
-              <span className="text-[11px] font-bold text-green-600 mt-xxs uppercase bg-green-50 border border-green-200 px-xs py-xxs rounded">
-                ✓ Active (180d)
-              </span>
-            ) : (
-              <span className="text-[11px] font-bold text-gray-400 mt-xxs uppercase bg-gray-50 border border-gray-200 px-xs py-xxs rounded">
-                Not Requested
-              </span>
-            )}
-            <span className="text-[8px] text-gray-400 mt-xxs">Requires Director Sign-off</span>
+          <div className="text-[8.5px] text-gray-400 pt-xxs border-t border-gray-100 flex justify-between items-center select-none shrink-0">
+            <span>Interactive sandbox</span>
+            <span className="font-bold text-blue-600 uppercase">Normalized</span>
           </div>
-        </div>
-
-        {/* Action Panel */}
-        <div className="bg-white border border-gray-200 rounded p-sm shadow-sm flex items-center justify-between select-none">
-          {loading ? (
-            <span className="text-[11px] text-gray-500 animate-pulse font-medium">Processing risk waiver request...</span>
-          ) : accepted ? (
-            <>
-              <div className="flex flex-col text-[9px] text-gray-500 text-left">
-                <span className="font-bold text-green-700">Waiver approved by Security Director</span>
-                <span>Reason: Active WAF virtual patching active.</span>
-              </div>
-              <button
-                onClick={handleReset}
-                className="px-xs py-xxs bg-gray-100 hover:bg-gray-200 border border-gray-300 text-[10px] font-bold rounded text-gray-700 transition"
-              >
-                Reset
-              </button>
-            </>
-          ) : (
-            <>
-              <span className="text-[10px] text-gray-500 max-w-[200px] leading-tight text-left">
-                Apply compensating control waiver for temporary exemption.
-              </span>
-              <button
-                onClick={handleAccept}
-                className="px-sm py-xs bg-black hover:bg-gray-900 text-[10px] font-bold rounded text-white transition shadow"
-              >
-                Accept Risk
-              </button>
-            </>
-          )}
         </div>
 
       </div>
+
     </div>
   );
 }
@@ -1254,18 +1351,18 @@ export default function Feature2({ moduleSlug }) {
             <div className="flex flex-col items-start gap-sm w-full">
               {/* Badge */}
               <span className="inline-flex items-center rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.16em] uppercase bg-[#F5F5F5] text-black border border-gray-300">
-                {isVM ? "Change & SLAs" : isAIM ? "Focused Inquiries" : isWAS ? "Rule Customization" : isVS ? "Vulnerability Inspection" : "Compliance Auditing"}
+                {isVM ? "Risk Normalization" : isAIM ? "Focused Inquiries" : isWAS ? "Rule Customization" : isVS ? "Vulnerability Inspection" : "Compliance Auditing"}
               </span>
 
               {/* Heading */}
               <h2 className="text-[28px] sm:text-[36px] font-semibold leading-[1.2] text-black tracking-tight mt-xs">
-                {isVM ? "Risk-Based SLA & Change Management" : isAIM ? "Context-Specific Views & Isolation" : isWAS ? "Customizable Rule Engine" : isVS ? "Unlimited Scanner" : "Monitor Asset Compliance Violations"}
+                {isVM ? "Risk Normalization & Automation" : isAIM ? "Context-Specific Views & Isolation" : isWAS ? "Customizable Rule Engine" : isVS ? "Unlimited Scanner" : "Monitor Asset Compliance Violations"}
               </h2>
 
               {/* Description */}
               <p className="text-[14px] sm:text-[15px] text-gray-900 leading-[1.5] mt-sm">
                 {isVM
-                  ? "Set custom SLA response deadlines based on risk severity, track team ownership, handle formal risk acceptance, and monitor exception requests."
+                  ? "We provide multiple frameworks like True Risk, Normalization Engine, Auto Triage, and False Positive Analysis to automatically classify and normalize risk on vulnerability data."
                   : isAIM
                     ? "Isolate asset analysis by specific classes. Drill down contextually into subdomains, expiring SSL certificates, unauthenticated APIs, or repository states without distracting noise."
                     : isWAS
@@ -1282,18 +1379,14 @@ export default function Feature2({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVM ? "SLA Deadline Tracking" : isAIM ? "Environment Isolation" : isWAS ? "Pre-built Security Rules" : isVS ? "Continuous CVE Synchronization" : "Continuous Policy Verification"}
+                    {isVM ? "True Risk Scoring" : isAIM ? "Environment Isolation" : isWAS ? "Pre-built Security Rules" : isVS ? "Continuous CVE Synchronization" : "Continuous Policy Verification"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
                     {isVM
-                      ? "Monitor remaining resolution time for active vulnerabilities and prevent SLA policy breaches."
+                      ? "Calculate true severity scores using contextual asset importance, exploit availability, and environment exposure."
                       : isAIM
                         ? "Classify asset networks by target stages (Production, Staging, Development) to isolate external exposures."
-                        : isWAS
-                          ? "Access hundreds of ready-to-run rules covering OWASP Top 10, database bypasses, and file injection checks."
-                          : isVS 
-                            ? "Automatically evaluate packages and system components against security databases like NVD and GitHub Security Advisory."
-                            : "Assess configurations against SOC2, ISO 27001, and customized corporate security criteria."}
+                        : "Access hundreds of ready-to-run rules covering OWASP Top 10, database bypasses, and file injection checks."}
                   </p>
                 </div>
               </div>
@@ -1301,11 +1394,11 @@ export default function Feature2({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVM ? "Formal Risk Waivers" : isAIM ? "Type-Specific Insights" : isWAS ? "Tailored Signatures" : isVS ? "Actionable Patch Operations" : "Automatic Remediation Insights"}
+                    {isVM ? "Auto-Triage & False Positive Analysis" : isAIM ? "Type-Specific Insights" : isWAS ? "Tailored Signatures" : isVS ? "Actionable Patch Operations" : "Automatic Remediation Insights"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
                     {isVM
-                      ? "Document Compensating Security Controls and execute director-approved risk acceptance flows."
+                      ? "Automatically filter false positives and route verified vulnerabilities to appropriate developer queues."
                       : isAIM
                         ? "Track certificate expiration warning indicators and locate exposed cloud storage buckets contextually."
                         : isWAS
@@ -1323,7 +1416,7 @@ export default function Feature2({ moduleSlug }) {
           <div className="lg:col-span-7 px-sm sm:px-xl lg:px-64px py-lg lg:py-88px bg-[#FAFAFA] flex items-center justify-center">
             <FadeInBlock className="w-full">
               {isVM ? (
-                <VMChangeSLAControl />
+                <VMRuleDrivenEngine />
               ) : isAIM ? (
                 <AIMFocusedDashboards />
               ) : isWAS ? (

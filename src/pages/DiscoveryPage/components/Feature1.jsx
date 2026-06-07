@@ -2,6 +2,116 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
+const ENDPOINTS = [
+  { 
+    id: 1, 
+    method: 'GET', 
+    url: '/api/v1/auth/session', 
+    status: 'secure', 
+    vulnType: null,
+    cvss: null,
+    tests: [
+      { name: 'SQL Injection', status: 'PASS', payload: "' OR '1'='1" },
+      { name: 'XSS Injection', status: 'PASS', payload: "<script>alert('snapsec')</script>" },
+      { name: 'Auth Bypass', status: 'PASS', payload: "Authorization: Bearer null" }
+    ]
+  },
+  { 
+    id: 2, 
+    method: 'POST', 
+    url: '/api/v1/admin/fetch-image', 
+    status: 'vulnerable', 
+    vulnType: 'SSRF',
+    cvss: '8.2',
+    vulnerability: 'Server-Side Request Forgery on fetch endpoint',
+    tests: [
+      { name: 'SQL Injection', status: 'PASS', payload: "id=1; WAITFOR DELAY '0:0:5'" },
+      { name: 'XSS Injection', status: 'PASS', payload: "\"><svg/onload=confirm(1)>" },
+      { name: 'SSRF Probing', status: 'FAIL', payload: "url=http://169.254.169.254/latest/meta-data/" }
+    ]
+  },
+  { 
+    id: 3, 
+    method: 'GET', 
+    url: '/api/v1/products/search', 
+    status: 'secure', 
+    vulnType: null,
+    cvss: null,
+    tests: [
+      { name: 'SQL Injection', status: 'PASS', payload: "' UNION SELECT NULL, @@version --" },
+      { name: 'Command Injection', status: 'PASS', payload: "search=;whoami" },
+      { name: 'Directory Traversal', status: 'PASS', payload: "../../etc/passwd" }
+    ]
+  },
+  { 
+    id: 4, 
+    method: 'POST', 
+    url: '/api/v1/billing/charge', 
+    status: 'vulnerable', 
+    vulnType: 'SQL Injection',
+    cvss: '9.1',
+    vulnerability: 'Blind SQL Injection in invoice payload',
+    tests: [
+      { name: 'Parameter Tampering', status: 'PASS', payload: "amount=-100" },
+      { name: 'XSS Injection', status: 'PASS', payload: "</textarea><script>fetch(keys)</script>" },
+      { name: 'SQL Injection', status: 'FAIL', payload: "charge_id=1' OR SLEEP(5) --" }
+    ]
+  },
+  { 
+    id: 5, 
+    method: 'GET', 
+    url: '/api/v2/users/profile', 
+    status: 'secure', 
+    vulnType: null,
+    cvss: null,
+    tests: [
+      { name: 'Authentication Flaws', status: 'PASS', payload: "Cookie: session=invalid" },
+      { name: 'IDOR Validation', status: 'PASS', payload: "user_id=9999" },
+      { name: 'SSRF Probing', status: 'PASS', payload: "avatar=http://localhost:80" }
+    ]
+  },
+  { 
+    id: 6, 
+    method: 'POST', 
+    url: '/api/v1/checkout/apply-coupon', 
+    status: 'vulnerable', 
+    vulnType: 'IDOR',
+    cvss: '7.5',
+    vulnerability: 'Insecure Direct Object Reference in coupon ownership checks',
+    tests: [
+      { name: 'SQL Injection', status: 'PASS', payload: "coupon=' OR 1=1" },
+      { name: 'XSS Injection', status: 'PASS', payload: "<img src=x onerror=alert(1)>" },
+      { name: 'IDOR Validation', status: 'FAIL', payload: "user_id=1024&coupon_id=55" }
+    ]
+  },
+  { 
+    id: 7, 
+    method: 'GET', 
+    url: '/api/v1/files/download', 
+    status: 'secure', 
+    vulnType: null,
+    cvss: null,
+    tests: [
+      { name: 'Path Traversal', status: 'PASS', payload: "file=../../../../etc/passwd" },
+      { name: 'Null Byte Injection', status: 'PASS', payload: "file=resume.pdf%00.png" },
+      { name: 'Privilege Check', status: 'PASS', payload: "role=admin" }
+    ]
+  },
+  { 
+    id: 8, 
+    method: 'DELETE', 
+    url: '/api/v1/posts/102', 
+    status: 'secure', 
+    vulnType: null,
+    cvss: null,
+    tests: [
+      { name: 'CSRF Token Check', status: 'PASS', payload: "X-CSRF-Token: missing" },
+      { name: 'Authorization Flaws', status: 'PASS', payload: "Authorization: User" },
+      { name: 'SQL Injection', status: 'PASS', payload: "id=102 OR 1=1" }
+    ]
+  }
+];
+
 function FadeInBlock({ children, delay = 0, className = 'w-full' }) {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
   return (
@@ -19,438 +129,920 @@ function FadeInBlock({ children, delay = 0, className = 'w-full' }) {
 
 // Normalization Engine Animation for VM (Feature 1)
 function VMNormalizationEngine() {
-  const [pulse, setPulse] = useState(0);
-  const [normalizedItems, setNormalizedItems] = useState([
-    { id: "VM-201", title: "SQLi in /api/v1/checkout", sev: "CRITICAL", cvss: "9.8", source: "WAS Scanner" },
-    { id: "VM-202", title: "Port 22 SSH exposed", sev: "HIGH", cvss: "8.4", source: "VS Scanner" },
-    { id: "VM-203", title: "Outdated OpenSSL package", sev: "MEDIUM", cvss: "5.3", source: "Snyk Ingestion" }
+  const [activeSourceIdx, setActiveSourceIdx] = useState(0);
+  
+  const SOURCES = [
+    { name: "Qualys", domain: "qualys.com", y: 20, midY: 37 },
+    { name: "Nessus", domain: "tenable.com", y: 85, midY: 102 },
+    { name: "Snyk", domain: "snyk.io", y: 150, midY: 167 },
+    { name: "Rapid7", domain: "rapid7.com", y: 215, midY: 232 },
+    { name: "GitHub", domain: "github.com", y: 280, midY: 297 }
+  ];
+
+  const VULN_TEMPLATES = [
+    { id: "VM-201", title: "Exposed SSH Port 22 on staging", sev: "HIGH", cvss: "8.4", source: "Qualys" },
+    { id: "VM-202", title: "Apache Tomcat RCE (CVE-2024-XXXX)", sev: "CRITICAL", cvss: "9.8", source: "Nessus" },
+    { id: "VM-203", title: "Prototype Pollution in lodash", sev: "MEDIUM", cvss: "6.5", source: "Snyk" },
+    { id: "VM-204", title: "Outdated TLS 1.0 Enabled on API", sev: "MEDIUM", cvss: "5.4", source: "Rapid7" },
+    { id: "VM-205", title: "Leaked AWS credentials in branch", sev: "CRITICAL", cvss: "9.3", source: "GitHub" },
+    { id: "VM-206", title: "Exposed AWS S3 backups bucket", sev: "HIGH", cvss: "8.1", source: "Qualys" },
+    { id: "VM-207", title: "SQLi in /api/v1/checkout", sev: "CRITICAL", cvss: "9.8", source: "Nessus" }
+  ];
+
+  const [items, setItems] = useState([
+    VULN_TEMPLATES[2],
+    VULN_TEMPLATES[3],
+    VULN_TEMPLATES[4],
+    VULN_TEMPLATES[0]
   ]);
 
   useEffect(() => {
-    const sources = ["WAS Scanner", "VS Scanner", "Snyk Ingestion", "Qualys API", "Bug Bounty Feed"];
-    const titles = [
-      { t: "Exposed S3 backups bucket", s: "HIGH", c: "8.1" },
-      { t: "RCE in Log4j library version", s: "CRITICAL", c: "9.8" },
-      { t: "XSS vulnerable parameter 'q'", s: "MEDIUM", c: "6.1" },
-      { t: "CSRF token bypass in checkout", s: "HIGH", c: "7.5" }
-    ];
+    const timer = setInterval(() => {
+      setActiveSourceIdx(prev => {
+        const nextIdx = (prev + 1) % SOURCES.length;
+        
+        // Find template corresponding to the next source
+        const nextSource = SOURCES[nextIdx];
+        const sourceTemplates = VULN_TEMPLATES.filter(t => t.source === nextSource.name);
+        const randomTemplate = sourceTemplates[Math.floor(Math.random() * sourceTemplates.length)];
+        
+        setItems(current => {
+          const filtered = current.filter(item => item.id !== randomTemplate.id);
+          return [randomTemplate, ...filtered].slice(0, 4);
+        });
 
-    const interval = setInterval(() => {
-      setPulse(prev => (prev + 1) % 3);
-      
-      // Add a normalized item periodically
-      const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-      const randomSrc = sources[Math.floor(Math.random() * sources.length)];
-      const newItem = {
-        id: `VM-${Math.floor(Math.random() * 800) + 204}`,
-        title: randomTitle.t,
-        sev: randomTitle.s,
-        cvss: randomTitle.c,
-        source: randomSrc
-      };
+        return nextIdx;
+      });
+    }, 3200);
 
-      setNormalizedItems(prev => [newItem, prev[0], prev[1]].slice(0, 3));
-    }, 3000);
-
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[400px]" style={{ fontFamily: "'Inter', sans-serif" }}>
       
-      {/* Title Bar */}
-      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+      {/* Title Header Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-[10px] flex items-center justify-between select-none">
         <div className="flex items-center gap-[6px]">
-          <span className="w-[8px] h-[8px] rounded-full bg-blue-500 animate-pulse" />
-          <span className="text-gray-900 font-semibold text-[10px] ml-xs tracking-wider uppercase">
-            Normalization Engine v1.2
+          <span className="w-[8px] h-[8px] rounded-full bg-blue-600 animate-pulse" />
+          <span className="text-gray-950 font-bold text-[11px] tracking-wider uppercase">
+            VM Ingestion & Normalization
           </span>
         </div>
-        <div className="text-[9px] font-bold text-green-600 bg-green-50 border border-green-200 px-xs py-xxs rounded">
+        <div className="text-[9px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-xs py-xxs rounded">
           NORMALIZING FEEDS
         </div>
       </div>
 
-      {/* SVG Container */}
-      <div className="flex-1 bg-[#FAFAFA] relative overflow-hidden flex flex-col p-sm justify-between">
+      {/* Main Grid split */}
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-12 overflow-hidden bg-white">
         
-        {/* Top visual representation */}
-        <div className="h-[120px] relative border border-gray-200 rounded bg-white overflow-hidden">
-          <svg className="w-full h-full" viewBox="0 0 500 100">
-            {/* Source logos/nodes on left */}
-            <g transform="translate(30, 10)">
-              <rect x="0" y="0" width="70" height="20" rx="4" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="1" />
-              <text x="35" y="13" textAnchor="middle" className="font-mono text-[8px] font-bold fill-gray-600 uppercase">Qualys</text>
-            </g>
-            <g transform="translate(30, 40)">
-              <rect x="0" y="0" width="70" height="20" rx="4" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="1" />
-              <text x="35" y="13" textAnchor="middle" className="font-mono text-[8px] font-bold fill-gray-600 uppercase">Snyk</text>
-            </g>
-            <g transform="translate(30, 70)">
-              <rect x="0" y="0" width="70" height="20" rx="4" fill="#E5E7EB" stroke="#D1D5DB" strokeWidth="1" />
-              <text x="35" y="13" textAnchor="middle" className="font-mono text-[8px] font-bold fill-gray-600 uppercase">WAS/VS</text>
+        {/* Left + Center (Col span 7): Ingestion Map */}
+        <div className="md:col-span-7 border-r border-gray-600 relative overflow-hidden bg-[#FAFBFB] flex items-center justify-center p-xs">
+          
+          <svg className="w-full h-full max-h-[350px] overflow-visible" viewBox="0 0 310 340">
+            {/* Definitions for masks / filters */}
+            <defs>
+              <linearGradient id="activeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.2" />
+              </linearGradient>
+            </defs>
+
+            {/* Connection lines from sources to Snapsec */}
+            {SOURCES.map((source, idx) => {
+              const isActive = idx === activeSourceIdx;
+              return (
+                <path 
+                  key={idx}
+                  d={`M 115 ${source.midY} L 210 167`} 
+                  stroke={isActive ? "#3B82F6" : "#E5E7EB"} 
+                  strokeWidth={isActive ? 2.5 : 1.5} 
+                  strokeDasharray={isActive ? "none" : "3 3"}
+                  fill="none"
+                  className="transition-all duration-300"
+                />
+              );
+            })}
+
+            {/* Animated Flowing Particles on the paths */}
+            {SOURCES.map((source, idx) => {
+              const isActive = idx === activeSourceIdx;
+              if (!isActive) return null;
+              return (
+                <circle key={`particle-${idx}`} r="3.5" fill="#3B82F6" className="shadow">
+                  <animateMotion 
+                    dur="1.2s" 
+                    repeatCount="indefinite" 
+                    path={`M 115 ${source.midY} L 210 167`} 
+                  />
+                </circle>
+              );
+            })}
+
+            {/* Source nodes (External Tools) */}
+            {SOURCES.map((source, idx) => {
+              const isActive = idx === activeSourceIdx;
+              return (
+                <g key={idx} className="transition-all duration-300">
+                  {/* Container Rect */}
+                  <rect 
+                    x="15" 
+                    y={source.y} 
+                    width="100" 
+                    height="34" 
+                    rx="6" 
+                    fill="white" 
+                    stroke={isActive ? "#3B82F6" : "#E5E7EB"} 
+                    strokeWidth={isActive ? 2 : 1}
+                    className="shadow-sm transition-all duration-300"
+                  />
+                  {/* Tool Logo Frame */}
+                  <rect 
+                    x="23" 
+                    y={source.y + 8} 
+                    width="18" 
+                    height="18" 
+                    rx="3" 
+                    fill="#F9FAFB" 
+                    stroke="#E5E7EB" 
+                    strokeWidth="0.5" 
+                  />
+                  {/* Tool Logo image */}
+                  <image 
+                    href={`https://img.logo.dev/${source.domain}?token=pk_YDuXMfwrRe2kQtBuzc3Etg`} 
+                    x="24" 
+                    y={source.y + 9} 
+                    width="16" 
+                    height="16" 
+                  />
+                  {/* Tool Name Label */}
+                  <text 
+                    x="48" 
+                    y={source.y + 20} 
+                    className={`text-[9px] font-sans font-bold ${isActive ? "fill-blue-600" : "fill-gray-900"}`}
+                  >
+                    {source.name}
+                  </text>
+                  {/* Status Indicator Dot */}
+                  <circle 
+                    cx="106" 
+                    cy={source.y + 17} 
+                    r="2.5" 
+                    fill={isActive ? "#3B82F6" : "#10B981"}
+                    className={isActive ? "animate-pulse" : ""}
+                  />
+                </g>
+              );
+            })}
+
+            {/* Snapsec Integration Hub (Gateway) */}
+            {/* Snapsec Integration Hub (Gateway) */}
+            <g transform="translate(210, 140)">
+              {/* Outer pulsing ring */}
+              <rect 
+                x="0" 
+                y="0" 
+                width="75" 
+                height="54" 
+                rx="8" 
+                fill="white" 
+                stroke="#3B82F6" 
+                strokeWidth="2" 
+                className="animate-pulse"
+              />
+              {/* Logo image (actual mark in assets) */}
+              <image 
+                href="/assets/snapsec-mark.png"
+                x="21.5" 
+                y="11" 
+                width="32" 
+                height="32" 
+              />
             </g>
 
-            {/* Central Normalizer Core */}
-            <g transform="translate(250, 50)">
-              <circle cx="0" cy="0" r="24" fill={pulse === 1 ? "#3B82F6" : "#4F46E5"} fillOpacity="0.1" className="animate-pulse" />
-              <circle cx="0" cy="0" r="14" fill="#4F46E5" stroke="#3730A3" strokeWidth="1.5" />
-              <text x="0" y="3" textAnchor="middle" className="font-mono text-[8px] font-bold fill-white">CORE</text>
-            </g>
-
-            {/* Ingestion Arrows */}
-            <path d="M 110 20 L 220 40" stroke="#9CA3AF" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-            <path d="M 110 50 L 220 50" stroke="#9CA3AF" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-            <path d="M 110 80 L 220 60" stroke="#9CA3AF" strokeWidth="1" strokeDasharray="3 3" fill="none" />
-
-            {/* Output Lines to the standard feed */}
-            <path d="M 280 50 L 380 50" stroke="#10B981" strokeWidth="1.5" strokeDasharray={pulse === 0 ? "4 4" : "none"} fill="none" className="transition-all duration-300" />
-            <circle cx={pulse === 0 ? "300" : pulse === 1 ? "340" : "370"} cy="50" r="3" fill="#10B981" />
-
-            <g transform="translate(390, 35)">
-              <rect x="0" y="0" width="80" height="30" rx="4" fill="#ECFDF5" stroke="#A7F3D0" strokeWidth="1" />
-              <text x="40" y="14" textAnchor="middle" className="font-mono text-[8px] font-extrabold fill-green-800">NORMALIZED</text>
-              <text x="40" y="24" textAnchor="middle" className="font-mono text-[7px] fill-green-600">SCHEMA V1</text>
-            </g>
+            {/* Output line connecting Gateway to the Feed/List */}
+            <path 
+              d="M 285 167 L 345 167" 
+              stroke="#3B82F6" 
+              strokeWidth="2" 
+              fill="none" 
+            />
+            {/* Animated particle flowing from Gateway to Feed */}
+            <circle r="3.5" fill="#3B82F6">
+              <animateMotion 
+                dur="0.8s" 
+                repeatCount="indefinite" 
+                path="M 285 167 L 345 167" 
+              />
+            </circle>
           </svg>
         </div>
 
-        {/* Real-time normalized output list */}
-        <div className="flex-1 flex flex-col gap-xs justify-end mt-sm select-text">
-          <div className="text-[9px] font-bold text-gray-500 uppercase tracking-wider select-none">Normalized Vulnerability Registry</div>
-          {normalizedItems.map((item, idx) => (
-            <div key={idx} className="flex items-center justify-between bg-white border border-gray-200 rounded px-xs py-xxs text-[10px] font-mono shadow-sm">
-              <div className="flex items-center gap-xs truncate">
-                <span className="text-gray-400 font-bold">{item.id}</span>
-                <span className="font-bold text-gray-900 truncate">{item.title}</span>
-              </div>
-              <div className="flex items-center gap-xs shrink-0 pl-xs">
-                <span className="text-gray-400 text-[8px]">{item.source}</span>
-                <span className={`text-[8px] font-extrabold px-[5px] py-[1.5px] rounded ${
-                  item.sev === "CRITICAL" ? "bg-red-100 text-red-700" :
-                  item.sev === "HIGH" ? "bg-orange-100 text-orange-700" : "bg-yellow-100 text-yellow-700"
-                }`}>
-                  CVSS {item.cvss}
-                </span>
-              </div>
-            </div>
-          ))}
+        {/* Right (Col span 5): Unified Security Dashboard */}
+        <div className="md:col-span-5 flex flex-col bg-white overflow-hidden p-sm justify-between">
+          
+          {/* Dashboard Header */}
+          <div className="flex justify-between items-center pb-[6px] border-b border-gray-150 select-none">
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+              Unified Security Feed
+            </span>
+            <span className="text-[9px] text-gray-400 font-mono">
+              SCHEMA V2
+            </span>
+          </div>
+
+          {/* Finding Cards */}
+          <div className="flex-1 flex flex-col gap-xs py-sm overflow-hidden">
+            {items.map((item, idx) => {
+              const isNewest = idx === 0;
+              
+              let sourceDomain = "qualys.com";
+              if (item.source === "Qualys") sourceDomain = "qualys.com";
+              if (item.source === "Nessus") sourceDomain = "tenable.com";
+              if (item.source === "Snyk") sourceDomain = "snyk.io";
+              if (item.source === "Rapid7") sourceDomain = "rapid7.com";
+              if (item.source === "GitHub") sourceDomain = "github.com";
+
+              return (
+                <div 
+                  key={item.id + idx}
+                  className={`border rounded-[6px] p-xs flex items-center justify-between text-[10.5px] transition-all duration-300 ${
+                    isNewest 
+                      ? 'border-blue-500 bg-blue-50/20 shadow-sm' 
+                      : 'border-gray-200 bg-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-sm min-w-0">
+                    {/* Source logo */}
+                    <div className="w-5 h-5 rounded border border-gray-200 bg-white flex items-center justify-center shrink-0 overflow-hidden">
+                      <img 
+                        src={`https://img.logo.dev/${sourceDomain}?token=pk_YDuXMfwrRe2kQtBuzc3Etg`} 
+                        alt={item.source}
+                        className="w-4 h-4 object-contain"
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                      />
+                    </div>
+                    
+                    <div className="flex flex-col min-w-0 text-left">
+                      <div className="flex items-center gap-xs">
+                        <span className="font-mono text-[9px] font-bold text-gray-400">{item.id}</span>
+                        {isNewest && (
+                          <span className="text-[8px] bg-blue-100 text-blue-800 font-bold px-[4px] rounded uppercase tracking-wider scale-90">
+                            JUST INGESTED
+                          </span>
+                        )}
+                      </div>
+                      <span className="font-sans font-bold text-gray-900 truncate max-w-[140px] md:max-w-[170px]">
+                        {item.title}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-sm shrink-0 pl-xs">
+                    <span className={`text-[8px] font-extrabold px-[6px] py-[2px] rounded uppercase ${
+                      item.sev === "CRITICAL" ? "bg-rose-50 text-rose-700 border border-rose-100" :
+                      item.sev === "HIGH" ? "bg-amber-50 text-amber-700 border border-amber-100" : 
+                      "bg-amber-50/40 text-amber-600 border border-amber-100/50"
+                    }`}>
+                      CVSS {item.cvss}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Status / SLA Metric Summary */}
+          <div className="border-t border-gray-150 pt-xs flex justify-between items-center text-[9px] text-gray-400 select-none">
+            <span>SLA TRACKING: <span className="text-gray-950 font-bold">ACTIVE</span></span>
+            <span className="font-bold text-black uppercase hover:underline cursor-pointer">
+              Unified Console &rarr;
+            </span>
+          </div>
+
         </div>
 
       </div>
+
     </div>
   );
 }
 
 // Unified Asset map representation for AIM (Feature 1)
 function AIMUnifiedAssetMap() {
-  const [pulse, setPulse] = useState(0);
-  const [counts, setCounts] = useState({ subdomains: 130, apis: 72, repos: 30, certs: 18 });
+  const [activeSourceIdx, setActiveSourceIdx] = useState(0);
+  
+  const SOURCES = [
+    { name: "Google Cloud", domain: "google.com", y: 20, midY: 37 },
+    { name: "AWS", domain: "amazon.com", y: 85, midY: 102 },
+    { name: "Postman", domain: "postman.com", y: 150, midY: 167 },
+    { name: "GitHub", domain: "github.com", y: 215, midY: 232 },
+    { name: "Slack", domain: "slack.com", y: 280, midY: 297 }
+  ];
+
+  const ASSET_TEMPLATES = [
+    { id: "AST-401", details: "billing-prd.gcp.snapsec.co", type: "Subdomain", status: "MONITORED", source: "Google Cloud" },
+    { id: "AST-402", details: "s3://invoices-backup-prd", type: "Cloud Bucket", status: "MONITORED", source: "AWS" },
+    { id: "AST-403", details: "GET /api/v2/users/auth", type: "API Route", status: "EXPOSED", source: "Postman" },
+    { id: "AST-404", details: "snapsec/gateway-service", type: "Repository", status: "MONITORED", source: "GitHub" },
+    { id: "AST-405", details: "hooks.slack.com/services/...", type: "Webhook", status: "EXPOSED", source: "Slack" },
+    { id: "AST-406", details: "log-collector.gcp.internal", type: "DNS Record", status: "MONITORED", source: "Google Cloud" },
+    { id: "AST-407", details: "s3://customer-avatars-public", type: "Cloud Bucket", status: "MONITORED", source: "AWS" }
+  ];
+
+  const [items, setItems] = useState([
+    ASSET_TEMPLATES[2],
+    ASSET_TEMPLATES[3],
+    ASSET_TEMPLATES[4]
+  ]);
+
+  const [counts, setCounts] = useState({
+    subdomains: 134,
+    apis: 72,
+    buckets: 45,
+    repos: 31
+  });
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPulse(p => (p + 1) % 4);
-      setCounts(c => ({
-        subdomains: c.subdomains + (Math.random() > 0.7 ? 1 : 0),
-        apis: c.apis + (Math.random() > 0.8 ? 1 : 0),
-        repos: c.repos + (Math.random() > 0.9 ? 1 : 0),
-        certs: c.certs + (Math.random() > 0.95 ? 1 : 0)
-      }));
-    }, 1500);
-    return () => clearInterval(interval);
+    const timer = setInterval(() => {
+      setActiveSourceIdx(prev => {
+        const nextIdx = (prev + 1) % SOURCES.length;
+        
+        // Pick templates matching next source
+        const nextSource = SOURCES[nextIdx];
+        const sourceTemplates = ASSET_TEMPLATES.filter(t => t.source === nextSource.name);
+        const randomTemplate = sourceTemplates[Math.floor(Math.random() * sourceTemplates.length)];
+        
+        setItems(current => {
+          const filtered = current.filter(item => item.id !== randomTemplate.id);
+          return [randomTemplate, ...filtered].slice(0, 3);
+        });
+
+        // Increment counts dynamically
+        setCounts(curr => {
+          const keyMap = {
+            "Subdomain": "subdomains",
+            "DNS Record": "subdomains",
+            "API Route": "apis",
+            "Cloud Bucket": "buckets",
+            "Repository": "repos"
+          };
+          const targetKey = keyMap[randomTemplate.type];
+          if (targetKey) {
+            return {
+              ...curr,
+              [targetKey]: curr[targetKey] + 1
+            };
+          }
+          return curr;
+        });
+
+        return nextIdx;
+      });
+    }, 3200);
+
+    return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[400px]" style={{ fontFamily: "'Inter', sans-serif" }}>
       
-      {/* Title Bar */}
-      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+      {/* Title Header Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-[10px] flex items-center justify-between select-none">
         <div className="flex items-center gap-[6px]">
-          <span className="w-[8px] h-[8px] rounded-full bg-blue-400" />
-          <span className="w-[8px] h-[8px] rounded-full bg-indigo-400" />
-          <span className="w-[8px] h-[8px] rounded-full bg-green-400" />
-          <span className="text-gray-900 font-semibold text-[10px] ml-xs tracking-wider uppercase">
-            Asset Ingestion Core
+          <span className="w-[8px] h-[8px] rounded-full bg-blue-600 animate-pulse" />
+          <span className="text-gray-950 font-bold text-[11px] tracking-wider uppercase">
+            Asset Inventory Discovery
           </span>
         </div>
-        <div className="flex items-center gap-xs text-[10px] font-bold text-blue-600">
-          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse inline-block" />
-          <span>INGESTING DATAFEED</span>
+        <div className="text-[9px] font-bold text-blue-600 bg-blue-50 border border-blue-200 px-xs py-xxs rounded">
+          DISCOVERING ASSETS
         </div>
       </div>
 
-      {/* SVG Container */}
-      <div className="flex-1 bg-white relative overflow-hidden flex items-center justify-center">
-        <svg className="w-full h-full" viewBox="0 0 600 240">
-          {/* Grid background */}
-          <pattern id="aimGrid" width="30" height="30" patternUnits="userSpaceOnUse">
-            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#F3F4F6" strokeWidth="0.5" />
-          </pattern>
-          <rect width="600" height="240" fill="url(#aimGrid)" />
+      {/* Main Grid split */}
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-12 overflow-hidden bg-white">
+        
+        {/* Left + Center (Col span 7): Ingestion Map */}
+        <div className="md:col-span-7 border-r border-gray-600 relative overflow-hidden bg-[#FAFBFB] flex items-center justify-center p-xs">
+          
+          <svg className="w-full h-full max-h-[350px] overflow-visible" viewBox="0 0 310 340">
+            {/* Connection lines from sources to Snapsec */}
+            {SOURCES.map((source, idx) => {
+              const isActive = idx === activeSourceIdx;
+              return (
+                <path 
+                  key={idx}
+                  d={`M 115 ${source.midY} L 210 167`} 
+                  stroke={isActive ? "#3B82F6" : "#E5E7EB"} 
+                  strokeWidth={isActive ? 2.5 : 1.5} 
+                  strokeDasharray={isActive ? "none" : "3 3"}
+                  fill="none"
+                  className="transition-all duration-300"
+                />
+              );
+            })}
 
-          {/* Connection Lines from perimeter to center */}
-          <path d="M 120 70 L 300 120" stroke={pulse === 0 ? "#3B82F6" : "#E5E7EB"} strokeWidth={pulse === 0 ? "2" : "1.2"} fill="none" className="transition-all duration-300" />
-          <path d="M 120 170 L 300 120" stroke={pulse === 1 ? "#6366F1" : "#E5E7EB"} strokeWidth={pulse === 1 ? "2" : "1.2"} fill="none" className="transition-all duration-300" />
-          <path d="M 480 70 L 300 120" stroke={pulse === 2 ? "#10B981" : "#E5E7EB"} strokeWidth={pulse === 2 ? "2" : "1.2"} fill="none" className="transition-all duration-300" />
-          <path d="M 480 170 L 300 120" stroke={pulse === 3 ? "#EC4899" : "#E5E7EB"} strokeWidth={pulse === 3 ? "2" : "1.2"} fill="none" className="transition-all duration-300" />
+            {/* Animated Flowing Particles on the paths */}
+            {SOURCES.map((source, idx) => {
+              const isActive = idx === activeSourceIdx;
+              if (!isActive) return null;
+              return (
+                <circle key={`particle-${idx}`} r="3.5" fill="#3B82F6" className="shadow">
+                  <animateMotion 
+                    dur="1.2s" 
+                    repeatCount="indefinite" 
+                    path={`M 115 ${source.midY} L 210 167`} 
+                  />
+                </circle>
+              );
+            })}
 
-          {/* Central Hub Node */}
-          <g transform="translate(300, 120)">
-            <circle cx="0" cy="0" r="32" fill="#3B82F6" fillOpacity="0.05" stroke="#3B82F6" strokeWidth="1" strokeDasharray="3 3" />
-            <circle cx="0" cy="0" r="20" fill="#3B82F6" stroke="#1D4ED8" strokeWidth="1.5" />
-            <text x="0" y="3" textAnchor="middle" className="font-mono text-[9px] font-bold fill-white select-none">AIM</text>
-          </g>
+            {/* Source nodes (External Tools) */}
+            {SOURCES.map((source, idx) => {
+              const isActive = idx === activeSourceIdx;
+              return (
+                <g key={idx} className="transition-all duration-300">
+                  {/* Container Rect */}
+                  <rect 
+                    x="15" 
+                    y={source.y} 
+                    width="100" 
+                    height="34" 
+                    rx="6" 
+                    fill="white" 
+                    stroke={isActive ? "#3B82F6" : "#E5E7EB"} 
+                    strokeWidth={isActive ? 2 : 1}
+                    className="shadow-sm transition-all duration-300"
+                  />
+                  {/* Tool Logo Frame */}
+                  <rect 
+                    x="23" 
+                    y={source.y + 8} 
+                    width="18" 
+                    height="18" 
+                    rx="3" 
+                    fill="#F9FAFB" 
+                    stroke="#E5E7EB" 
+                    strokeWidth="0.5" 
+                  />
+                  {/* Tool Logo image */}
+                  <image 
+                    href={`https://img.logo.dev/${source.domain}?token=pk_YDuXMfwrRe2kQtBuzc3Etg`} 
+                    x="24" 
+                    y={source.y + 9} 
+                    width="16" 
+                    height="16" 
+                  />
+                  {/* Tool Name Label */}
+                  <text 
+                    x="48" 
+                    y={source.y + 20} 
+                    className={`text-[9px] font-sans font-bold ${isActive ? "fill-blue-600" : "fill-gray-900"}`}
+                  >
+                    {source.name}
+                  </text>
+                  {/* Status Indicator Dot */}
+                  <circle 
+                    cx="106" 
+                    cy={source.y + 17} 
+                    r="2.5" 
+                    fill={isActive ? "#3B82F6" : "#10B981"}
+                    className={isActive ? "animate-pulse" : ""}
+                  />
+                </g>
+              );
+            })}
 
-          {/* Category Cards */}
-          <g transform="translate(40, 40)">
-            <rect x="0" y="0" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1.5" />
-            <rect x="0" y="0" width="100" height="5" rx="2" fill="#3B82F6" />
-            <text x="8" y="20" className="font-sans text-[8px] font-bold fill-gray-500 uppercase select-none">SUBDOMAINS</text>
-            <text x="8" y="32" className="font-mono text-[11px] font-extrabold fill-black">{counts.subdomains}</text>
-          </g>
+            {/* Snapsec Center Discovery Hub */}
+            {/* Snapsec Center Discovery Hub */}
+            <g transform="translate(210, 140)">
+              {/* Outer pulsing ring */}
+              <rect 
+                x="0" 
+                y="0" 
+                width="75" 
+                height="54" 
+                rx="8" 
+                fill="white" 
+                stroke="#3B82F6" 
+                strokeWidth="2" 
+                className="animate-pulse"
+              />
+              {/* Logo image (actual mark in assets) */}
+              <image 
+                href="/assets/snapsec-mark.png"
+                x="21.5" 
+                y="11" 
+                width="32" 
+                height="32" 
+              />
+            </g>
 
-          <g transform="translate(40, 140)">
-            <rect x="0" y="0" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1.5" />
-            <rect x="0" y="0" width="100" height="5" rx="2" fill="#6366F1" />
-            <text x="8" y="20" className="font-sans text-[8px] font-bold fill-gray-500 uppercase select-none">API ENDPOINTS</text>
-            <text x="8" y="32" className="font-mono text-[11px] font-extrabold fill-black">{counts.apis}</text>
-          </g>
-
-          <g transform="translate(460, 40)">
-            <rect x="0" y="0" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1.5" />
-            <rect x="0" y="0" width="100" height="5" rx="2" fill="#10B981" />
-            <text x="8" y="20" className="font-sans text-[8px] font-bold fill-gray-500 uppercase select-none">REPOSITORIES</text>
-            <text x="8" y="32" className="font-mono text-[11px] font-extrabold fill-black">{counts.repos}</text>
-          </g>
-
-          <g transform="translate(460, 140)">
-            <rect x="0" y="0" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1.5" />
-            <rect x="0" y="0" width="100" height="5" rx="2" fill="#EC4899" />
-            <text x="8" y="20" className="font-sans text-[8px] font-bold fill-gray-500 uppercase select-none">CERTIFICATES</text>
-            <text x="8" y="32" className="font-mono text-[11px] font-extrabold fill-black">{counts.certs}</text>
-          </g>
-        </svg>
-
-        {/* Real-time Ticker */}
-        <div className="absolute bottom-xs left-xs right-xs bg-white border border-gray-600 rounded-[4px] px-sm py-[6px] text-[10px] font-mono text-gray-500 flex justify-between select-none">
-          <span>&gt; Ingesting cloud boundary log feeds...</span>
-          <span className="font-bold text-green-600">SYNC ACTIVE</span>
+            {/* Output line connecting Gateway to the Feed/List */}
+            <path 
+              d="M 285 167 L 345 167" 
+              stroke="#3B82F6" 
+              strokeWidth="2" 
+              fill="none" 
+            />
+            {/* Animated particle flowing from Gateway to Feed */}
+            <circle r="3.5" fill="#3B82F6">
+              <animateMotion 
+                dur="0.8s" 
+                repeatCount="indefinite" 
+                path="M 285 167 L 345 167" 
+              />
+            </circle>
+          </svg>
         </div>
+
+        {/* Right (Col span 5): Live Asset Inventory Dashboard */}
+        <div className="md:col-span-5 flex flex-col bg-white overflow-hidden p-sm justify-between">
+          
+          {/* Dashboard Header */}
+          <div className="flex justify-between items-center pb-[6px] border-b border-gray-150 select-none">
+            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+              Discovered Assets
+            </span>
+            <span className="text-[9px] text-gray-400 font-mono">
+              REAL-TIME SYNC
+            </span>
+          </div>
+
+          {/* Asset Statistics Widget Strip */}
+          <div className="grid grid-cols-4 gap-xxs border border-gray-200 rounded-[6px] p-[6px] bg-[#FAFBFB] mt-xs select-none">
+            <div className="flex flex-col text-left">
+              <span className="text-[6.5px] text-gray-400 uppercase font-bold">Subdomains</span>
+              <span className="font-mono text-[10.5px] font-bold text-gray-900">{counts.subdomains}</span>
+            </div>
+            <div className="flex flex-col text-left">
+              <span className="text-[6.5px] text-gray-400 uppercase font-bold">APIs</span>
+              <span className="font-mono text-[10.5px] font-bold text-gray-900">{counts.apis}</span>
+            </div>
+            <div className="flex flex-col text-left">
+              <span className="text-[6.5px] text-gray-400 uppercase font-bold">Buckets</span>
+              <span className="font-mono text-[10.5px] font-bold text-gray-900">{counts.buckets}</span>
+            </div>
+            <div className="flex flex-col text-left">
+              <span className="text-[6.5px] text-gray-400 uppercase font-bold">Repos</span>
+              <span className="font-mono text-[10.5px] font-bold text-gray-900">{counts.repos}</span>
+            </div>
+          </div>
+
+          {/* Table Headers */}
+          <div className="grid grid-cols-12 text-[7.5px] font-black text-gray-450 uppercase tracking-wider pb-[6px] border-b border-gray-150 select-none px-xs mt-sm">
+            <div className="col-span-7 text-left">Asset / Endpoint</div>
+            <div className="col-span-3 text-left">Found On</div>
+            <div className="col-span-2 text-right">Status</div>
+          </div>
+
+          {/* Discovered Assets Sleek Table List */}
+          <div className="flex-1 flex flex-col gap-0 py-xs overflow-hidden justify-center select-text">
+            {items.map((item, idx) => {
+              const isNewest = idx === 0;
+              
+              let sourceDomain = "google.com";
+              let sourceShort = "GCP";
+              if (item.source === "Google Cloud") { sourceDomain = "google.com"; sourceShort = "GCP"; }
+              if (item.source === "AWS") { sourceDomain = "amazon.com"; sourceShort = "AWS"; }
+              if (item.source === "Postman") { sourceDomain = "postman.com"; sourceShort = "Postman"; }
+              if (item.source === "GitHub") { sourceDomain = "github.com"; sourceShort = "GitHub"; }
+              if (item.source === "Slack") { sourceDomain = "slack.com"; sourceShort = "Slack"; }
+
+              return (
+                <div 
+                  key={item.id + idx}
+                  className={`grid grid-cols-12 items-center py-xs px-xs border-b border-gray-100 last:border-b-0 text-[10px] transition-all duration-300 ${
+                    isNewest 
+                      ? 'bg-blue-50/35 border-l-2 border-l-blue-500 pl-[6px]' 
+                      : 'bg-transparent border-l-2 border-l-transparent'
+                  }`}
+                >
+                  {/* Asset details / type */}
+                  <div className="col-span-7 flex flex-col min-w-0 pr-xs text-left">
+                    <span className="font-mono text-[9px] font-bold text-gray-900 truncate max-w-[130px] md:max-w-[160px]">
+                      {item.details}
+                    </span>
+                    <div className="flex items-center gap-[4px] mt-[1px]">
+                      <span className="text-[7px] text-gray-400 font-bold uppercase tracking-wider">{item.type}</span>
+                      <span className="text-gray-300">•</span>
+                      <span className="text-[7px] text-gray-400 font-mono">{item.id}</span>
+                    </div>
+                  </div>
+
+                  {/* Found On */}
+                  <div className="col-span-3 flex items-center gap-xxs min-w-0 text-left">
+                    <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center shrink-0 overflow-hidden border border-gray-100">
+                      <img 
+                        src={`https://img.logo.dev/${sourceDomain}?token=pk_YDuXMfwrRe2kQtBuzc3Etg`} 
+                        alt={item.source}
+                        className="w-2.5 h-2.5 object-contain"
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                      />
+                    </div>
+                    <span className="text-[8px] text-gray-650 font-bold truncate">
+                      {sourceShort}
+                    </span>
+                  </div>
+
+                  {/* Status */}
+                  <div className="col-span-2 text-right">
+                    <span className={`inline-block text-[7px] font-extrabold px-[5px] py-[1.5px] rounded-full ${
+                      item.status === "EXPOSED" 
+                        ? "bg-rose-50 text-rose-700 border border-rose-100" 
+                        : "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                    }`}>
+                      {item.status}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Status Summary */}
+          <div className="border-t border-gray-150 pt-xs flex justify-between items-center text-[9px] text-gray-400 select-none">
+            <span>PERIMETER: <span className="text-gray-950 font-bold">SECURE</span></span>
+            <span className="font-bold text-black uppercase hover:underline cursor-pointer">
+              Launch Inventory &rarr;
+            </span>
+          </div>
+
+        </div>
+
       </div>
+
     </div>
   );
 }
 
 // Web Application UI Bug Map for WAS (Feature 1 and Final Benefits)
 function WASWebUiBugMap() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [hoveredBug, setHoveredBug] = useState(null);
+  const [activeEndpointIdx, setActiveEndpointIdx] = useState(0);
+  const [activeTestIdx, setActiveTestIdx] = useState(0);
+  const [isScanning, setIsScanning] = useState(true);
+  const [history, setHistory] = useState([]); // Array of finished index results
 
-  const bugs = [
-    {
-      id: 0,
-      x: 315,
-      y: 102,
-      title: "SQL Injection (SQLi)",
-      parameter: "invoice_id",
-      payload: "10023' OR 1=1 --",
-      severity: "Critical",
-      desc: "Allows database manipulation and sensitive data exposure via unvalidated search parameters."
-    },
-    {
-      id: 1,
-      x: 315,
-      y: 147,
-      title: "Stored Cross-Site Scripting (XSS)",
-      parameter: "display_name",
-      payload: "<script>alert('XSS')</script>",
-      severity: "High",
-      desc: "Executes arbitrary Javascript in the browser of users accessing this profile page."
-    },
-    {
-      id: 2,
-      x: 315,
-      y: 192,
-      title: "Broken Object Level Auth (IDOR)",
-      parameter: "user_id",
-      payload: "?user_id=1001",
-      severity: "High",
-      desc: "Permits unauthorized reading/modification of other profiles by swapping resource IDs."
-    },
-    {
-      id: 3,
-      x: 520,
-      y: 102,
-      title: "Server-Side Request Forgery (SSRF)",
-      parameter: "webhook_url",
-      payload: "http://169.254.169.254/latest/",
-      severity: "Critical",
-      desc: "Tricks the server into routing scan requests to internal local networks and instance metadata."
-    },
-    {
-      id: 4,
-      x: 520,
-      y: 147,
-      title: "Local File Inclusion (LFI)",
-      parameter: "xml_path",
-      payload: "file:///etc/passwd",
-      severity: "High",
-      desc: "Forces server to read system files or environment configuration parameters."
-    },
-    {
-      id: 5,
-      x: 520,
-      y: 192,
-      title: "Cross-Site Request Forgery (CSRF)",
-      parameter: "action_token",
-      payload: "No CSRF Token Supplied",
-      severity: "Medium",
-      desc: "Enables execution of malicious setting updates via unauthorized third-party user sessions."
-    }
-  ];
+  const activeEndpoint = ENDPOINTS[activeEndpointIdx];
+  const currentTest = activeEndpoint.tests[activeTestIdx];
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex(prev => (prev + 1) % bugs.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
+    if (!isScanning) return;
 
-  const activeBug = hoveredBug || bugs[activeIndex];
+    const timer = setTimeout(() => {
+      if (activeTestIdx < activeEndpoint.tests.length - 1) {
+        // Next test in same endpoint
+        setActiveTestIdx(prev => prev + 1);
+      } else if (activeTestIdx === activeEndpoint.tests.length - 1) {
+        // Advance to verdict state
+        setActiveTestIdx(activeEndpoint.tests.length);
+      } else {
+        // Finalized current endpoint, move to next
+        setHistory(prev => [...prev, activeEndpointIdx]);
+        setActiveTestIdx(0);
+        setActiveEndpointIdx(prev => (prev + 1) % ENDPOINTS.length);
+      }
+    }, activeTestIdx === activeEndpoint.tests.length ? 1500 : 800);
+
+    return () => clearTimeout(timer);
+  }, [activeEndpointIdx, activeTestIdx, isScanning]);
+
+  // When loop wraps around to index 0, reset history
+  useEffect(() => {
+    if (activeEndpointIdx === 0 && activeTestIdx === 0) {
+      setHistory([]);
+    }
+  }, [activeEndpointIdx, activeTestIdx]);
 
   return (
     <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[400px]" style={{ fontFamily: "'Inter', sans-serif" }}>
       
-      {/* Title Bar */}
-      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+      {/* Header Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-[10px] flex items-center justify-between select-none">
         <div className="flex items-center gap-[6px]">
-          <span className="w-[8px] h-[8px] rounded-full bg-red-400" />
-          <span className="w-[8px] h-[8px] rounded-full bg-yellow-400" />
-          <span className="w-[8px] h-[8px] rounded-full bg-green-400" />
-          <span className="text-gray-900 font-semibold text-[10px] ml-xs tracking-wider uppercase">
-            WAS Vulnerability Analyzer
+          <span className="w-[8px] h-[8px] rounded-full bg-blue-600 animate-pulse" />
+          <span className="text-gray-950 font-bold text-[11px] tracking-wider uppercase">
+            Dynamic DAST API Audit
           </span>
         </div>
-        <div className="flex items-center gap-xs text-gray-900 text-[10px] font-semibold">
-          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse inline-block" />
-          <span className="text-red-600 uppercase">
-            {bugs.length} Bugs Found
-          </span>
+        
+        <div className="flex gap-md items-center text-[10px] font-mono">
+          <div className="text-gray-500">
+            COMPLETED: <span className="text-black font-bold">{history.length}</span>
+          </div>
+          <div className="text-gray-500">
+            VULNERABLE: <span className="text-rose-600 font-bold">{ENDPOINTS.filter((e, idx) => history.includes(idx) && e.status === 'vulnerable').length}</span>
+          </div>
+          <button 
+            onClick={() => setIsScanning(!isScanning)} 
+            className="ml-sm px-[8px] py-[2px] rounded border border-gray-600 text-[9px] hover:bg-gray-100 transition-colors uppercase font-bold text-gray-700 active:scale-95"
+          >
+            {isScanning ? 'Pause' : 'Resume'}
+          </button>
         </div>
       </div>
 
-      {/* SVG Container */}
-      <div className="flex-1 relative overflow-hidden bg-white flex items-center justify-center">
-        <svg className="w-full h-full" viewBox="0 0 600 240">
-          {/* Grid background */}
-          <pattern id="wasGrid" width="30" height="30" patternUnits="userSpaceOnUse">
-            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#F3F4F6" strokeWidth="0.5" />
-          </pattern>
-          <rect width="600" height="240" fill="url(#wasGrid)" />
+      {/* Main Grid */}
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-12 overflow-hidden bg-white">
+        
+        {/* Left Panel: Sleek Rows */}
+        <div className="md:col-span-7 border-r border-gray-600 flex flex-col bg-white overflow-y-auto">
+          {ENDPOINTS.map((endpoint, idx) => {
+            const isActive = idx === activeEndpointIdx;
+            const isFinished = history.includes(idx);
+            
+            let statusDot = (
+              <span className="relative flex h-2 w-2">
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-gray-350"></span>
+              </span>
+            );
+            let statusLabel = "Pending";
+            let statusColor = "text-gray-450";
+            let rowBg = "bg-white";
 
-          {/* Browser Window Mock */}
-          <rect x="30" y="20" width="540" height="200" rx="8" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1.5" />
-          <rect x="30" y="20" width="540" height="24" rx="8" fill="#FAFAFA" />
-          <line x1="30" y1="44" x2="570" y2="44" stroke="#E5E7EB" strokeWidth="1" />
-          
-          {/* Controls */}
-          <circle cx="45" cy="32" r="3" fill="#EF4444" />
-          <circle cx="55" cy="32" r="3" fill="#F59E0B" />
-          <circle cx="65" cy="32" r="3" fill="#10B981" />
-          <rect x="100" y="24" width="380" height="15" rx="4" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1" />
-          <text x="110" y="34" className="font-mono text-[7px] fill-gray-400 select-none">https://app.corp.internal/settings/profile</text>
+            if (isActive) {
+              statusDot = (
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+              );
+              statusLabel = "Auditing";
+              statusColor = "text-amber-600 font-bold";
+              rowBg = "bg-blue-50/40 border-l-[3px] border-blue-500 pl-[9px]";
+            } else if (isFinished) {
+              if (endpoint.status === 'vulnerable') {
+                statusDot = (
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                  </span>
+                );
+                statusLabel = "Vulnerable";
+                statusColor = "text-rose-600 font-bold";
+              } else {
+                statusDot = (
+                  <span className="relative flex h-2 w-2">
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                );
+                statusLabel = "Secure";
+                statusColor = "text-emerald-600 font-bold";
+              }
+            }
 
-          {/* Sidebar */}
-          <rect x="30" y="44" width="100" height="176" fill="#FAFAFA" />
-          <line x1="130" y1="44" x2="130" y2="220" stroke="#E5E7EB" strokeWidth="1" />
-          <rect x="40" y="60" width="80" height="8" rx="2" fill="#E5E7EB" />
-          <rect x="40" y="76" width="80" height="8" rx="2" fill="#E5E7EB" />
-          <rect x="40" y="92" width="80" height="8" rx="2" fill="#E5E7EB" />
-          <rect x="40" y="108" width="80" height="8" rx="2" fill="#E5E7EB" />
+            let methodColor = "bg-gray-105 text-gray-700";
+            if (endpoint.method === 'GET') methodColor = "bg-emerald-50 text-emerald-700 border border-emerald-100";
+            if (endpoint.method === 'POST') methodColor = "bg-blue-50 text-blue-700 border border-blue-100";
+            if (endpoint.method === 'DELETE') methodColor = "bg-rose-50 text-rose-700 border border-rose-100";
 
-          {/* Content Headings */}
-          <text x="145" y="70" className="font-sans text-[11px] font-bold fill-black select-none">Account Settings</text>
-          <text x="145" y="80" className="font-sans text-[7px] fill-gray-400 select-none">Configure API endpoints and check parameters</text>
-
-          {/* Input Fields */}
-          {/* SQLi */}
-          <text x="145" y="98" className="font-sans text-[7px] font-bold fill-gray-500 select-none">Search Invoices (ID)</text>
-          <rect x="145" y="102" width="180" height="18" rx="4" fill="#FFFFFF" stroke={activeBug.id === 0 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 0 ? 1.5 : 1} />
-          <text x="150" y="113" className="font-mono text-[7px] fill-gray-700 select-none">10023' OR 1=1 --</text>
-
-          {/* XSS */}
-          <text x="145" y="143" className="font-sans text-[7px] font-bold fill-gray-500 select-none">User Display Name</text>
-          <rect x="145" y="147" width="180" height="18" rx="4" fill="#FFFFFF" stroke={activeBug.id === 1 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 1 ? 1.5 : 1} />
-          <text x="150" y="158" className="font-mono text-[7px] fill-gray-700 select-none">&lt;script&gt;alert('XSS')&lt;/script&gt;</text>
-
-          {/* IDOR */}
-          <text x="145" y="188" className="font-sans text-[7px] font-bold fill-gray-500 select-none">Endpoint Identifier (IDOR)</text>
-          <rect x="145" y="192" width="180" height="18" rx="4" fill="#FFFFFF" stroke={activeBug.id === 2 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 2 ? 1.5 : 1} />
-          <text x="150" y="203" className="font-mono text-[7px] fill-gray-700 select-none">?user_id=1001</text>
-
-          {/* SSRF */}
-          <text x="350" y="98" className="font-sans text-[7px] font-bold fill-gray-500 select-none">Outbound Webhook URL (SSRF)</text>
-          <rect x="350" y="102" width="180" height="18" rx="4" fill="#FFFFFF" stroke={activeBug.id === 3 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 3 ? 1.5 : 1} />
-          <text x="355" y="113" className="font-mono text-[7px] fill-gray-700 select-none">http://169.254.169.254/latest/</text>
-
-          {/* LFI */}
-          <text x="350" y="143" className="font-sans text-[7px] font-bold fill-gray-500 select-none">XML Report Path (LFI)</text>
-          <rect x="350" y="147" width="180" height="18" rx="4" fill="#FFFFFF" stroke={activeBug.id === 4 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 4 ? 1.5 : 1} />
-          <text x="355" y="158" className="font-mono text-[7px] fill-gray-700 select-none">file:///etc/passwd</text>
-
-          {/* CSRF */}
-          <text x="350" y="188" className="font-sans text-[7px] font-bold fill-gray-500 select-none">CSRF Policy</text>
-          <rect x="350" y="192" width="180" height="18" rx="4" fill={activeBug.id === 5 ? "#FEF2F2" : "#F9FAFB"} stroke={activeBug.id === 5 ? "#EF4444" : "#E5E7EB"} strokeWidth={activeBug.id === 5 ? 1.5 : 1} />
-          <text x="355" y="203" className="font-sans text-[7px] font-bold fill-red-600 select-none">Update Settings (No Token)</text>
-
-          {/* Active target scanner overlay */}
-          {activeBug && (
-            <g>
-              <circle cx={activeBug.x} cy={activeBug.y} r="8" fill="none" stroke="#EF4444" strokeWidth="1.2" className="animate-ping" />
-              <line x1="300" y1="240" x2={activeBug.x} y2={activeBug.y} stroke="rgba(239, 68, 68, 0.2)" strokeWidth="1.5" strokeDasharray="3 3" />
-            </g>
-          )}
-
-          {/* Nodes */}
-          {bugs.map((bug) => {
-            const isActive = activeBug?.id === bug.id;
             return (
-              <g
-                key={bug.id}
-                className="cursor-pointer"
-                onMouseEnter={() => setHoveredBug(bug)}
-                onMouseLeave={() => setHoveredBug(null)}
+              <div 
+                key={endpoint.id}
+                className={`h-[42px] px-sm flex items-center justify-between border-b border-gray-100 last:border-b-0 transition-colors duration-150 ${rowBg} ${!isActive && 'pl-[12px]'}`}
               >
-                {isActive && (
-                  <circle cx={bug.x} cy={bug.y} r="6" fill="#EF4444" fillOpacity="0.3" className="animate-pulse" />
-                )}
-                <circle cx={bug.x} cy={bug.y} r={isActive ? 4 : 3} fill="#EF4444" stroke="#FFF" strokeWidth="1" />
-              </g>
+                <div className="flex items-center gap-sm min-w-0">
+                  <span className={`text-[8px] font-bold px-[5px] py-[1.5px] rounded uppercase font-mono tracking-wider ${methodColor}`}>
+                    {endpoint.method}
+                  </span>
+                  <span className="font-mono text-[9.5px] font-medium text-gray-900 truncate max-w-[200px] md:max-w-[240px]">
+                    {endpoint.url}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-xs pr-xs">
+                  {statusDot}
+                  <span className={`text-[8.5px] font-mono tracking-wide ${statusColor}`}>
+                    {statusLabel}
+                  </span>
+                </div>
+              </div>
             );
           })}
-        </svg>
-
-        {/* Tooltip description drawer */}
-        <div className="absolute bottom-xs left-xs right-xs bg-white border border-gray-600 rounded-[6px] p-xs shadow-md flex items-center justify-between text-[11px] min-h-[46px] select-none">
-          {activeBug && (
-            <>
-              <div className="flex flex-col min-w-0 pr-sm">
-                <span className="font-bold text-black flex items-center gap-xs">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                  {activeBug.title}
-                </span>
-                <span className="text-[10px] text-gray-500 mt-[2px] leading-snug">{activeBug.desc}</span>
-              </div>
-              <div className="flex flex-col items-end shrink-0 text-right">
-                <span className="text-[9px] uppercase font-bold tracking-wider px-[6px] py-[2.5px] rounded bg-red-100 text-red-700 border border-red-200">
-                  {activeBug.severity}
-                </span>
-                <span className="font-mono text-[8px] text-gray-400 mt-xxs truncate max-w-[120px]">param: {activeBug.parameter}</span>
-              </div>
-            </>
-          )}
         </div>
+
+        {/* Right Panel: Sleek Inspection detail */}
+        <div className="md:col-span-5 flex flex-col bg-[#FAFBFB] p-sm justify-between">
+          
+          {/* Target summary card */}
+          <div className="flex flex-col gap-xs">
+            <span className="text-[9px] uppercase tracking-wider font-bold text-gray-400">Target Asset Details</span>
+            <div className="bg-white border border-gray-200 rounded-[6px] p-xs shadow-sm flex flex-col gap-[3px]">
+              <div className="flex justify-between items-center text-[10px] text-gray-500">
+                <span>Method:</span>
+                <span className="font-bold text-gray-800">{activeEndpoint.method}</span>
+              </div>
+              <div className="flex justify-between items-center text-[10px] text-gray-500">
+                <span>Route:</span>
+                <span className="font-mono text-[9px] text-gray-800 truncate max-w-[120px]">{activeEndpoint.url}</span>
+              </div>
+              <div className="flex justify-between items-center text-[10px] text-gray-500">
+                <span>Host:</span>
+                <span className="text-gray-850">api.snapsec.co</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Live Check Steps */}
+          <div className="flex flex-col gap-xs flex-1 my-sm justify-center">
+            <span className="text-[9px] uppercase tracking-wider font-bold text-gray-400">Vulnerability Audits</span>
+            <div className="flex flex-col gap-[6px]">
+              {activeEndpoint.tests.map((test, index) => {
+                const isTestPast = index < activeTestIdx;
+                const isTestCurrent = index === activeTestIdx;
+
+                let checkIcon = (
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-300" />
+                );
+                let checkLabelClass = "text-gray-400";
+                let checkBadge = null;
+
+                if (isTestPast) {
+                  checkIcon = (
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  );
+                  checkLabelClass = "text-gray-900 font-medium";
+                  checkBadge = <span className="text-[7.5px] bg-emerald-50 text-emerald-700 px-[4px] rounded border border-emerald-100">PASS</span>;
+                } else if (isTestCurrent) {
+                  checkIcon = (
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                  );
+                  checkLabelClass = "text-amber-700 font-bold";
+                  checkBadge = <span className="text-[7.5px] bg-amber-50 text-amber-700 px-[4px] rounded border border-amber-100 animate-pulse">TESTING</span>;
+                }
+
+                // If failed
+                if (activeTestIdx === activeEndpoint.tests.length && index === activeEndpoint.tests.length - 1 && activeEndpoint.status === 'vulnerable') {
+                  checkIcon = (
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                  );
+                  checkLabelClass = "text-rose-700 font-bold";
+                  checkBadge = <span className="text-[7.5px] bg-rose-50 text-rose-700 px-[4px] rounded border border-rose-100 font-bold">EXPOSED</span>;
+                } else if (activeTestIdx === activeEndpoint.tests.length && index === activeEndpoint.tests.length - 1 && activeEndpoint.status !== 'vulnerable') {
+                  checkIcon = (
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  );
+                  checkLabelClass = "text-emerald-700 font-bold";
+                  checkBadge = <span className="text-[7.5px] bg-emerald-50 text-emerald-700 px-[4px] rounded border border-emerald-100">PASS</span>;
+                }
+
+                return (
+                  <div key={index} className="flex items-center justify-between text-[10.5px]">
+                    <div className="flex items-center gap-xs">
+                      {checkIcon}
+                      <span className={checkLabelClass}>{test.name}</span>
+                    </div>
+                    {checkBadge}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Verdict Panel */}
+          <div className="border-t border-gray-250 pt-xs min-h-[72px] flex flex-col justify-center">
+            {activeTestIdx === activeEndpoint.tests.length ? (
+              <div className="flex flex-col gap-[2px]">
+                <span className="text-[9px] uppercase tracking-wider font-bold text-gray-400">Audit Verdict</span>
+                <div className={`rounded-[6px] p-xs border ${
+                  activeEndpoint.status === 'vulnerable'
+                    ? 'bg-rose-50/50 border-rose-200 text-rose-900'
+                    : 'bg-emerald-50/50 border-emerald-200 text-emerald-900'
+                }`}>
+                  <div className="flex items-center gap-xs text-[10px] font-bold">
+                    {activeEndpoint.status === 'vulnerable' ? (
+                      <>
+                        <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse" />
+                        <span>VULNERABILITY IDENTIFIED</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                        <span>ENDPOINT SECURE</span>
+                      </>
+                    )}
+                  </div>
+                  <p className="text-[9px] text-gray-500 mt-[2px] leading-tight">
+                    {activeEndpoint.status === 'vulnerable'
+                      ? `${activeEndpoint.vulnType} (CVSS ${activeEndpoint.cvss}) found in payload parameters.`
+                      : "All input parameter checks passed successfully. No anomalies detected."}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center text-gray-400 text-[10px] py-[4px]">
+                <span className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-[4px]" />
+                <span>Running payload analysis...</span>
+              </div>
+            )}
+          </div>
+
+        </div>
+
       </div>
+
     </div>
   );
 }

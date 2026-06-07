@@ -17,118 +17,124 @@ function FadeInBlock({ children, className = 'w-full' }) {
 
 // Interactive Ownership Assignment & Integration Sync for VM (Feature 3)
 function VMOwnershipTickets() {
-  const [selectedOwner, setSelectedOwner] = useState("platform");
-  const [syncStatus, setSyncStatus] = useState("Synced");
+  const [departments, setDepartments] = useState([
+    { id: 1, name: "Platform Engineering", tickets: 14, compliance: 94.2, violations: 2 },
+    { id: 2, name: "SecOps Core", tickets: 5, compliance: 98.7, violations: 0 },
+    { id: 3, name: "Billing & Finance", tickets: 29, compliance: 76.5, violations: 8 },
+    { id: 4, name: "Vendor-B Devs", tickets: 12, compliance: 88.0, violations: 1 }
+  ]);
+  const [notified, setNotified] = useState({});
 
-  useEffect(() => {
-    setSyncStatus("Syncing...");
-    const timer = setTimeout(() => {
-      setSyncStatus("Synced");
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [selectedOwner]);
+  const handleNotify = (id) => {
+    setNotified(prev => ({ ...prev, [id]: "Sending..." }));
+    setTimeout(() => {
+      setNotified(prev => ({ ...prev, [id]: "Alerted ✓" }));
+    }, 800);
+  };
 
   return (
     <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
       
       {/* Title Bar */}
-      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-[10px] flex items-center justify-between select-none shrink-0">
         <div className="flex items-center gap-[6px]">
-          <span className="w-[8px] h-[8px] rounded-full bg-indigo-500" />
-          <span className="text-gray-900 font-semibold text-[10px] tracking-wider uppercase">
-            Delegation & Integration Hub
+          <span className="w-[8px] h-[8px] rounded-full bg-indigo-600 animate-pulse" />
+          <span className="text-gray-955 font-bold text-[10px] tracking-tight uppercase">
+            Accountability Leaderboard
           </span>
         </div>
-        <span className={`text-[8px] font-bold uppercase tracking-wider px-[6px] py-[2.5px] rounded ${
-          syncStatus === "Synced" ? "bg-green-50 text-green-700 border border-green-100" : "bg-blue-50 text-blue-700 border border-blue-100"
-        }`}>
-          {syncStatus}
-        </span>
+        <div className="text-[9px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-xs py-xxs rounded">
+          DEPT COMPLIANCE TRACKER
+        </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 p-sm bg-[#FAFAFA] flex flex-col justify-between">
-        
-        {/* Owner Selector */}
-        <div className="bg-white border border-gray-200 rounded p-sm shadow-sm flex flex-col gap-xxs select-none">
-          <label className="text-[9px] font-bold text-gray-400 uppercase">Assign Ownership / Service Vendor</label>
-          <div className="flex gap-xs mt-xxs">
-            <button
-              onClick={() => setSelectedOwner("platform")}
-              className={`flex-1 py-xs text-[10px] font-bold border rounded uppercase transition ${
-                selectedOwner === "platform" ? "bg-black text-white border-black" : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
-              }`}
-            >
-              Platform Team
-            </button>
-            <button
-              onClick={() => setSelectedOwner("secops")}
-              className={`flex-1 py-xs text-[10px] font-bold border rounded uppercase transition ${
-                selectedOwner === "secops" ? "bg-black text-white border-black" : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
-              }`}
-            >
-              SecOps Unit
-            </button>
-            <button
-              onClick={() => setSelectedOwner("vendor")}
-              className={`flex-1 py-xs text-[10px] font-bold border rounded uppercase transition ${
-                selectedOwner === "vendor" ? "bg-black text-white border-black" : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
-              }`}
-            >
-              Service Vendor B
-            </button>
-          </div>
+      {/* Stats Summary Panel */}
+      <div className="grid grid-cols-3 border-b border-gray-200 bg-[#FAFBFB] p-xs gap-xs select-none shrink-0">
+        <div className="bg-white border border-gray-200 rounded p-[6px] text-center">
+          <span className="block text-[8px] font-bold text-gray-400 uppercase">Total Tickets</span>
+          <span className="text-[14px] font-bold text-gray-900 mt-xxs block">60</span>
         </div>
-
-        {/* Integration pipelines */}
-        <div className="flex-1 flex flex-col gap-xs justify-end mt-sm select-text">
-          <div className="text-[9px] font-bold text-gray-500 uppercase tracking-wider select-none">Automated Integration Pipelines</div>
-          
-          {/* Jira Row */}
-          <div className="flex items-center justify-between bg-white border border-gray-200 rounded p-xs text-[10px] shadow-sm">
-            <div className="flex items-center gap-xs">
-              <span className="font-bold text-blue-600 font-mono">JIRA-492</span>
-              <span className="text-gray-500 font-mono">Assignee &rarr; {
-                selectedOwner === "platform" ? "Platform Team Lead" :
-                selectedOwner === "secops" ? "SecOps Queue" : "External Vendor Vendor-B-Dev"
-              }</span>
-            </div>
-            <span className="text-[8px] font-bold uppercase tracking-wider px-[4px] py-[1.5px] rounded bg-green-50 text-green-700 border border-green-200">
-              UPDATED
-            </span>
-          </div>
-
-          {/* Slack Row */}
-          <div className="flex items-center justify-between bg-white border border-gray-200 rounded p-xs text-[10px] shadow-sm">
-            <div className="flex items-center gap-xs">
-              <span className="font-bold text-red-500 font-mono">#slack</span>
-              <span className="text-gray-500 font-mono">Posted to: {
-                selectedOwner === "platform" ? "#infra-alerts" :
-                selectedOwner === "secops" ? "#security-incidents" : "#vendor-b-support"
-              }</span>
-            </div>
-            <span className="text-[8px] font-bold uppercase tracking-wider px-[4px] py-[1.5px] rounded bg-green-50 text-green-700 border border-green-200">
-              DISPATCHED
-            </span>
-          </div>
-
-          {/* ServiceNow / Incident Row */}
-          <div className="flex items-center justify-between bg-white border border-gray-200 rounded p-xs text-[10px] shadow-sm">
-            <div className="flex items-center gap-xs">
-              <span className="font-bold text-purple-700 font-mono">INC-94021</span>
-              <span className="text-gray-500 font-mono">Assigned group: {
-                selectedOwner === "platform" ? "Platform-Svc-Group" :
-                selectedOwner === "secops" ? "SecOps-SOC-L1" : "Vendor-Escalations"
-              }</span>
-            </div>
-            <span className="text-[8px] font-bold uppercase tracking-wider px-[4px] py-[1.5px] rounded bg-green-50 text-green-700 border border-green-200">
-              SYNCED
-            </span>
-          </div>
-
+        <div className="bg-white border border-gray-200 rounded p-[6px] text-center">
+          <span className="block text-[8px] font-bold text-gray-400 uppercase">Avg Compliance</span>
+          <span className="text-[14px] font-bold text-indigo-600 mt-xxs block">89.3%</span>
         </div>
-
+        <div className="bg-white border border-gray-200 rounded p-[6px] text-center">
+          <span className="block text-[8px] font-bold text-gray-400 uppercase">Active Breaches</span>
+          <span className="text-[14px] font-bold text-red-600 mt-xxs block">11</span>
+        </div>
       </div>
+
+      {/* Main Table Container */}
+      <div className="flex-1 overflow-y-auto bg-white p-xs">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="border-b border-gray-200 text-gray-400 text-[8.5px] uppercase font-bold select-none">
+              <th className="pb-xxs font-bold">Department</th>
+              <th className="pb-xxs font-bold text-center">Tickets</th>
+              <th className="pb-xxs font-bold text-center">Compliance</th>
+              <th className="pb-xxs font-bold text-center">Violations</th>
+              <th className="pb-xxs font-bold text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {departments.map((dept) => {
+              const complianceColor = 
+                dept.compliance >= 95 ? "text-green-600" :
+                dept.compliance >= 85 ? "text-yellow-600" : "text-red-600";
+              
+              const violationColor =
+                dept.violations === 0 ? "text-gray-400" :
+                dept.violations < 3 ? "text-orange-500 font-bold" : "text-red-600 font-extrabold";
+
+              const isNotified = notified[dept.id];
+
+              return (
+                <tr key={dept.id} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50/50 transition-colors">
+                  <td className="py-xs">
+                    <span className="text-[10.5px] font-semibold text-gray-900 block leading-tight">{dept.name}</span>
+                    <span className="text-[8px] text-gray-400 block mt-[2px] font-mono">Owner assigned</span>
+                  </td>
+                  <td className="py-xs text-center">
+                    <span className="text-[10px] font-bold text-gray-800 font-mono">{dept.tickets}</span>
+                  </td>
+                  <td className="py-xs text-center">
+                    <span className={`text-[10px] font-bold font-mono ${complianceColor}`}>
+                      {dept.compliance}%
+                    </span>
+                  </td>
+                  <td className="py-xs text-center">
+                    <span className={`text-[10px] font-mono ${violationColor}`}>
+                      {dept.violations}
+                    </span>
+                  </td>
+                  <td className="py-xs text-right">
+                    <button
+                      onClick={() => handleNotify(dept.id)}
+                      disabled={isNotified && isNotified !== "Sending..."}
+                      className={`px-xs py-[3px] rounded text-[8px] font-bold uppercase tracking-wider transition border ${
+                        isNotified === "Alerted ✓" 
+                          ? "bg-green-50 text-green-700 border-green-200"
+                          : isNotified === "Sending..."
+                            ? "bg-gray-50 text-gray-400 border-gray-200 animate-pulse"
+                            : "bg-white text-gray-700 border-gray-300 hover:bg-gray-900 hover:text-white hover:border-gray-900"
+                      }`}
+                    >
+                      {isNotified || "Notify"}
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Table Footer */}
+      <div className="bg-white border-t border-gray-200 px-xs py-xxs flex items-center justify-between text-[8px] text-gray-400 font-semibold select-none shrink-0">
+        <span>SLA countdown active</span>
+        <span className="text-gray-505">Auto-escalation enabled</span>
+      </div>
+
     </div>
   );
 }
@@ -682,18 +688,18 @@ export default function Feauture3({ moduleSlug }) {
             <div className="flex flex-col items-start gap-sm w-full">
               {/* Badge */}
               <span className="inline-flex items-center rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.16em] uppercase bg-[#F5F5F5] text-black border border-gray-300">
-                {isVM ? "Delegation & Sync" : isAIM ? "Risk Intelligence" : isWAS ? "AI Engine" : isVS ? "Asset Catalog" : "Custom Detection"}
+                {isVM ? "Ownership & SLAs" : isAIM ? "Risk Intelligence" : isWAS ? "AI Engine" : isVS ? "Asset Catalog" : "Custom Detection"}
               </span>
 
               {/* Heading */}
               <h2 className="text-[28px] sm:text-[36px] font-semibold leading-[1.2] text-black tracking-tight mt-xs">
-                {isVM ? "Vulnerability Ownership & Integrations" : isAIM ? "Identify Risk Concentration Quickly" : isWAS ? "AI Driven Intelligence" : isVS ? "Auto Updating Asset Catalog" : "Codify Your Security Policies with Custom YAML Rules"}
+                {isVM ? "Vulnerability Ownership & Accountability" : isAIM ? "Identify Risk Concentration Quickly" : isWAS ? "AI Driven Intelligence" : isVS ? "Auto Updating Asset Catalog" : "Codify Your Security Policies with Custom YAML Rules"}
               </h2>
 
               {/* Description */}
               <p className="text-[14px] sm:text-[15px] text-gray-900 leading-[1.5] mt-sm">
                 {isVM
-                  ? "Assign clear ownership of vulnerabilities to specific service vendors or internal business units, and automatically sync tickets with Jira, Slack, and ServiceNow."
+                  ? "Assign clear ownership of vulnerabilities to specific business units or developers, and enforce automated SLA deadlines to ensure timely remediation and accountability."
                   : isAIM
                     ? "Instantly flag critical vulnerabilities, expired SSL certificates, and unauthenticated APIs across all discovered endpoints to prevent security incidents."
                     : isWAS
@@ -710,11 +716,11 @@ export default function Feauture3({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVM ? "Business Units & Vendors" : isAIM ? "Alerting & Triggers" : isWAS ? "AI-Powered Crawling" : isVS ? "Codified Vulnerability Logic" : "Codified Attack Surface"}
+                    {isVM ? "Vulnerability Ownership" : isAIM ? "Alerting & Triggers" : isWAS ? "AI-Powered Crawling" : isVS ? "Codified Vulnerability Logic" : "Codified Attack Surface"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
                     {isVM
-                      ? "Segment assets and delegate system ownership to the appropriate engineering or operations team automatically."
+                      ? "Segment assets and delegate vulnerability ownership to developers, engineering groups, or vendors automatically on detection."
                       : isAIM
                         ? "Generate dynamic security alerts to notify security teams whenever public storage buckets or unauthenticated endpoints are identified."
                         : isWAS
@@ -729,11 +735,11 @@ export default function Feauture3({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVM ? "Developer Ticket Sync" : isAIM ? "Risk Prioritization" : isWAS ? "Automated Reporting" : "Instant Action Workflows"}
+                    {isVM ? "SLA Enforcements" : isAIM ? "Risk Prioritization" : isWAS ? "Automated Reporting" : "Instant Action Workflows"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
                     {isVM
-                      ? "Automatically trigger ticketing actions on external platforms to notify developers in their native workflows."
+                      ? "Enforce strict resolution countdowns based on vulnerability severity, triggering escalation alerts before SLAs breach."
                       : isAIM
                         ? "Classify exposures by severity to help security teams prioritize remediation on critical issues first."
                         : isWAS
