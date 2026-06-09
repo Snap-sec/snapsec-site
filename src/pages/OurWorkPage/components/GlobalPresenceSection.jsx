@@ -27,17 +27,17 @@ const GlobalPresenceSection = () => {
             <div className="flex flex-col items-start gap-sm w-full">
               {/* Badge */}
               <span className="inline-flex items-center rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.16em] uppercase bg-[#F5F5F5] text-black border border-gray-300">
-                Global Network
+                Global Operations
               </span>
 
               {/* Heading */}
               <h2 className="text-[28px] sm:text-[36px] font-semibold leading-[1.2] text-black tracking-tight mt-xs">
-                Securing Assets Across 10+ Countries
+                Securing Clients Across 10+ Countries
               </h2>
 
               {/* Description */}
               <p className="text-[14px] sm:text-[15px] text-gray-900 leading-[1.5] mt-sm">
-                Our globally distributed vulnerability scanning node network operates 24/7. This guarantees low-latency external discovery and simulates real-world threat actors from local networks in major regions.
+                Our globally distributed team of penetration testers operates 24/7. We simulate real-world advanced persistent threats (APTs) from multiple regions to rigorously test your defenses and geo-fencing controls.
               </p>
             </div>
 

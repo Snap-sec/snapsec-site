@@ -798,43 +798,6 @@ function WASWebUiBugMap() {
             </div>
           </div>
 
-          {/* Verdict Panel */}
-          <div className="border-t border-gray-250 pt-xs min-h-[72px] flex flex-col justify-center">
-            {activeTestIdx === activeEndpoint.tests.length ? (
-              <div className="flex flex-col gap-[2px]">
-                <span className="text-[9px] uppercase tracking-wider font-bold text-gray-400">Audit Verdict</span>
-                <div className={`rounded-[6px] p-xs border ${
-                  activeEndpoint.status === 'vulnerable'
-                    ? 'bg-rose-50/50 border-rose-200 text-rose-900'
-                    : 'bg-emerald-50/50 border-emerald-200 text-emerald-900'
-                }`}>
-                  <div className="flex items-center gap-xs text-[10px] font-bold">
-                    {activeEndpoint.status === 'vulnerable' ? (
-                      <>
-                        <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse" />
-                        <span>VULNERABILITY IDENTIFIED</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-                        <span>ENDPOINT SECURE</span>
-                      </>
-                    )}
-                  </div>
-                  <p className="text-[9px] text-gray-500 mt-[2px] leading-tight">
-                    {activeEndpoint.status === 'vulnerable'
-                      ? `${activeEndpoint.vulnType} (CVSS ${activeEndpoint.cvss}) found in payload parameters.`
-                      : "All input parameter checks passed successfully. No anomalies detected."}
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center text-center text-gray-400 text-[10px] py-[4px]">
-                <span className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-[4px]" />
-                <span>Running payload analysis...</span>
-              </div>
-            )}
-          </div>
 
         </div>
 

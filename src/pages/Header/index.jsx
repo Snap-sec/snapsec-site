@@ -403,6 +403,45 @@ const dropdownData = {
       },
     ],
   },
+  Services: {
+    columns: [
+      {
+        items: [
+          {
+            icon: Icons.layers,
+            title: 'Services List',
+            desc: 'Explore our full range of cybersecurity assessments and penetration testing.',
+            link: '/services',
+            internal: true,
+          },
+          {
+            icon: Icons.wrench,
+            title: 'Methodology',
+            desc: 'Learn about our structured, security-first testing processes and frameworks.',
+            link: '/service/our-methodology',
+            internal: true,
+          },
+        ],
+      },
+      {
+        items: [
+          {
+            icon: Icons.chart,
+            title: 'Our Work',
+            desc: 'Case studies, client success stories, and real-world security outcomes.',
+            link: '/our-work',
+            internal: true,
+          },
+          {
+            icon: Icons.clipboard,
+            title: 'Demo Reports',
+            desc: 'Download sample sanitized VAPT and security assessment reports.',
+            link: '#',
+          },
+        ],
+      },
+    ],
+  },
   Company: {
     columns: [
       {
@@ -452,6 +491,30 @@ const promoData = {
             <path d="M16.5 9.4 7.55 4.24a1.79 1.79 0 0 0-2.5 1.55v12.42a1.79 1.79 0 0 0 2.5 1.55L16.5 14.6a1.79 1.79 0 0 0 0-3.2z"/>
           </svg>
           <span className="font-mono text-[10px] tracking-wider uppercase font-bold text-white/95">INTEGRATIONS</span>
+        </div>
+      </div>
+    )
+  },
+  Services: {
+    tag: 'RESOURCES',
+    tagBg: 'bg-black',
+    tagColor: 'text-white',
+    headline: 'Company Capabilities',
+    desc: 'Download our full Company Profile to learn about our team, approach, and services.',
+    link: '#',
+    linkLabel: 'Download PDF',
+    graphic: (
+      <div className="relative w-full h-[90px] rounded-lg bg-gradient-to-br from-[#111111] to-[#222222] overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+        <div className="flex items-center gap-[8px] text-white">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <span className="font-mono text-[10px] tracking-wider uppercase font-bold text-white/95">COMPANY PROFILE</span>
         </div>
       </div>
     )
@@ -592,6 +655,7 @@ function MegaDropdown({ data, menuName, isOpen }) {
 // ─── Nav items config ───────────────────────────────────
 const navItems = [
   { label: 'Platform', hasDropdown: false, href: '/platform' },
+  { label: 'Services', hasDropdown: true },
   { label: 'Modules', hasDropdown: true },
   { label: 'Usecases', hasDropdown: true },
   { label: 'Resources', hasDropdown: true },

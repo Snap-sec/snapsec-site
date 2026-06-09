@@ -17,226 +17,256 @@ function FadeInBlock({ children, className = 'w-full' }) {
 
 // Interactive Rule Driven YAML Engine for VM (Feature 2)
 function VMRuleDrivenEngine() {
-  const [selectedRule, setSelectedRule] = useState("sandbox"); // "sandbox", "escalate", "false_positive"
+  const [activeIdx, setActiveIdx] = useState(0);
 
-  const ruleYamls = {
-    sandbox: `id: auto-triage-sandbox
-on: vulnerability_detected
-conditions:
-  - environment == "sandbox"
-  - cve.severity == "medium"
-actions:
-  - change_state: "closed"
-  - add_label: "auto-triaged"`,
-    escalate: `id: escalate-public-api
-on: vulnerability_detected
-conditions:
-  - asset.exposure == "public"
-  - cve.cvss_score >= 7.0
-actions:
-  - override_severity: "critical"
-  - set_sla: "7_days"`,
-    false_positive: `id: normalize-false-positives
-on: vulnerability_detected
-conditions:
-  - check.name matches "test-key"
-  - file.path contains "test/"
-actions:
-  - change_state: "false_positive"
-  - override_severity: "low"`
-  };
-
-  const vulnerabilities = [
+  const automationRules = [
     {
-      id: "vuln-1",
-      cve: "CVE-2024-1928",
-      asset: "dev-sandbox-db",
-      originalSeverity: "Medium",
-      originalState: "Open",
-      ruleType: "sandbox",
-      targetSeverity: "Medium",
-      targetState: "Auto-Triaged",
-      targetStateColor: "text-blue-700 bg-blue-100 border-blue-200",
-      description: "Low-risk sandbox instance exposure."
+      id: "triage-sandbox",
+      title: "triage-sandbox",
+      badge: "Filter",
+      badgeClass: "bg-gray-50 text-gray-600 border-gray-200",
+      description: "Auto-close sandbox DB issues",
+      source: "Qualys Ingestion Feed",
+      yaml: `# Triage rules for sandbox databases
+rule: triage-sandbox
+match:
+  host: "*-sandbox-*"
+  plugin_id: 10928
+action:
+  state: "auto-closed"
+  triage: "non-prod-ignore"
+  assignee: null`,
+      trigger: "Host matching *-sandbox-* with plugin 10928",
+      action: "Auto-close vulnerability and triage as Non-Production"
     },
     {
-      id: "vuln-2",
-      cve: "CVE-2024-5510",
-      asset: "api-public-gateway",
-      originalSeverity: "High",
-      originalState: "Open",
-      ruleType: "escalate",
-      targetSeverity: "Critical",
-      targetState: "Escalated SLA",
-      targetStateColor: "text-red-700 bg-red-100 border-red-200",
-      description: "External API exposure of credentials."
+      id: "escalate-public-rce",
+      title: "escalate-public-rce",
+      badge: "Escalate",
+      badgeClass: "bg-rose-50 text-rose-600 border-rose-200",
+      description: "Escalate RCEs on public hosts",
+      source: "Nessus Vulnerability Scan",
+      yaml: `# Critical escalation for public RCEs
+rule: escalate-public-rce
+match:
+  cvss: ">= 9.0"
+  host: "api-public-*"
+action:
+  severity: "critical"
+  sla: "24_hours"
+  notify: "#sec-ops-alerts"`,
+      trigger: "CVSS >= 9.0 on host matching api-public-*",
+      action: "Promote to Critical severity, set 24h SLA, & ping #sec-ops-alerts"
     },
     {
-      id: "vuln-3",
-      cve: "Secret Leak",
-      asset: "test/dummy_auth.py",
-      originalSeverity: "Critical",
-      originalState: "Open",
-      ruleType: "false_positive",
-      targetSeverity: "Low",
-      targetState: "False Positive",
-      targetStateColor: "text-gray-700 bg-gray-100 border-gray-200",
-      description: "Mock API keys inside test directory."
+      id: "ignore-test-keys",
+      title: "ignore-test-keys",
+      badge: "Ignore",
+      badgeClass: "bg-emerald-50 text-emerald-600 border-emerald-200",
+      description: "Ignore dummy keys in test dirs",
+      source: "GitHub Secret Scanning",
+      yaml: `# Filter test repository dummy keys
+rule: ignore-test-keys
+match:
+  secret_type: "aws_access_key"
+  file_path: "**/test/dummy_*"
+action:
+  severity: "info"
+  classification: "false-positive"
+  state: "resolved"`,
+      trigger: "AWS access keys detected in files matching **/test/dummy_*",
+      action: "Downgrade severity to Info, tag as false-positive, & auto-resolve"
+    },
+    {
+      id: "ssl-expiry-warn",
+      title: "ssl-expiry-warn",
+      badge: "Assign",
+      badgeClass: "bg-amber-50 text-amber-600 border-amber-200",
+      description: "Warning for expiring SSL certs",
+      source: "Continuous SSL Monitor",
+      yaml: `# Handle SSL certificates nearing expiry
+rule: ssl-expiry-warn
+match:
+  days_remaining: "<= 7"
+  type: "ssl_certificate"
+action:
+  severity: "medium"
+  assignee: "infrastructure-team"
+  ticket_priority: "high"`,
+      trigger: "SSL certificate days remaining <= 7 days",
+      action: "Assign warning ticket to infrastructure-team with High priority"
+    },
+    {
+      id: "database-sqli-sla",
+      title: "database-sqli-sla",
+      badge: "SLA Guard",
+      badgeClass: "bg-blue-50 text-blue-600 border-blue-200",
+      description: "Strict 4h SLA on DB SQLi",
+      source: "Web App Vulnerability Scan",
+      yaml: `# Enforce strict SLA for DB SQL injections
+rule: database-sqli-sla
+match:
+  vulnerability_type: "SQL Injection"
+  target_host: "*db-primary*"
+action:
+  sla: "4_hours"
+  escalate_to: "security-lead"`,
+      trigger: "SQL Injection vulnerability found on *db-primary*",
+      action: "Set strict 4h SLA & escalate immediately to security-lead"
+    },
+    {
+      id: "slack-ops-notify",
+      title: "slack-ops-notify",
+      badge: "Notify",
+      badgeClass: "bg-purple-50 text-purple-600 border-purple-200",
+      description: "Notify slack on critical CVEs",
+      source: "Container Registry Scan",
+      yaml: `# Route critical container CVEs to Slack
+rule: slack-ops-notify
+match:
+  severity: "critical"
+  cve_id: "CVE-2024-*"
+action:
+  channel: "#sec-alerts"
+  mention: "@oncall"`,
+      trigger: "Critical CVE-2024-* found in container registry scan",
+      action: "Send alert to #sec-alerts Slack channel and ping @oncall"
     }
   ];
 
+  const activeRule = automationRules[activeIdx];
+
+  const highlightYaml = (yamlText) => {
+    return yamlText.split('\n').map((line, i) => {
+      if (line.trim().startsWith('#')) {
+        return <div key={i} className="text-[#6A9955]">{line}</div>;
+      }
+      const colonIdx = line.indexOf(':');
+      if (colonIdx !== -1) {
+        const key = line.slice(0, colonIdx);
+        const val = line.slice(colonIdx);
+        return (
+          <div key={i}>
+            <span className="text-[#9CDCFE]">{key}</span>
+            <span className="text-gray-300">{val}</span>
+          </div>
+        );
+      }
+      return <div key={i} className="text-gray-300">{line}</div>;
+    });
+  };
+
   return (
-    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
-      
-      {/* Title Bar */}
-      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-[10px] flex items-center justify-between select-none">
+    <div 
+      className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[400px] text-left font-sans select-none" 
+      style={{ fontFamily: "'Inter', sans-serif" }}
+    >
+      {/* Console Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-[10px] flex items-center justify-between">
         <div className="flex items-center gap-[6px]">
-          <span className="w-[8px] h-[8px] rounded-full bg-blue-600 animate-pulse" />
-          <span className="text-gray-950 font-bold text-[10px] tracking-tight uppercase">
-            Rule Driven Engine
+          <span className="w-[8px] h-[8px] rounded-full bg-red-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-yellow-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-green-400" />
+          <span className="text-gray-900 font-semibold text-[10px] ml-xs tracking-wider uppercase">
+            Risk Normalization Engine
           </span>
         </div>
-        <div className="text-[9px] font-bold text-blue-600 bg-blue-50 border border-blue-200 px-xs py-xxs rounded">
-          YAML PARSER ACTIVE
+        <div className="flex items-center gap-xs text-gray-900 text-[10px] font-semibold">
+          <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse inline-block" />
+          <span className="text-[#10B981] uppercase font-bold">
+            Rules Active
+          </span>
         </div>
       </div>
 
-      {/* Main split */}
-      <div className="flex-1 flex overflow-hidden bg-white">
+      {/* Main Content Layout */}
+      <div className="flex-1 flex bg-white overflow-hidden">
         
-        {/* Left Side: YAML Rule Editor */}
-        <div className="w-[55%] border-r border-gray-200 flex flex-col bg-[#FAFBFB] p-xs justify-between">
-          <div className="flex flex-col gap-xs flex-1 min-h-0">
-            {/* Rule Selector Header */}
-            <div className="flex gap-[4px] select-none shrink-0">
-              <button
-                onClick={() => setSelectedRule("sandbox")}
-                className={`flex-1 px-[5px] py-[4px] text-[8px] font-bold rounded uppercase tracking-wider transition-all border text-center ${
-                  selectedRule === "sandbox"
-                    ? "bg-black text-white border-black"
-                    : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
-                }`}
-              >
-                Auto-Triage
-              </button>
-              <button
-                onClick={() => setSelectedRule("escalate")}
-                className={`flex-1 px-[5px] py-[4px] text-[8px] font-bold rounded uppercase tracking-wider transition-all border text-center ${
-                  selectedRule === "escalate"
-                    ? "bg-black text-white border-black"
-                    : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
-                }`}
-              >
-                Escalate
-              </button>
-              <button
-                onClick={() => setSelectedRule("false_positive")}
-                className={`flex-1 px-[5px] py-[4px] text-[8px] font-bold rounded uppercase tracking-wider transition-all border text-center ${
-                  selectedRule === "false_positive"
-                    ? "bg-black text-white border-black"
-                    : "bg-white text-gray-400 border-gray-200 hover:text-gray-900"
-                }`}
-              >
-                False Positive
-              </button>
-            </div>
+        {/* Left Column: Vertical Tabs styled as Vulnerability/Rule Cards */}
+        <div className="w-[45%] bg-white border-r border-gray-200 flex flex-col pt-3 pb-3 px-2.5 gap-1.5 overflow-hidden">
+          <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider px-2 mb-0.5 flex items-center justify-between">
+             <span>Automation Rules</span>
+             <svg className="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+             </svg>
+          </div>
+          {automationRules.map((rule, idx) => {
+            const isActive = idx === activeIdx;
 
-            {/* YAML Editor window */}
-            <div className="flex-1 bg-white border border-gray-200 rounded p-xs font-mono text-[9px] leading-relaxed text-gray-900 select-text overflow-y-auto">
-              {ruleYamls[selectedRule].split("\n").map((line, idx) => {
-                const isComment = line.trim().startsWith("#");
-                const parts = line.split(":");
-                const key = parts[0];
-                const value = parts.slice(1).join(":");
-                
-                return (
-                  <div key={idx} className="whitespace-pre">
-                    {isComment ? (
-                      <span className="text-gray-400">{line}</span>
-                    ) : value ? (
-                      <>
-                        <span className="text-purple-700 font-semibold">{key}:</span>
-                        <span className="text-green-700">{value}</span>
-                      </>
-                    ) : (
-                      <span className="text-gray-800">{line}</span>
-                    )}
+            return (
+              <div
+                key={rule.id}
+                onClick={() => setActiveIdx(idx)}
+                className={`py-1.5 px-2.5 rounded-[6px] border text-left flex items-start transition-all duration-200 relative select-none cursor-pointer ${
+                  isActive 
+                    ? "bg-white border-blue-500 shadow-[0_2px_10px_rgba(59,130,246,0.06)] scale-[1.01]" 
+                    : "bg-white border-gray-200/60 hover:border-gray-300 hover:bg-gray-50/30"
+                }`}
+              >
+
+                {/* Title & Metadata */}
+                <div className="flex-1 min-w-0 pr-[54px] pl-0.5">
+                  <div className={`text-[10px] font-bold truncate leading-tight ${isActive ? "text-blue-700 font-extrabold" : "text-gray-900"}`}>
+                    {rule.title}.yaml
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                  <div className="text-[8.5px] text-gray-500 truncate leading-relaxed mt-[1px] font-medium">
+                    {rule.description}
+                  </div>
+                </div>
 
-          <div className="text-[8px] text-gray-400 mt-xs pt-xxs border-t border-gray-150 select-none">
-            Rule engine processes policies on ingestion
-          </div>
+                {/* Action Badge (Absolute Right) */}
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
+                  <span className={`text-[6.5px] font-extrabold px-1.5 py-0.5 rounded-[3px] border uppercase tracking-wider ${rule.badgeClass}`}>
+                    {rule.badge}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Right Side: Vulnerability States */}
-        <div className="w-[45%] p-xs flex flex-col gap-xs overflow-y-auto bg-white justify-between">
-          <div className="flex flex-col gap-xs flex-1">
-            <span className="text-[9px] font-bold text-gray-900 uppercase tracking-wider select-none">Live Normalization</span>
-            
-            <div className="flex flex-col gap-xs">
-              {vulnerabilities.map(v => {
-                const isActiveRule = selectedRule === v.ruleType;
-                
-                return (
-                  <div 
-                    key={v.id} 
-                    className={`border rounded p-xs transition-all duration-300 ${
-                      isActiveRule 
-                        ? "border-blue-400 bg-blue-50/20 shadow-sm" 
-                        : "border-gray-150 bg-white opacity-70"
-                    }`}
-                  >
-                    {/* Header */}
-                    <div className="flex justify-between items-center">
-                      <span className="text-[9px] font-bold text-gray-900">{v.cve}</span>
-                      <span className="text-[8px] text-gray-400 font-mono font-medium">{v.asset}</span>
-                    </div>
+        {/* Right Column: Code Editor + Info Card */}
+        <div className="w-[55%] bg-white p-4 flex flex-col justify-between overflow-hidden relative">
+          
+          {/* Subtle Grid Background */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.3]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="ruleGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#E5E7EB" strokeWidth="0.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#ruleGrid)" />
+          </svg>
 
-                    {/* States */}
-                    <div className="flex items-center gap-[4px] mt-xs text-[8.5px]">
-                      {isActiveRule ? (
-                        <>
-                          <div className="flex items-center gap-xxs line-through text-gray-400">
-                            <span>{v.originalSeverity}</span>
-                            <span>•</span>
-                            <span>{v.originalState}</span>
-                          </div>
-                          <span className="text-gray-400 select-none">&rarr;</span>
-                          <div className={`px-xs py-[1px] rounded border text-[8px] font-bold uppercase tracking-wider flex items-center gap-[3px] ${v.targetStateColor}`}>
-                            <span>{v.targetSeverity}</span>
-                            <span>•</span>
-                            <span>{v.targetState}</span>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="flex items-center gap-xxs text-gray-600">
-                          <span className="font-bold">{v.originalSeverity}</span>
-                          <span>•</span>
-                          <span>{v.originalState}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
+          <div className="relative z-10 flex flex-col h-full">
+            {/* Active Title */}
+            <div className="flex items-center justify-between text-[9px] text-gray-500 font-bold uppercase tracking-wider select-none mb-3">
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                Execution Logic
+              </span>
+              <span className="font-mono text-gray-600 bg-gray-50 border border-gray-200 shadow-sm px-[6px] py-[2px] rounded text-[8px]">YAML</span>
             </div>
-          </div>
 
-          <div className="text-[8.5px] text-gray-400 pt-xxs border-t border-gray-100 flex justify-between items-center select-none shrink-0">
-            <span>Interactive sandbox</span>
-            <span className="font-bold text-blue-600 uppercase">Normalized</span>
+            {/* Code Editor Box */}
+            <div className="flex-1 bg-[#18181B] text-gray-200 rounded-[8px] shadow-md border border-gray-800 font-mono p-4 overflow-hidden flex flex-col relative">
+              <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-800/60">
+                 <span className="text-[9px] text-gray-400 font-medium">{activeRule.title}.yaml</span>
+                 <span className="text-[8px] text-gray-600">UTF-8</span>
+              </div>
+              <div className="text-[10px] leading-[1.6] font-mono whitespace-pre select-all select-none overflow-y-auto hide-scrollbar flex-1">
+                {highlightYaml(activeRule.yaml)}
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
-
     </div>
   );
 }
+
 
 // Multi-Scanner Dashboard for VS
 function VSMultiScannerMap() {
@@ -494,9 +524,61 @@ function VSMultiScannerMap() {
 
 // Interactive Compliance Dashboard with 24-Dot Policy Grid
 function StaticComplianceDashboard({ moduleSlug }) {
+  const isVS = moduleSlug === 'vs';
+  const isASM = moduleSlug === 'asm' || !isVS;
+
   const [selectedRuleId, setSelectedRuleId] = useState(0);
 
-  const isVS = moduleSlug === 'vs';
+  const asmAssets = [
+    {
+      id: 0,
+      name: "snapsec-dev-backups",
+      type: "AWS S3 Bucket",
+      status: "Non-Compliant",
+      violationsCount: 2,
+      checkedTime: "Updated 5m ago"
+    },
+    {
+      id: 1,
+      name: "test-sandbox.internal.snapsec.co",
+      type: "DNS / EC2 Host",
+      status: "Non-Compliant",
+      violationsCount: 3,
+      checkedTime: "Updated 12m ago"
+    },
+    {
+      id: 2,
+      name: "api.prod.snapsec.co",
+      type: "API Gateway",
+      status: "Compliant",
+      violationsCount: 0,
+      checkedTime: "Updated 30m ago"
+    },
+    {
+      id: 3,
+      name: "www.snapsec.co",
+      type: "Corporate Portal",
+      status: "Compliant",
+      violationsCount: 0,
+      checkedTime: "Updated 45m ago"
+    },
+    {
+      id: 4,
+      name: "bastion.prod.snapsec.co",
+      type: "SSH Bastion Node",
+      status: "Compliant",
+      violationsCount: 0,
+      checkedTime: "Updated 1h ago"
+    },
+    {
+      id: 5,
+      name: "dev-portal.snapsec.co",
+      type: "Developer Sandbox",
+      status: "Compliant",
+      violationsCount: 0,
+      checkedTime: "Updated 2h ago"
+    }
+  ];
 
   // 24 Detailed policy rules mapping to the dots grid (VS vs ASM)
   const rules = isVS ? [
@@ -987,7 +1069,83 @@ function StaticComplianceDashboard({ moduleSlug }) {
     }
   ];
 
-  const current = rules[selectedRuleId];
+  const current = rules[selectedRuleId] || rules[0];
+
+  if (isASM) {
+    return (
+      <div 
+        className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[400px] text-left font-sans select-none" 
+        style={{ fontFamily: "'Inter', sans-serif" }}
+      >
+        {/* Title Header Bar - matching Feature 1 */}
+        <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-[10px] flex items-center justify-between select-none">
+          <div className="flex items-center gap-[6px]">
+            <span className="w-[8px] h-[8px] rounded-full bg-red-500 animate-pulse" />
+            <span className="text-gray-950 font-bold text-[11px] tracking-wider uppercase">
+              Asset Compliance Monitor
+            </span>
+          </div>
+          <div className="text-[9px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-xs py-xxs rounded">
+            MONITORING VIOLATIONS
+          </div>
+        </div>
+
+        {/* Content list - matches height/paddings, overflow-hidden keeps it static */}
+        <div className="flex-1 flex flex-col divide-y divide-gray-150 overflow-hidden px-sm py-xs">
+          {asmAssets.map((asset) => {
+            const isCompliant = asset.status === "Compliant";
+            return (
+              <div key={asset.id} className="py-sm flex items-center justify-between">
+                <div className="flex items-center gap-sm min-w-0">
+                  {/* Status Indicator (Green tick / Red cross) */}
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-white font-bold text-[11px] ${
+                    isCompliant 
+                      ? "bg-emerald-500" 
+                      : "bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.3)] animate-pulse"
+                  }`}>
+                    {isCompliant ? "✓" : "✗"}
+                  </div>
+
+                  {/* Asset Info */}
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-[12px] font-bold text-gray-950 truncate">
+                      {asset.name}
+                    </span>
+                    <span className="text-[9px] text-gray-450 font-mono mt-[2px]">
+                      {asset.type} • {asset.checkedTime}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Violation Count badge */}
+                <div className="shrink-0">
+                  {isCompliant ? (
+                    <span className="text-[8.5px] font-bold px-[8px] py-[3px] rounded bg-emerald-50 text-emerald-700 border border-emerald-100 uppercase tracking-wider">
+                      Compliant
+                    </span>
+                  ) : (
+                    <span className="text-[8.5px] font-bold px-[8px] py-[3px] rounded bg-rose-50 text-rose-700 border border-rose-100 uppercase tracking-wider">
+                      {asset.violationsCount} {asset.violationsCount === 1 ? 'Violation' : 'Violations'}
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // Fallback layout if not isASM (for VS compatibility if ever called)
+  const stats = {
+    col1Label: isVS ? "Security Checks" : "Policy Rules",
+    col1Val: isVS ? "24 Active" : "24 Active",
+    col2Label: isVS ? "Scanner Health" : "Audit Score",
+    col2Val: isVS ? "98%" : "92%",
+    col3Label: isVS ? "CVEs / Risks" : "Violations",
+    col3Val: isVS ? "2 Open" : "2 Open"
+  };
 
   return (
     <div className="w-full rounded-[6px] border border-gray-600 bg-white overflow-hidden flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -996,13 +1154,13 @@ function StaticComplianceDashboard({ moduleSlug }) {
       <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between text-[11px] font-semibold text-gray-900 select-none">
         <div className="flex items-center gap-xs">
           <span className="w-1.5 h-1.5 rounded-full bg-black" />
-          <span className="tracking-tight text-[10px] font-bold uppercase">
+          <span className="tracking-tight text-[10px] font-bold uppercase text-left">
             {isVS ? "Vulnerability Auditing" : "COMPLIANCE ENGINE"}
           </span>
         </div>
         <div className="flex items-center gap-[6px] text-gray-900 text-[10px]">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-          <span className="font-semibold uppercase tracking-wider text-[9px]">
+          <span className="font-semibold uppercase tracking-wider text-[9px] text-right">
             {isVS ? "Continuous Vulnerability Sweeps" : "Continuous Auditing"}
           </span>
         </div>
@@ -1010,30 +1168,32 @@ function StaticComplianceDashboard({ moduleSlug }) {
 
       {/* Stats - Minimalist Grid */}
       <div className="grid grid-cols-3 border-b border-gray-200 bg-white text-[10px] font-semibold text-gray-900 select-none shrink-0">
-        <div className="p-xs border-r border-gray-200 flex flex-col justify-center">
-          <span className="text-[8px] text-gray-400 uppercase tracking-wider">
-            {isVS ? "Security Checks" : "Policy Rules"}
+        <div className="p-xs border-r border-gray-200 flex flex-col justify-center text-left">
+          <span className="text-[8px] text-gray-400 uppercase tracking-wider text-left">
+            {stats.col1Label}
           </span>
-          <span className="text-[13px] font-bold text-black mt-[2px]">24 Active</span>
+          <span className="text-[13px] font-bold text-black mt-[2px] text-left">{stats.col1Val}</span>
         </div>
-        <div className="p-xs border-r border-gray-200 flex flex-col justify-center">
-          <span className="text-[8px] text-gray-400 uppercase tracking-wider">
-            {isVS ? "Scanner Health" : "Audit Score"}
+        <div className="p-xs border-r border-gray-200 flex flex-col justify-center text-left">
+          <span className="text-[8px] text-gray-400 uppercase tracking-wider text-left">
+            {stats.col2Label}
           </span>
-          <span className="text-[13px] font-bold text-black mt-[2px]">{isVS ? "98%" : "92%"}</span>
+          <span className="text-[13px] font-bold text-black mt-[2px] text-left">{stats.col2Val}</span>
         </div>
-        <div className="p-xs flex flex-col justify-center">
-          <span className="text-[8px] text-gray-400 uppercase tracking-wider">
-            {isVS ? "CVEs / Risks" : "Violations"}
+        <div className="p-xs flex flex-col justify-center text-left">
+          <span className="text-[8px] text-gray-400 uppercase tracking-wider text-left">
+            {stats.col3Label}
           </span>
-          <span className="text-[13px] font-bold text-red-600 mt-[2px]">2 Open</span>
+          <span className={`text-[13px] font-bold mt-[2px] text-left ${stats.col3Val.includes("0") ? "text-green-600" : "text-red-655"}`}>
+            {stats.col3Val}
+          </span>
         </div>
       </div>
 
       {/* Main Area */}
       <div className="flex-1 p-sm flex gap-sm bg-white min-h-0">
         
-        {/* Left Side: 24-Dot Policy Grid */}
+        {/* Left Side: Original 24-Dot Policy Grid */}
         <div className="flex-1 flex flex-col justify-between min-w-0">
           <div>
             <span className="text-[9px] font-bold text-gray-900 uppercase tracking-wider block">
@@ -1074,12 +1234,12 @@ function StaticComplianceDashboard({ moduleSlug }) {
 
           {/* Selected rule label helper */}
           <div className="border-t border-gray-100 pt-xs min-h-[36px]">
-            <span className="text-[8px] text-gray-400 uppercase block font-semibold">Active Selection</span>
-            <span className="text-[10px] font-bold text-black truncate block mt-[2px]">{current.name}</span>
+            <span className="text-[8px] text-gray-400 uppercase block font-semibold text-left">Active Selection</span>
+            <span className="text-[10px] font-bold text-black truncate block mt-[2px] text-left">{current.name}</span>
           </div>
         </div>
 
-        {/* Right Side: Static Inspector Panel */}
+        {/* Right Side: Original Static Inspector Panel */}
         <div className="w-[160px] sm:w-[200px] bg-[#FAFAFA] border border-gray-200 rounded-[4px] p-xs flex flex-col justify-between shrink-0 h-full select-none">
           <div className="flex flex-col gap-[6px]">
             <div className="flex items-center justify-between">
@@ -1094,14 +1254,14 @@ function StaticComplianceDashboard({ moduleSlug }) {
               </span>
             </div>
 
-            <h4 className="text-[11px] font-bold text-black leading-tight mt-xxs">{current.name}</h4>
+            <h4 className="text-[11px] font-bold text-black leading-tight mt-xxs text-left">{current.name}</h4>
             
-            <div className="mt-xs">
+            <div className="mt-xs text-left">
               <span className="text-[8px] text-gray-400 font-bold uppercase block">Affected Asset</span>
               <span className="text-[9px] text-gray-900 mt-[1px] font-semibold break-all leading-tight block">{current.asset}</span>
             </div>
 
-            <div className="mt-xs">
+            <div className="mt-xs text-left">
               <span className="text-[8px] text-gray-400 font-bold uppercase block">Remediation</span>
               <span className="text-[9px] text-gray-900 mt-[1px] leading-tight block">{current.remediation}</span>
             </div>
@@ -1112,12 +1272,11 @@ function StaticComplianceDashboard({ moduleSlug }) {
             <span>{current.checkedTime}</span>
           </div>
         </div>
-
       </div>
-
     </div>
   );
 }
+
 
 // Interactive Focused Asset Class Dashboards for AIM (Feature 2)
 function AIMFocusedDashboards() {

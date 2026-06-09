@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CTASection = () => {
+const CTASection = ({ isServicesPage }) => {
   return (
     <div className="section-platform-cta">
       <div className="container bg-white">
@@ -8,13 +8,17 @@ const CTASection = () => {
           <div className="relative flex w-full flex-col items-center gap-lg lg:gap-lg">
             <div className="relative z-2 flex flex-col gap-sm lg:gap-lg">
               <h3 className="heading-h1 mx-auto w-full max-w-[650px]">
-                One Platform to Replace your fragmental toolset
+                {isServicesPage
+                  ? "Request for Services"
+                  : "One Platform to Replace your fragmental toolset"}
               </h3>
               <p
                 className="subtitle-m mx-auto w-full max-w-[480px]"
                 style={{ textAlign: 'center' }}
               >
-                Discover, detect, prioritize, and remediate — all from a single unified security platform built for modern enterprises.
+                {isServicesPage
+                  ? "Get in touch with our experts to secure your applications, infrastructure, and cloud environments."
+                  : "Discover, detect, prioritize, and remediate — all from a single unified security platform built for modern enterprises."}
               </p>
             </div>
             <div className="relative z-2">
@@ -23,24 +27,26 @@ const CTASection = () => {
                 href="/contact"
               >
                 <span className="block">
-                  See Snapsec in Action{' '}
+                  {isServicesPage ? "Contact Us" : "See Snapsec in Action"}{' '}
                   <span className="inline-block tracking-normal transition-transform duration-300 group-hover:translate-x-[2px]">
                     -&gt;
                   </span>
                 </span>
               </a>
             </div>
-            <div className="section-platform-cta__image absolute bottom-0 left-1/2 hidden w-full -translate-x-1/2 lg:block">
-              <span className="block" style={{ opacity: 1 }}>
-                <img
-                  alt="Non-Human Identity Security"
-                  width="932"
-                  height="191"
-                  className="w-full"
-                  src="/images/platform/cta-background.svg"
-                />
-              </span>
-            </div>
+            {!isServicesPage && (
+              <div className="section-platform-cta__image absolute bottom-0 left-1/2 hidden w-full -translate-x-1/2 lg:block">
+                <span className="block" style={{ opacity: 1 }}>
+                  <img
+                    alt="Non-Human Identity Security"
+                    width="932"
+                    height="191"
+                    className="w-full"
+                    src="/images/platform/cta-background.svg"
+                  />
+                </span>
+              </div>
+            )}
           </div>
           <div className="container bg-white">
             <div className="h-[0.5px] w-full bg-gray-600"></div>
@@ -57,9 +63,13 @@ const CTASection = () => {
                 />
               </span>
               <div className="flex flex-col gap-xs">
-                <p className="body-heading-m">Zero-Knowledge Architecture</p>
+                <p className="body-heading-m">
+                  {isServicesPage ? "Elite Security Experts" : "Zero-Knowledge Architecture"}
+                </p>
                 <p className="body-text-s mx-auto w-full max-w-[288px]">
-                  Sensitive data never leaves your environment
+                  {isServicesPage
+                    ? "Our seasoned ethical hackers bring deep offensive security experience to uncover your most complex vulnerabilities."
+                    : "Sensitive data never leaves your environment"}
                 </p>
               </div>
             </div>
@@ -74,9 +84,13 @@ const CTASection = () => {
                 />
               </span>
               <div className="flex flex-col gap-xs">
-                <p className="body-heading-m">On Prem Instance Support</p>
+                <p className="body-heading-m">
+                  {isServicesPage ? "Actionable Reporting" : "On Prem Instance Support"}
+                </p>
                 <p className="body-text-s mx-auto w-full max-w-[288px]">
-                  Deploy Snapsec on-premise for full data sovereignty and air-gapped environment support
+                  {isServicesPage
+                    ? "Receive clear, prioritized reports with step-by-step remediation guidance tailored specifically to your technology stack."
+                    : "Deploy Snapsec on-premise for full data sovereignty and air-gapped environment support"}
                 </p>
               </div>
             </div>
@@ -91,9 +105,13 @@ const CTASection = () => {
                 />
               </span>
               <div className="flex flex-col gap-xs">
-                <p className="body-heading-m">Solution Agnostic</p>
+                <p className="body-heading-m">
+                  {isServicesPage ? "Continuous Support" : "Solution Agnostic"}
+                </p>
                 <p className="body-text-s mx-auto w-full max-w-[288px]">
-                  We connect with any solution — integrating with your existing scanners, tools, and workflows out of the box
+                  {isServicesPage
+                    ? "We work closely alongside your engineering teams to validate fixes and ensure complete, lasting remediation."
+                    : "We connect with any solution — integrating with your existing scanners, tools, and workflows out of the box"}
                 </p>
               </div>
             </div>

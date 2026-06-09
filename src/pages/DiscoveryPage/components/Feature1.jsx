@@ -342,16 +342,6 @@ function VMNormalizationEngine() {
         {/* Right (Col span 5): Unified Security Dashboard */}
         <div className="md:col-span-5 flex flex-col bg-white overflow-hidden p-sm justify-between">
           
-          {/* Dashboard Header */}
-          <div className="flex justify-between items-center pb-[6px] border-b border-gray-150 select-none">
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-              Unified Security Feed
-            </span>
-            <span className="text-[9px] text-gray-400 font-mono">
-              SCHEMA V2
-            </span>
-          </div>
-
           {/* Finding Cards */}
           <div className="flex-1 flex flex-col gap-xs py-sm overflow-hidden">
             {items.map((item, idx) => {
@@ -412,15 +402,6 @@ function VMNormalizationEngine() {
               );
             })}
           </div>
-
-          {/* Status / SLA Metric Summary */}
-          <div className="border-t border-gray-150 pt-xs flex justify-between items-center text-[9px] text-gray-400 select-none">
-            <span>SLA TRACKING: <span className="text-gray-950 font-bold">ACTIVE</span></span>
-            <span className="font-bold text-black uppercase hover:underline cursor-pointer">
-              Unified Console &rarr;
-            </span>
-          </div>
-
         </div>
 
       </div>
@@ -454,15 +435,10 @@ function AIMUnifiedAssetMap() {
   const [items, setItems] = useState([
     ASSET_TEMPLATES[2],
     ASSET_TEMPLATES[3],
-    ASSET_TEMPLATES[4]
+    ASSET_TEMPLATES[4],
+    ASSET_TEMPLATES[0],
+    ASSET_TEMPLATES[1]
   ]);
-
-  const [counts, setCounts] = useState({
-    subdomains: 134,
-    apis: 72,
-    buckets: 45,
-    repos: 31
-  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -476,26 +452,7 @@ function AIMUnifiedAssetMap() {
         
         setItems(current => {
           const filtered = current.filter(item => item.id !== randomTemplate.id);
-          return [randomTemplate, ...filtered].slice(0, 3);
-        });
-
-        // Increment counts dynamically
-        setCounts(curr => {
-          const keyMap = {
-            "Subdomain": "subdomains",
-            "DNS Record": "subdomains",
-            "API Route": "apis",
-            "Cloud Bucket": "buckets",
-            "Repository": "repos"
-          };
-          const targetKey = keyMap[randomTemplate.type];
-          if (targetKey) {
-            return {
-              ...curr,
-              [targetKey]: curr[targetKey] + 1
-            };
-          }
-          return curr;
+          return [randomTemplate, ...filtered].slice(0, 5);
         });
 
         return nextIdx;
@@ -659,100 +616,56 @@ function AIMUnifiedAssetMap() {
         </div>
 
         {/* Right (Col span 5): Live Asset Inventory Dashboard */}
-        <div className="md:col-span-5 flex flex-col bg-white overflow-hidden p-sm justify-between">
+        <div className="md:col-span-5 flex flex-col bg-white overflow-hidden p-sm gap-sm justify-center">
           
           {/* Dashboard Header */}
-          <div className="flex justify-between items-center pb-[6px] border-b border-gray-150 select-none">
+          <div className="flex justify-between items-center pb-[8px] border-b border-gray-150 select-none">
             <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
               Discovered Assets
             </span>
-            <span className="text-[9px] text-gray-400 font-mono">
+            <span className="text-[9px] text-[#3B82F6] font-bold flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] animate-pulse inline-block" />
               REAL-TIME SYNC
             </span>
           </div>
 
-          {/* Asset Statistics Widget Strip */}
-          <div className="grid grid-cols-4 gap-xxs border border-gray-200 rounded-[6px] p-[6px] bg-[#FAFBFB] mt-xs select-none">
-            <div className="flex flex-col text-left">
-              <span className="text-[6.5px] text-gray-400 uppercase font-bold">Subdomains</span>
-              <span className="font-mono text-[10.5px] font-bold text-gray-900">{counts.subdomains}</span>
-            </div>
-            <div className="flex flex-col text-left">
-              <span className="text-[6.5px] text-gray-400 uppercase font-bold">APIs</span>
-              <span className="font-mono text-[10.5px] font-bold text-gray-900">{counts.apis}</span>
-            </div>
-            <div className="flex flex-col text-left">
-              <span className="text-[6.5px] text-gray-400 uppercase font-bold">Buckets</span>
-              <span className="font-mono text-[10.5px] font-bold text-gray-900">{counts.buckets}</span>
-            </div>
-            <div className="flex flex-col text-left">
-              <span className="text-[6.5px] text-gray-400 uppercase font-bold">Repos</span>
-              <span className="font-mono text-[10.5px] font-bold text-gray-900">{counts.repos}</span>
-            </div>
-          </div>
-
-          {/* Table Headers */}
-          <div className="grid grid-cols-12 text-[7.5px] font-black text-gray-450 uppercase tracking-wider pb-[6px] border-b border-gray-150 select-none px-xs mt-sm">
-            <div className="col-span-7 text-left">Asset / Endpoint</div>
-            <div className="col-span-3 text-left">Found On</div>
-            <div className="col-span-2 text-right">Status</div>
-          </div>
-
-          {/* Discovered Assets Sleek Table List */}
-          <div className="flex-1 flex flex-col gap-0 py-xs overflow-hidden justify-center select-text">
+          {/* Discovered Assets Sleek Card List */}
+          <div className="flex-1 flex flex-col gap-1.5 overflow-hidden justify-center select-text">
             {items.map((item, idx) => {
               const isNewest = idx === 0;
               
               let sourceDomain = "google.com";
-              let sourceShort = "GCP";
-              if (item.source === "Google Cloud") { sourceDomain = "google.com"; sourceShort = "GCP"; }
-              if (item.source === "AWS") { sourceDomain = "amazon.com"; sourceShort = "AWS"; }
-              if (item.source === "Postman") { sourceDomain = "postman.com"; sourceShort = "Postman"; }
-              if (item.source === "GitHub") { sourceDomain = "github.com"; sourceShort = "GitHub"; }
-              if (item.source === "Slack") { sourceDomain = "slack.com"; sourceShort = "Slack"; }
+              if (item.source === "Google Cloud") sourceDomain = "google.com";
+              else if (item.source === "AWS") sourceDomain = "amazon.com";
+              else if (item.source === "Postman") sourceDomain = "postman.com";
+              else if (item.source === "GitHub") sourceDomain = "github.com";
+              else if (item.source === "Slack") sourceDomain = "slack.com";
 
               return (
                 <div 
                   key={item.id + idx}
-                  className={`grid grid-cols-12 items-center py-xs px-xs border-b border-gray-100 last:border-b-0 text-[10px] transition-all duration-300 ${
+                  className={`py-1.5 px-2.5 rounded-[6px] border text-left flex items-center gap-2.5 transition-all duration-300 relative select-none ${
                     isNewest 
-                      ? 'bg-blue-50/35 border-l-2 border-l-blue-500 pl-[6px]' 
-                      : 'bg-transparent border-l-2 border-l-transparent'
+                      ? "bg-blue-50/30 border-blue-500/80 shadow-[0_2px_10px_rgba(59,130,246,0.08)] scale-[1.01]" 
+                      : "bg-white border-gray-200/60"
                   }`}
                 >
-                  {/* Asset details / type */}
-                  <div className="col-span-7 flex flex-col min-w-0 pr-xs text-left">
-                    <span className="font-mono text-[9px] font-bold text-gray-900 truncate max-w-[130px] md:max-w-[160px]">
+                  {/* Title & Metadata */}
+                  <div className="flex-1 min-w-0 pr-[54px]">
+                    <div className="text-[10px] font-bold text-gray-900 truncate leading-tight">
                       {item.details}
-                    </span>
-                    <div className="flex items-center gap-[4px] mt-[1px]">
-                      <span className="text-[7px] text-gray-400 font-bold uppercase tracking-wider">{item.type}</span>
-                      <span className="text-gray-300">•</span>
-                      <span className="text-[7px] text-gray-400 font-mono">{item.id}</span>
+                    </div>
+                    <div className="text-[7.5px] text-gray-400 font-bold uppercase tracking-wider mt-[1px]">
+                      {item.type} • {item.id}
                     </div>
                   </div>
 
-                  {/* Found On */}
-                  <div className="col-span-3 flex items-center gap-xxs min-w-0 text-left">
-                    <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center shrink-0 overflow-hidden border border-gray-100">
-                      <img 
-                        src={`https://img.logo.dev/${sourceDomain}?token=pk_YDuXMfwrRe2kQtBuzc3Etg`} 
-                        alt={item.source}
-                        className="w-2.5 h-2.5 object-contain"
-                        onError={(e) => { e.target.style.display = 'none'; }}
-                      />
-                    </div>
-                    <span className="text-[8px] text-gray-650 font-bold truncate">
-                      {sourceShort}
-                    </span>
-                  </div>
-
-                  {/* Status */}
-                  <div className="col-span-2 text-right">
-                    <span className={`inline-block text-[7px] font-extrabold px-[5px] py-[1.5px] rounded-full ${
+                  {/* Status Badge (Absolute Right) */}
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
+                    <span className={`text-[7.5px] font-bold px-[4px] py-[1px] rounded-[3px] border uppercase tracking-wider scale-[0.8] origin-right ${
                       item.status === "EXPOSED" 
-                        ? "bg-rose-50 text-rose-700 border border-rose-100" 
-                        : "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                        ? "bg-rose-50 text-rose-700 border-rose-200" 
+                        : "bg-emerald-50 text-emerald-700 border-emerald-200"
                     }`}>
                       {item.status}
                     </span>
@@ -760,14 +673,6 @@ function AIMUnifiedAssetMap() {
                 </div>
               );
             })}
-          </div>
-
-          {/* Status Summary */}
-          <div className="border-t border-gray-150 pt-xs flex justify-between items-center text-[9px] text-gray-400 select-none">
-            <span>PERIMETER: <span className="text-gray-950 font-bold">SECURE</span></span>
-            <span className="font-bold text-black uppercase hover:underline cursor-pointer">
-              Launch Inventory &rarr;
-            </span>
           </div>
 
         </div>
@@ -1001,43 +906,6 @@ function WASWebUiBugMap() {
             </div>
           </div>
 
-          {/* Verdict Panel */}
-          <div className="border-t border-gray-250 pt-xs min-h-[72px] flex flex-col justify-center">
-            {activeTestIdx === activeEndpoint.tests.length ? (
-              <div className="flex flex-col gap-[2px]">
-                <span className="text-[9px] uppercase tracking-wider font-bold text-gray-400">Audit Verdict</span>
-                <div className={`rounded-[6px] p-xs border ${
-                  activeEndpoint.status === 'vulnerable'
-                    ? 'bg-rose-50/50 border-rose-200 text-rose-900'
-                    : 'bg-emerald-50/50 border-emerald-200 text-emerald-900'
-                }`}>
-                  <div className="flex items-center gap-xs text-[10px] font-bold">
-                    {activeEndpoint.status === 'vulnerable' ? (
-                      <>
-                        <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse" />
-                        <span>VULNERABILITY IDENTIFIED</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-                        <span>ENDPOINT SECURE</span>
-                      </>
-                    )}
-                  </div>
-                  <p className="text-[9px] text-gray-500 mt-[2px] leading-tight">
-                    {activeEndpoint.status === 'vulnerable'
-                      ? `${activeEndpoint.vulnType} (CVSS ${activeEndpoint.cvss}) found in payload parameters.`
-                      : "All input parameter checks passed successfully. No anomalies detected."}
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center text-center text-gray-400 text-[10px] py-[4px]">
-                <span className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-[4px]" />
-                <span>Running payload analysis...</span>
-              </div>
-            )}
-          </div>
 
         </div>
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 const HeroSection = () => {
   return (
-    <section className="section-about-hero mt-[100px] lg:mt-[120px] pb-64px lg:pb-88px bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <section className="section-about-hero mt-[100px] lg:mt-[120px] bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div className="container">
         {/* Main outer border container matching Discovery solutions and ContactUs sections */}
         <div className="section-border section-border-top grid grid-cols-1 lg:grid-cols-2 border-b border-gray-600 border-x-[0.5px]">

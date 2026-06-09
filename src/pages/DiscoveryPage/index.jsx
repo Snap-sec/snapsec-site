@@ -5,7 +5,7 @@ import SolutionSection from './components/SolutionSection.jsx';
 import QuoteSection from './components/QuoteSection.jsx';
 import Feature1 from './components/Feature1.jsx';
 import Feature2 from './components/Feature2.jsx';
-import Feauture3 from './components/Feauture3.jsx';
+import Feature3 from './components/Feature3.jsx';
 import FinalBenefits from './components/FinalBenefits.jsx';
 import CTABannerSection from './components/CTABannerSection.jsx';
 
@@ -74,7 +74,7 @@ export default function DiscoveryPage() {
         <>
           <Feature1 moduleSlug={slug} />
           <Feature2 moduleSlug={slug} />
-          <Feauture3 moduleSlug={slug} />
+          <Feature3 moduleSlug={slug} />
           <FinalBenefits moduleSlug={slug} />
         </>
       )}

@@ -17,127 +17,124 @@ function FadeInBlock({ children, className = 'w-full' }) {
 
 // Interactive Ownership Assignment & Integration Sync for VM (Feature 3)
 function VMOwnershipTickets() {
-  const [departments, setDepartments] = useState([
-    { id: 1, name: "Platform Engineering", tickets: 14, compliance: 94.2, violations: 2 },
-    { id: 2, name: "SecOps Core", tickets: 5, compliance: 98.7, violations: 0 },
-    { id: 3, name: "Billing & Finance", tickets: 29, compliance: 76.5, violations: 8 },
-    { id: 4, name: "Vendor-B Devs", tickets: 12, compliance: 88.0, violations: 1 }
-  ]);
-  const [notified, setNotified] = useState({});
-
-  const handleNotify = (id) => {
-    setNotified(prev => ({ ...prev, [id]: "Sending..." }));
-    setTimeout(() => {
-      setNotified(prev => ({ ...prev, [id]: "Alerted ✓" }));
-    }, 800);
-  };
+  const departments = [
+    { id: 1, name: "Platform Engineering", compliance: 94, barColor: "bg-[#10B981]" },
+    { id: 2, name: "SecOps Core", compliance: 98, barColor: "bg-[#10B981]" },
+    { id: 3, name: "Billing & Finance", compliance: 76, barColor: "bg-[#F97316]" },
+  ];
 
   return (
-    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px]" style={{ fontFamily: "'Inter', sans-serif" }}>
-      
-      {/* Title Bar */}
-      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-[10px] flex items-center justify-between select-none shrink-0">
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[340px] text-left font-sans select-none" style={{ fontFamily: "'Inter', sans-serif" }}>
+      {/* Console Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-[10px] flex items-center justify-between">
         <div className="flex items-center gap-[6px]">
-          <span className="w-[8px] h-[8px] rounded-full bg-indigo-600 animate-pulse" />
-          <span className="text-gray-955 font-bold text-[10px] tracking-tight uppercase">
-            Accountability Leaderboard
+          <span className="w-[8px] h-[8px] rounded-full bg-red-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-yellow-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-green-400" />
+          <span className="text-gray-950 font-bold text-[10px] ml-xs tracking-wider uppercase">
+            Vulnerability SLA Breakdown
           </span>
         </div>
-        <div className="text-[9px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-xs py-xxs rounded">
-          DEPT COMPLIANCE TRACKER
+        <div className="flex items-center gap-xs text-gray-950 text-[10px] font-bold">
+          <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse inline-block" />
+          <span className="text-[#10B981] uppercase font-bold">
+            SLA Tracker Active
+          </span>
         </div>
       </div>
 
-      {/* Stats Summary Panel */}
-      <div className="grid grid-cols-3 border-b border-gray-200 bg-[#FAFBFB] p-xs gap-xs select-none shrink-0">
-        <div className="bg-white border border-gray-200 rounded p-[6px] text-center">
-          <span className="block text-[8px] font-bold text-gray-400 uppercase">Total Tickets</span>
-          <span className="text-[14px] font-bold text-gray-900 mt-xxs block">60</span>
+      {/* Main Content Area */}
+      <div className="flex-1 p-4 flex flex-col justify-between min-h-0 bg-white relative overflow-hidden">
+        {/* Subtle Grid Background */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.3]" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="slaGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#E5E7EB" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#slaGrid)" />
+        </svg>
+
+        <div className="relative z-10 flex flex-col h-full justify-between">
+          {/* Top Section: Severity Breakdown */}
+          <div className="flex flex-col select-none">
+            <div className="flex items-center gap-1.5 text-[9px] text-gray-500 font-bold uppercase tracking-wider">
+              <span>Severity Breakdown</span>
+              <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            
+            <div className="flex items-baseline gap-2 mt-2 select-none">
+              <span className="text-[32px] font-bold text-gray-950 leading-none tracking-tight">480</span>
+              <span className="text-[9px] text-gray-400 font-bold uppercase">Active Vulnerabilities</span>
+            </div>
+
+            {/* Segmented bar chart */}
+            <div className="w-full h-[10px] rounded-full bg-gray-100 overflow-hidden flex mt-2.5">
+              {/* Red (Critical) */}
+              <div className="h-full bg-[#EF4444]" style={{ width: "12%" }} />
+              {/* Orange (High) */}
+              <div className="h-full bg-[#F97316]" style={{ width: "23%" }} />
+              {/* Yellow (Medium) */}
+              <div className="h-full bg-[#EAB308]" style={{ width: "38%" }} />
+              {/* Blue (Low) */}
+              <div className="h-full bg-[#3B82F6]" style={{ width: "20%" }} />
+              {/* Gray (None) */}
+              <div className="h-full bg-[#D1D5DB]" style={{ width: "7%" }} />
+            </div>
+
+            {/* Legend */}
+            <div className="flex items-center gap-3 mt-2 text-[9px] text-gray-500 font-bold uppercase tracking-wide">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#EF4444]" />
+                <span>Critical</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#F97316]" />
+                <span>High</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#EAB308]" />
+                <span>Medium</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+                <span>Low</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#D1D5DB]" />
+                <span>None</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Section: Department Progress Bars */}
+          <div className="border-t border-gray-100 pt-3 flex flex-col gap-2">
+            {departments.map((dept) => (
+              <div key={dept.id} className="flex items-center justify-between text-[10px] gap-3">
+                <div className="w-[110px] font-bold text-gray-600 truncate uppercase tracking-tight">
+                  {dept.name}
+                </div>
+                
+                {/* Progress Bar Container */}
+                <div className="flex-1 h-[6px] bg-gray-100 rounded-full overflow-hidden">
+                  <div className={`h-full ${dept.barColor} rounded-full`} style={{ width: `${dept.compliance}%` }} />
+                </div>
+                
+                <div className="w-[30px] text-right font-extrabold text-gray-950">
+                  {dept.compliance}%
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="bg-white border border-gray-200 rounded p-[6px] text-center">
-          <span className="block text-[8px] font-bold text-gray-400 uppercase">Avg Compliance</span>
-          <span className="text-[14px] font-bold text-indigo-600 mt-xxs block">89.3%</span>
-        </div>
-        <div className="bg-white border border-gray-200 rounded p-[6px] text-center">
-          <span className="block text-[8px] font-bold text-gray-400 uppercase">Active Breaches</span>
-          <span className="text-[14px] font-bold text-red-600 mt-xxs block">11</span>
-        </div>
+
       </div>
-
-      {/* Main Table Container */}
-      <div className="flex-1 overflow-y-auto bg-white p-xs">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="border-b border-gray-200 text-gray-400 text-[8.5px] uppercase font-bold select-none">
-              <th className="pb-xxs font-bold">Department</th>
-              <th className="pb-xxs font-bold text-center">Tickets</th>
-              <th className="pb-xxs font-bold text-center">Compliance</th>
-              <th className="pb-xxs font-bold text-center">Violations</th>
-              <th className="pb-xxs font-bold text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {departments.map((dept) => {
-              const complianceColor = 
-                dept.compliance >= 95 ? "text-green-600" :
-                dept.compliance >= 85 ? "text-yellow-600" : "text-red-600";
-              
-              const violationColor =
-                dept.violations === 0 ? "text-gray-400" :
-                dept.violations < 3 ? "text-orange-500 font-bold" : "text-red-600 font-extrabold";
-
-              const isNotified = notified[dept.id];
-
-              return (
-                <tr key={dept.id} className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50/50 transition-colors">
-                  <td className="py-xs">
-                    <span className="text-[10.5px] font-semibold text-gray-900 block leading-tight">{dept.name}</span>
-                    <span className="text-[8px] text-gray-400 block mt-[2px] font-mono">Owner assigned</span>
-                  </td>
-                  <td className="py-xs text-center">
-                    <span className="text-[10px] font-bold text-gray-800 font-mono">{dept.tickets}</span>
-                  </td>
-                  <td className="py-xs text-center">
-                    <span className={`text-[10px] font-bold font-mono ${complianceColor}`}>
-                      {dept.compliance}%
-                    </span>
-                  </td>
-                  <td className="py-xs text-center">
-                    <span className={`text-[10px] font-mono ${violationColor}`}>
-                      {dept.violations}
-                    </span>
-                  </td>
-                  <td className="py-xs text-right">
-                    <button
-                      onClick={() => handleNotify(dept.id)}
-                      disabled={isNotified && isNotified !== "Sending..."}
-                      className={`px-xs py-[3px] rounded text-[8px] font-bold uppercase tracking-wider transition border ${
-                        isNotified === "Alerted ✓" 
-                          ? "bg-green-50 text-green-700 border-green-200"
-                          : isNotified === "Sending..."
-                            ? "bg-gray-50 text-gray-400 border-gray-200 animate-pulse"
-                            : "bg-white text-gray-700 border-gray-300 hover:bg-gray-900 hover:text-white hover:border-gray-900"
-                      }`}
-                    >
-                      {isNotified || "Notify"}
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Table Footer */}
-      <div className="bg-white border-t border-gray-200 px-xs py-xxs flex items-center justify-between text-[8px] text-gray-400 font-semibold select-none shrink-0">
-        <span>SLA countdown active</span>
-        <span className="text-gray-505">Auto-escalation enabled</span>
-      </div>
-
     </div>
   );
 }
+
 
 // Auto-Updating Catalog Illustration for VS
 function VSAutoUpdatingCatalogMap() {
@@ -671,7 +668,7 @@ function WASAiReportWriter() {
   );
 }
 
-export default function Feauture3({ moduleSlug }) {
+export default function Feature3({ moduleSlug }) {
   const isVS = moduleSlug === 'vs';
   const isWAS = moduleSlug === 'was';
   const isAIM = moduleSlug === 'aim';
