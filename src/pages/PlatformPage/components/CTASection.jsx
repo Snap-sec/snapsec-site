@@ -4,7 +4,7 @@ const CTASection = ({ isServicesPage }) => {
   return (
     <div className="section-platform-cta">
       <div className="container bg-white">
-        <div className="section-platform-cta__wrapper relative flex flex-col gap-xxl overflow-hidden border-x-[0.5px] border-t-[0.5px] border-gray-600 px-sm py-xxl text-center sm:px-xl lg:gap-64px lg:px-80px lg:py-88px">
+        <div className="section-platform-cta__wrapper relative flex flex-col gap-xxl overflow-hidden border-x-[0.5px] border-t-[0.5px] border-gray-600 px-sm pt-[100px] pb-xxl text-center sm:px-xl lg:gap-64px lg:px-80px lg:py-88px">
           <div className="relative flex w-full flex-col items-center gap-lg lg:gap-lg">
             <div className="relative z-2 flex flex-col gap-sm lg:gap-lg">
               <h3 className="heading-h1 mx-auto w-full max-w-[650px]">

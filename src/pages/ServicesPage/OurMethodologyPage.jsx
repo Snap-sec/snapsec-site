@@ -649,7 +649,7 @@ function VMDashboard() {
         }}
       >
         {/* ── Tab Bar ── */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T_VM.border}`, padding: '0 24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T_VM.border}`, padding: '0 24px', overflowX: 'auto' }}>
           <div style={{ display: 'flex' }}>
             {['Pentest Scope', 'All Vulnerabilities', 'Reporting', 'Executive Summary'].map((tab, i) => (
               <div key={tab} style={{
@@ -820,7 +820,8 @@ function VMDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.7, duration: 0.5 }}
-            style={{ borderRadius: '8px', border: `1px solid ${T_VM.borderLight}`, overflow: 'hidden' }}>
+            style={{ borderRadius: '8px', border: `1px solid ${T_VM.borderLight}`, overflowX: 'auto' }}>
+            <div style={{ minWidth: '700px' }}>
             <div style={{
               display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr',
               padding: '9px 20px', background: T_VM.panel, borderBottom: `1px solid ${T_VM.borderLight}`,
@@ -852,6 +853,7 @@ function VMDashboard() {
                 </span>
               </motion.div>
             ))}
+            </div>
           </motion.div>
 
         </div>

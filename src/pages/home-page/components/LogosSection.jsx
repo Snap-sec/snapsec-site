@@ -31,7 +31,7 @@ export default function LogosSection() {
           </div>
 
           {/* Logos */}
-          <div className="grid grid-cols-2 gap-xxl lg:flex lg:flex-wrap lg:justify-between">
+          <div className="grid grid-cols-2 gap-md lg:gap-xxl lg:flex lg:flex-wrap lg:justify-between">
             {logos.map((logo, i) => (
               <motion.div
                 key={logo.id}

@@ -17,7 +17,7 @@ export default function AiEraSection() {
       <div className="container">
         <div
           ref={ref}
-          className="section-border section-border-top flex flex-col gap-xl overflow-hidden px-sm py-xxl sm:px-xl lg:gap-96px lg:px-80px lg:py-88px"
+          className="section-border section-border-top flex flex-col gap-xl overflow-hidden px-sm pt-[100px] pb-xxl sm:px-xl lg:gap-96px lg:px-80px lg:py-88px"
         >
           {/* Top area */}
           <div className="flex flex-col gap-xl lg:flex-row lg:items-center lg:justify-between lg:gap-lg">

@@ -87,6 +87,7 @@ export default function EcosystemWidget() {
           gap: '0',
           borderBottom: `1px solid ${C.border}`,
           padding: '0 20px',
+          overflowX: 'auto',
         }}
       >
         {categories.map((cat) => (
@@ -107,6 +108,8 @@ export default function EcosystemWidget() {
         ))}
       </div>
 
+      <div style={{ overflowX: 'auto' }}>
+        <div style={{ minWidth: '400px' }}>
       {/* ── Table header ── */}
       <div
         style={{
@@ -174,6 +177,8 @@ export default function EcosystemWidget() {
             </div>
           </div>
         ))}
+      </div>
+        </div>
       </div>
     </div>
   );

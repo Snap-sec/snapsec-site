@@ -703,7 +703,7 @@ export default function Header() {
     <header
       ref={headerRef}
       className={`fixed inset-x-0 top-0 z-50 flex items-center py-[12px] transition-all duration-200 lg:py-midmd ${
-        scrolled
+        scrolled || mobileOpen
           ? 'bg-white shadow-[0_1px_0_0_#D9D9D9]'
           : 'bg-transparent'
       }`}

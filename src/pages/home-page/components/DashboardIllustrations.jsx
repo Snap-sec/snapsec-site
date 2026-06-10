@@ -115,7 +115,7 @@ export function DiscoveryWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.2 }}
       style={{
-        width: '200px', background: '#fff', borderRadius: '12px',
+        width: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -187,7 +187,7 @@ export function ScanningWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.25 }}
       style={{
-        width: '200px', background: '#fff', borderRadius: '12px',
+        width: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -234,7 +234,7 @@ export function RemediationWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.3 }}
       style={{
-        width: '200px', background: '#fff', borderRadius: '12px',
+        width: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -329,7 +329,7 @@ export function VMDashboard({ inView = true }) {
       </div>
 
       {/* Metric cards */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '14px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '14px', flexShrink: 0 }}>
         <MetricCard value="247" label="Findings" accent={C.text} delay={0.25} inView={inView} />
         <MetricCard value="12" label="Critical" accent={C.critical} delay={0.3} inView={inView} />
         <MetricCard value="34" label="High" accent={C.high} delay={0.35} inView={inView} />
@@ -433,7 +433,7 @@ export function ASMDashboard({ inView = true }) {
       </div>
 
       {/* Metric cards */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '14px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '14px', flexShrink: 0 }}>
         <MetricCard value="156" label="Subdomains" accent="#8B5CF6" delay={0.25} inView={inView} />
         <MetricCard value="23" label="Open Ports" accent={C.high} delay={0.3} inView={inView} />
         <MetricCard value="12" label="Certificates" accent={C.success} delay={0.35} inView={inView} />
@@ -537,7 +537,7 @@ export function AIMDashboard({ inView = true }) {
       </div>
 
       {/* Metric cards */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '14px', flexShrink: 0 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '14px', flexShrink: 0 }}>
         <MetricCard value="1,247" label="Total Assets" accent={C.text} delay={0.25} inView={inView} />
         <MetricCard value="89" label="APIs" accent="#8B5CF6" delay={0.3} inView={inView} />
         <MetricCard value="234" label="Repositories" accent={C.success} delay={0.35} inView={inView} />
@@ -629,7 +629,7 @@ export function VSDashboard({ inView = true }) {
         </div>
         <span style={{ fontSize: '9px', color: C.textSec }}>Last run: 1h ago</span>
       </div>
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
         <MetricCard value="48" label="Scanned IPs" accent={C.text} delay={0.25} inView={inView} />
         <MetricCard value="1" label="Alert" accent={C.high} delay={0.3} inView={inView} />
         <MetricCard value="99.2%" label="Score" accent={C.success} delay={0.35} inView={inView} />
@@ -688,7 +688,7 @@ export function WASDashboard({ inView = true }) {
         </div>
         <span style={{ fontSize: '9px', color: C.textSec }}>Active scan</span>
       </div>
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
         <MetricCard value="1,240" label="URLs Crawled" accent={C.text} delay={0.25} inView={inView} />
         <MetricCard value="3" label="Vulns" accent={C.critical} delay={0.3} inView={inView} />
         <MetricCard value="100%" label="Coverage" accent={C.success} delay={0.35} inView={inView} />
@@ -730,7 +730,7 @@ export function VSDiscoveryWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.2 }}
       style={{
-        width: '200px', background: '#fff', borderRadius: '12px',
+        width: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -779,7 +779,7 @@ export function VSScanningWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.25 }}
       style={{
-        width: '200px', background: '#fff', borderRadius: '12px',
+        width: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -819,7 +819,7 @@ export function VSReportingWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.3 }}
       style={{
-        width: '200px', background: '#fff', borderRadius: '12px',
+        width: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -870,7 +870,7 @@ export function ASMDiscoveryWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.2 }}
       style={{
-        width: '200px', background: '#fff', borderRadius: '12px',
+        width: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -919,7 +919,7 @@ export function ASMClassificationWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.25 }}
       style={{
-        width: '200px', background: '#fff', borderRadius: '12px',
+        width: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -961,7 +961,7 @@ export function ASMRemediationWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.3 }}
       style={{
-        width: '200px', background: '#fff', borderRadius: '12px',
+        width: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",

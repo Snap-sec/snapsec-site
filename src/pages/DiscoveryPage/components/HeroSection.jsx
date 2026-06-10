@@ -80,7 +80,7 @@ function ASMDashboard() {
         }}
       >
         {/* ── Tab Bar ── */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T.border}`, padding: '0 24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T.border}`, padding: '0 24px', overflowX: 'auto' }}>
           <div style={{ display: 'flex' }}>
             {['Dashboard', 'Asset Catalog', 'Risk Signals', 'Tickets', 'Scans', 'Reports'].map((tab, i) => (
               <div key={tab} style={{
@@ -230,7 +230,8 @@ function ASMDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.7, duration: 0.5 }}
-            style={{ borderRadius: '8px', border: `1px solid ${T.borderLight}`, overflow: 'hidden' }}>
+            style={{ borderRadius: '8px', border: `1px solid ${T.borderLight}`, overflowX: 'auto' }}>
+            <div style={{ minWidth: '700px' }}>
             <div style={{
               display: 'grid', gridTemplateColumns: '2fr 0.8fr 0.7fr 1fr 0.6fr 0.5fr',
               padding: '9px 20px', background: T.panel, borderBottom: `1px solid ${T.borderLight}`,
@@ -268,6 +269,7 @@ function ASMDashboard() {
                 </span>
               </motion.div>
             ))}
+            </div>
           </motion.div>
 
         </div>
@@ -345,7 +347,7 @@ function WASDashboard() {
         }}
       >
         {/* ── Tab Bar ── */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T_WAS.border}`, padding: '0 24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T_WAS.border}`, padding: '0 24px', overflowX: 'auto' }}>
           <div style={{ display: 'flex' }}>
             {['Dashboard', 'APIs & Web Apps', 'Dynamic Scans', 'Vulnerabilities', 'Coverage', 'Reports'].map((tab, i) => (
               <div key={tab} style={{
@@ -496,7 +498,8 @@ function WASDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.7, duration: 0.5 }}
-            style={{ borderRadius: '8px', border: `1px solid ${T_WAS.borderLight}`, overflow: 'hidden' }}>
+            style={{ borderRadius: '8px', border: `1px solid ${T_WAS.borderLight}`, overflowX: 'auto' }}>
+            <div style={{ minWidth: '700px' }}>
             <div style={{
               display: 'grid', gridTemplateColumns: '2fr 0.8fr 0.7fr 1fr 0.6fr 0.5fr',
               padding: '9px 20px', background: T_WAS.panel, borderBottom: `1px solid ${T_WAS.borderLight}`,
@@ -534,6 +537,7 @@ function WASDashboard() {
                 </span>
               </motion.div>
             ))}
+            </div>
           </motion.div>
 
         </div>
@@ -604,7 +608,7 @@ function AIMDashboard() {
         }}
       >
         {/* ── Tab Bar ── */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T_AIM.border}`, padding: '0 24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T_AIM.border}`, padding: '0 24px', overflowX: 'auto' }}>
           <div style={{ display: 'flex' }}>
             {['Dashboard', 'Ecosystem Connectors', 'Asset Catalog', 'Risk Aggregation', 'SLA Tracking', 'Reports'].map((tab, i) => (
               <div key={tab} style={{
@@ -736,7 +740,8 @@ function AIMDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.7, duration: 0.5 }}
-            style={{ borderRadius: '8px', border: `1px solid ${T_AIM.borderLight}`, overflow: 'hidden' }}>
+            style={{ borderRadius: '8px', border: `1px solid ${T_AIM.borderLight}`, overflowX: 'auto' }}>
+            <div style={{ minWidth: '700px' }}>
             <div style={{
               display: 'grid', gridTemplateColumns: '2fr 1fr 0.8fr 0.8fr 1.4fr',
               padding: '9px 20px', background: T_AIM.panel, borderBottom: `1px solid ${T_AIM.borderLight}`,
@@ -773,6 +778,7 @@ function AIMDashboard() {
                 </span>
               </motion.div>
             ))}
+            </div>
           </motion.div>
 
         </div>
@@ -835,7 +841,7 @@ function VSDashboard() {
         }}
       >
         {/* ── Tab Bar ── */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T_VS.border}`, padding: '0 24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T_VS.border}`, padding: '0 24px', overflowX: 'auto' }}>
           <div style={{ display: 'flex' }}>
             {['Dashboard', 'Scanner Agents', 'Targets Catalog', 'Exposure Map', 'Scan Schedules', 'Reports'].map((tab, i) => (
               <div key={tab} style={{
@@ -1008,7 +1014,8 @@ function VSDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.7, duration: 0.5 }}
-            style={{ borderRadius: '8px', border: `1px solid ${T_VS.borderLight}`, overflow: 'hidden' }}>
+            style={{ borderRadius: '8px', border: `1px solid ${T_VS.borderLight}`, overflowX: 'auto' }}>
+            <div style={{ minWidth: '700px' }}>
             <div style={{
               display: 'grid', gridTemplateColumns: '2fr 1.2fr 1fr 1fr 1.3fr',
               padding: '9px 20px', background: T_VS.panel, borderBottom: `1px solid ${T_VS.borderLight}`,
@@ -1040,6 +1047,7 @@ function VSDashboard() {
                 </span>
               </motion.div>
             ))}
+            </div>
           </motion.div>
 
         </div>
@@ -1110,7 +1118,7 @@ function VMDashboard() {
         }}
       >
         {/* ── Tab Bar ── */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T_VM.border}`, padding: '0 24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${T_VM.border}`, padding: '0 24px', overflowX: 'auto' }}>
           <div style={{ display: 'flex' }}>
             {['Remediation Inbox', 'Scanner Connectors', 'SLA Tracking', 'Automation Rules', 'Prioritization', 'Reports'].map((tab, i) => (
               <div key={tab} style={{
@@ -1281,7 +1289,8 @@ function VMDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.7, duration: 0.5 }}
-            style={{ borderRadius: '8px', border: `1px solid ${T_VM.borderLight}`, overflow: 'hidden' }}>
+            style={{ borderRadius: '8px', border: `1px solid ${T_VM.borderLight}`, overflowX: 'auto' }}>
+            <div style={{ minWidth: '700px' }}>
             <div style={{
               display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1.2fr 1fr',
               padding: '9px 20px', background: T_VM.panel, borderBottom: `1px solid ${T_VM.borderLight}`,
@@ -1314,6 +1323,7 @@ function VMDashboard() {
                 </span>
               </motion.div>
             ))}
+            </div>
           </motion.div>
 
         </div>

@@ -109,6 +109,8 @@ export default function ExposureWidget() {
         ))}
       </div>
 
+      <div style={{ overflowX: 'auto' }}>
+        <div style={{ minWidth: '400px' }}>
       {/* ── Table header ── */}
       <div
         style={{
@@ -202,6 +204,8 @@ export default function ExposureWidget() {
             </div>
           );
         })}
+      </div>
+        </div>
       </div>
     </div>
   );
