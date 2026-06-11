@@ -2,16 +2,16 @@ const footerLinks = {
   Modules: [
     { label: 'Vulnerability Management', href: 'https://docs.snapsec.co/products/vm/dashboard' },
     { label: 'Attack Surface Management', href: 'https://docs.snapsec.co/products/asm/dashboard' },
-    { label: 'Asset Intelligence Management', href: 'https://docs.snapsec.co/products/aim/dashboard' },
+    { label: 'Asset Inventory Management', href: 'https://docs.snapsec.co/products/aim/dashboard' },
     { label: 'Vulnerability Scanning', href: 'https://docs.snapsec.co/products/vs/dashboard' },
     { label: 'Web Application Scanner', href: 'https://docs.snapsec.co/products/was/dashboard' },
   ],
   'Use Cases': [
-    { label: 'External Asset Discovery', href: 'https://docs.snapsec.co/usecases/introduction' },
-    { label: 'Shadow IT Detection', href: 'https://docs.snapsec.co/usecases/introduction' },
-    { label: 'Risk-Based Prioritization', href: 'https://docs.snapsec.co/usecases/introduction' },
-    { label: 'Automated SLA Enforcement', href: 'https://docs.snapsec.co/usecases/introduction' },
-    { label: 'Continuous API Fuzzing', href: 'https://docs.snapsec.co/usecases/introduction' },
+    { label: 'External Asset Discovery', href: 'https://docs.snapsec.co/usecases/asm/external-asset-discovery' },
+    { label: 'Shadow IT Detection', href: 'https://docs.snapsec.co/usecases/asm/shadow-it-detection' },
+    { label: 'Risk-Based Prioritization', href: 'https://docs.snapsec.co/usecases/vm/risk-based-prioritization' },
+    { label: 'Automated SLA Enforcement', href: 'https://docs.snapsec.co/usecases/vm/automated-sla-enforcement' },
+    { label: 'Continuous API Fuzzing', href: 'https://docs.snapsec.co/usecases/was/continuous-api-fuzzing' },
   ],
   Resources: [
     { label: 'Documentation', href: 'https://docs.snapsec.co', external: true },

@@ -33,7 +33,7 @@ const testimonials = [
     authorName: 'Elena Rostova',
     authorRole: 'Head of Cyber Operations',
     authorAvatar: '/assets/fluidra-author.png',
-    quote: '"Managing asset intelligence at scale was a nightmare. Snapsec\'s automated classification and team ownership mapping allowed us to assign and remediate vulnerabilities 3x faster than before."',
+    quote: '"Managing asset inventory at scale was a nightmare. Snapsec\'s automated classification and team ownership mapping allowed us to assign and remediate vulnerabilities 3x faster than before."',
   },
 ];
 

@@ -191,7 +191,7 @@ export default function ModuleViewPage() {
                 </p>
                 <div className="mt-2">
                   <a href="/demo" className="button-primary-m !bg-[#111111] !text-white px-8 h-[52px] text-[15px] hover:scale-105 transition-transform duration-300 shadow-xl border border-black">
-                    See Clutch in Action &rarr;
+                    See Snapsec in Action &rarr;
                   </a>
                 </div>
               </div>

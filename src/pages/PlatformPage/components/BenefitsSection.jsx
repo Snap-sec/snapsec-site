@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const PLATFORM_BENEFITS = [
   {
@@ -154,26 +155,33 @@ const BenefitsSection = ({ isServicesPage }) => {
             </h2>
           )}
           <div className="section-platform-benefits__cards grid grid-cols-1 gap-xs md:grid-cols-2 lg:grid-cols-3">
-            {cardsToRender.map((card, idx) => (
-              <a
-                key={card.title + idx}
-                href="#"
-                className="group section-platform-benefits__card flex cursor-pointer flex-col items-start gap-md rounded-10 border-[0.5px] border-gray-600 p-md text-left transition-all lg:gap-64px lg:hover:border-gray-700 lg:hover:bg-[#F9F9F980]"
-              >
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-[#FAFBFB] text-[#555] border border-gray-200/60 flex items-center justify-center transition-all duration-300 group-hover:bg-black group-hover:text-white group-hover:border-black">
-                  {card.icon}
-                </div>
-                <span className="section-platform-benefits__card-info flex flex-col gap-xs">
-                  <span className="body-heading-m cursor-pointer">{card.title}</span>
-                  <p className="body-text-s cursor-pointer">{card.desc}</p>
-                </span>
-              </a>
-            ))}
+            {cardsToRender.map((card, idx) => {
+              const cardHref = isServicesPage
+                ? `/contact-us?query=${encodeURIComponent("I am interested in " + card.title)}`
+                : "#";
+              const Tag = isServicesPage ? Link : 'a';
+
+              return (
+                <Tag
+                  key={card.title + idx}
+                  {...(isServicesPage ? { to: cardHref } : { href: cardHref })}
+                  className="group section-platform-benefits__card flex cursor-pointer flex-col items-start gap-md rounded-10 border-[0.5px] border-gray-600 p-md text-left transition-all lg:gap-64px lg:hover:border-gray-700 lg:hover:bg-[#F9F9F980]"
+                >
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-[#FAFBFB] text-[#555] border border-gray-200/60 flex items-center justify-center transition-all duration-300 group-hover:bg-black group-hover:text-white group-hover:border-black">
+                    {card.icon}
+                  </div>
+                  <span className="section-platform-benefits__card-info flex flex-col gap-xs">
+                    <span className="body-heading-m cursor-pointer">{card.title}</span>
+                    <p className="body-text-s cursor-pointer">{card.desc}</p>
+                  </span>
+                </Tag>
+              );
+            })}
 
             <div
               className="section-platform-benefits__card relative flex items-center justify-center overflow-hidden rounded-8 border-[0.5px] border-gray-600 bg-white bg-cover bg-[center_bottom_-40px] bg-no-repeat p-md md:bg-[center_bottom_-32px] lg:bg-center"
               style={{
-                backgroundImage: "url('https://www.clutch.security/_next/static/media/small-card-gradient.9573d86b.png')"
+                backgroundImage: "url('/assets/small-card-gradient.png')"
               }}
             >
               <div className="noise absolute inset-0 z-1"></div>
@@ -192,14 +200,14 @@ const BenefitsSection = ({ isServicesPage }) => {
                   )}
                 </p>
                 <div className="z-2 relative">
-                  <a href="#" className="group button-primary-s">
+                  <Link to="/contact-us" className="group button-primary-s">
                     <span className="block">
                       Book a Demo
                       <span className="inline-block tracking-normal transition-transform duration-300 group-hover:translate-x-[2px]">
                         -&gt;
                       </span>
                     </span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

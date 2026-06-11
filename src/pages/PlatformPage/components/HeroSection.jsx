@@ -21,7 +21,7 @@ const HeroSection = ({ isServicesPage }) => {
             <div className="h-full w-full">
               <div className="in-view h-full w-full" style={{ opacity: 1, transform: "none" }}>
                 <div style={{ width: "100%", height: "100%" }}>
-                  <img src="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fintegrations-grid.3d54a9be.svg&w=1200&q=75" className="w-full h-full object-contain" alt="" />
+                  <img src="/assets/integrations-grid.svg" className="w-full h-full object-contain" alt="" />
                 </div>
               </div>
             </div>
@@ -33,7 +33,7 @@ const HeroSection = ({ isServicesPage }) => {
                 width="1124"
                 height="680"
                 className="pointer-events-none w-full max-w-full select-none lg:w-[1124px] lg:max-w-none"
-                src="https://www.clutch.security/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fintegrations-grid.3d54a9be.svg&w=1200&q=75"
+                src="/assets/integrations-grid.svg"
               />
             </span>
           </div>

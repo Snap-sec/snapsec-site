@@ -33,8 +33,9 @@ const DemoReportSection = () => {
                 <span className="text-[12px] text-gray-400 font-semibold uppercase tracking-wider">PDF Document • 4.2 MB</span>
               </div>
               <a 
-                href="/assets/snapsec_sample_pentest_report.pdf" 
-                download
+                href="https://drive.google.com/drive/folders/1aPSMT157KiFIdSxC_mQe_BFoNk05Pyro?usp=sharing" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="button-primary-m flex items-center justify-center gap-xs px-md py-sm rounded-[6px] text-[12px] font-bold uppercase tracking-wider text-center w-full sm:w-auto shrink-0"
               >
                 <span>Download Sample Report</span>

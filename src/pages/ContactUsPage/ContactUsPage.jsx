@@ -6,9 +6,8 @@ const ContactUsPage = () => {
     fullName: '',
     email: '',
     phone: '',
-    title: '',
     company: '',
-    referrer: '',
+    query: '',
   });
 
   const [phonePrefix, setPhonePrefix] = useState('+966');
@@ -38,6 +37,15 @@ const ContactUsPage = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
+  }, []);
+
+  // Pre-populate query field from URL search params
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlQuery = params.get('query');
+    if (urlQuery) {
+      setFormData(prev => ({ ...prev, query: urlQuery }));
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -146,7 +154,13 @@ const ContactUsPage = () => {
 
             {/* Right Column: Dynamic Form Block */}
             <div className="px-sm sm:px-xl lg:px-80px py-lg lg:py-88px bg-white flex flex-col justify-center">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-sm max-w-[500px] w-full mx-auto">
+              <form 
+                action="https://formsubmit.co/imran@snapsec.co" 
+                method="POST" 
+                className="flex flex-col gap-sm max-w-[500px] w-full mx-auto"
+              >
+                <input type="hidden" name="_subject" value="New Snapsec Contact Submission" />
+                <input type="hidden" name="phone_prefix" value={phonePrefix} />
 
                 {/* Full Name */}
                 <div className="flex flex-col gap-[6px]">
@@ -242,22 +256,6 @@ const ContactUsPage = () => {
                   </div>
                 </div>
 
-                {/* Title */}
-                <div className="flex flex-col gap-[6px]">
-                  <label htmlFor="title" className="text-[13px] font-semibold text-black leading-none">
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    placeholder="Security Engineer"
-                    className="h-[48px] px-sm border border-gray-600 rounded-[6px] bg-white focus:border-black focus:outline-none transition-all placeholder-gray-500 text-[14px] font-normal"
-                    value={formData.title}
-                    onChange={handleChange}
-                  />
-                </div>
-
                 {/* Company */}
                 <div className="flex flex-col gap-[6px]">
                   <label htmlFor="company" className="text-[13px] font-semibold text-black leading-none">
@@ -274,18 +272,20 @@ const ContactUsPage = () => {
                   />
                 </div>
 
-                {/* Referrer */}
+
+
+                {/* Query / Message */}
                 <div className="flex flex-col gap-[6px]">
-                  <label htmlFor="referrer" className="text-[13px] font-semibold text-black leading-none">
-                    How did you hear about us?
+                  <label htmlFor="query" className="text-[13px] font-semibold text-black leading-none">
+                    How can we help you?
                   </label>
-                  <input
-                    type="text"
-                    id="referrer"
-                    name="referrer"
-                    placeholder="LinkedIn, Friend etc"
-                    className="h-[48px] px-sm border border-gray-600 rounded-[6px] bg-white focus:border-black focus:outline-none transition-all placeholder-gray-500 text-[14px] font-normal"
-                    value={formData.referrer}
+                  <textarea
+                    id="query"
+                    name="query"
+                    rows={4}
+                    placeholder="Tell us about your security needs, questions, or comments..."
+                    className="py-xs px-sm border border-gray-600 rounded-[6px] bg-white focus:border-black focus:outline-none transition-all placeholder-gray-500 text-[14px] font-normal resize-none"
+                    value={formData.query}
                     onChange={handleChange}
                   />
                 </div>

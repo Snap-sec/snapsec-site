@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const CTASection = ({ isServicesPage }) => {
   return (
@@ -22,9 +23,9 @@ const CTASection = ({ isServicesPage }) => {
               </p>
             </div>
             <div className="relative z-2">
-              <a
+              <Link
                 className="group button-primary-m min-w-[198px]"
-                href="/contact"
+                to="/contact-us"
               >
                 <span className="block">
                   {isServicesPage ? "Contact Us" : "See Snapsec in Action"}{' '}
@@ -32,7 +33,7 @@ const CTASection = ({ isServicesPage }) => {
                     -&gt;
                   </span>
                 </span>
-              </a>
+              </Link>
             </div>
             {!isServicesPage && (
               <div className="section-platform-cta__image absolute bottom-0 left-1/2 hidden w-full -translate-x-1/2 lg:block">
@@ -59,7 +60,7 @@ const CTASection = ({ isServicesPage }) => {
                   width="32"
                   height="32"
                   className="size-lg"
-                  src="https://www.clutch.security/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fknowledge-architecture.40a3993e.svg&w=64&q=75"
+                  src="/assets/knowledge-architecture.svg"
                 />
               </span>
               <div className="flex flex-col gap-xs">
@@ -80,7 +81,7 @@ const CTASection = ({ isServicesPage }) => {
                   width="32"
                   height="32"
                   className="size-lg"
-                  src="https://www.clutch.security/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbusiness-continuity.d1bf1ed4.svg&w=64&q=75"
+                  src="/assets/business-continuity.svg"
                 />
               </span>
               <div className="flex flex-col gap-xs">
@@ -101,7 +102,7 @@ const CTASection = ({ isServicesPage }) => {
                   width="32"
                   height="32"
                   className="size-lg"
-                  src="https://www.clutch.security/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fscalability.6d19dad2.svg&w=64&q=75"
+                  src="/assets/scalability.svg"
                 />
               </span>
               <div className="flex flex-col gap-xs">

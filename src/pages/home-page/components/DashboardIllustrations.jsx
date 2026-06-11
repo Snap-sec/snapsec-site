@@ -115,7 +115,7 @@ export function DiscoveryWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.2 }}
       style={{
-        width: '100%', background: '#fff', borderRadius: '12px',
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -187,7 +187,7 @@ export function ScanningWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.25 }}
       style={{
-        width: '100%', background: '#fff', borderRadius: '12px',
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -234,7 +234,7 @@ export function RemediationWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.3 }}
       style={{
-        width: '100%', background: '#fff', borderRadius: '12px',
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -730,7 +730,7 @@ export function VSDiscoveryWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.2 }}
       style={{
-        width: '100%', background: '#fff', borderRadius: '12px',
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -779,7 +779,7 @@ export function VSScanningWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.25 }}
       style={{
-        width: '100%', background: '#fff', borderRadius: '12px',
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -819,7 +819,7 @@ export function VSReportingWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.3 }}
       style={{
-        width: '100%', background: '#fff', borderRadius: '12px',
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -870,7 +870,7 @@ export function ASMDiscoveryWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.2 }}
       style={{
-        width: '100%', background: '#fff', borderRadius: '12px',
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -919,7 +919,7 @@ export function ASMClassificationWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.25 }}
       style={{
-        width: '100%', background: '#fff', borderRadius: '12px',
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",
@@ -961,7 +961,7 @@ export function ASMRemediationWidget({ inView = true }) {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay: 0.3 }}
       style={{
-        width: '100%', background: '#fff', borderRadius: '12px',
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
         border: `1px solid ${C.border}`, padding: '14px 16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
         fontFamily: "'Inter', sans-serif",

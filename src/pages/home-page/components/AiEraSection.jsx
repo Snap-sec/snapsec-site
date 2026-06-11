@@ -3,9 +3,9 @@ import { useInView } from 'react-intersection-observer';
 
 const illustrationItems = [
   { icon: '/assets/user.svg', label: 'Attack Surface Management (ASM)' },
-  { icon: '/assets/medal.svg', label: 'Asset Intelligence Management (AIM)', logo: '/assets/github.svg', logoWidth: 'w-[79px]' },
-  { icon: '/assets/apps.svg', label: 'Vulnerability Scanning (VS)', logo: '/assets/aws.svg', logoWidth: 'w-[60px]' },
-  { icon: '/assets/robot.svg', label: 'Web Application Scanner (WAS)', logo: '/assets/openai.svg', logoWidth: 'w-lg' },
+  { icon: '/assets/medal.svg', label: 'Asset Inventory Management (AIM)' },
+  { icon: '/assets/apps.svg', label: 'Vulnerability Scanning (VS)' },
+  { icon: '/assets/robot.svg', label: 'Web Application Scanner (WAS)' },
   { icon: '/assets/identity-lineage.svg', label: 'Vulnerability Management (VM)' },
 ];
 
@@ -57,7 +57,7 @@ export default function AiEraSection() {
             </div>
 
             {/* Right illustration */}
-            <div className="flex flex-col gap-lg">
+            <div className="flex flex-col gap-lg w-full lg:w-auto">
               {/* Desktop introducing */}
               <div className="hidden items-center gap-xs font-primary text-[13px] font-medium uppercase leading-[140%] tracking-[0.16em] lg:flex">
                 <motion.span
@@ -78,7 +78,7 @@ export default function AiEraSection() {
               </div>
 
               {/* Illustration items */}
-              <div className="relative flex flex-col items-start gap-midsm pl-xl">
+              <div className="relative flex flex-col items-start gap-midsm pl-xl w-full">
                 {/* Arrows */}
                 <div className="pointer-events-none absolute left-0 top-midmd">
                   <img src="/assets/arrow-first.svg" alt="" className="w-midmd" />
@@ -107,12 +107,6 @@ export default function AiEraSection() {
                     )}
                     <img src={item.icon} alt={item.label} className="w-[18px] h-[18px] shrink-0" />
                     <span className="subtitle-s shrink-0">{item.label}</span>
-                    {item.logo && (
-                      <img src={item.logo} alt="" className={`${item.logoWidth} shrink-0`} />
-                    )}
-                    {item.logo2 && (
-                      <img src={item.logo2} alt="" className="w-md shrink-0" />
-                    )}
                   </motion.div>
                 ))}
               </div>
@@ -120,26 +114,25 @@ export default function AiEraSection() {
           </div>
 
           {/* Bottom banner */}
-          <div className="group flex flex-col gap-md overflow-hidden border-[0.5px] border-[#D9D9D9] pb-md lg:flex-row lg:items-center lg:justify-between lg:py-[33px] lg:pr-xxl">
-            <div className="relative flex flex-col lg:flex-row lg:items-center lg:pl-[256px]">
-              {/* Banner image */}
-              <div className="pointer-events-none h-[160px] w-full lg:absolute lg:left-0 lg:top-1/2 lg:h-[358px] lg:w-[400px] lg:-translate-y-1/2">
-                <img
-                  src="/assets/banner-bg.webp"
-                  alt="Banner"
-                  className="h-[160px] w-full object-cover object-left transition-all duration-500 lg:h-full group-hover:scale-105"
-                />
-              </div>
-              <p className="subtitle-m relative z-[2] px-md lg:max-w-[398px] lg:px-0">
-                Snapsec Suite provides complete visibility, governance, and SLA
-                enforcement across your entire application and infrastructure footprint.
-              </p>
+          <div className="group relative flex flex-col gap-md overflow-hidden border-[0.5px] border-[#D9D9D9] p-md lg:flex-row lg:items-center lg:justify-between lg:py-[33px] lg:px-xxl">
+            {/* Full Card Background with Blur */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden z-[1]">
+              <div className="absolute inset-0 opacity-[0.08] blur-[1px]" style={{
+                backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
+                backgroundSize: '16px 16px'
+              }} />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-primary/8 blur-[80px]" />
             </div>
+
+            <p className="subtitle-m relative z-[2] lg:max-w-[650px]">
+              Snapsec Suite provides complete visibility, governance, and SLA
+              enforcement across your entire application and infrastructure footprint.
+            </p>
             <a
               href="https://suite.snapsec.co/demo"
               target="_blank"
               rel="noopener noreferrer"
-              className="button-primary-m shrink-0 mx-md lg:mx-0 relative z-[2] text-center"
+              className="button-primary-m shrink-0 relative z-[2] text-center"
             >
               Explore Live Demo
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="ml-xxs">

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -551,6 +552,81 @@ const OurMethodologyPage = () => {
             <div className="w-full mt-md bg-white rounded-[12px] border border-gray-200 shadow-sm p-sm md:p-md overflow-hidden">
               <VMDashboard />
             </div>
+
+            {/* VM Modernization Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-sm mt-lg">
+              
+              {/* Card 1 */}
+              <div className="flex flex-col gap-md border border-gray-200 rounded-[10px] p-md bg-white hover:border-gray-400 transition-all duration-300">
+                <div className="w-10 h-10 rounded-lg bg-[#FAFBFB] border border-gray-200 flex items-center justify-center text-black">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <div className="flex flex-col gap-xxs">
+                  <h3 className="text-[15px] font-bold text-black tracking-tight">Real-Time Streaming</h3>
+                  <p className="text-[12px] text-gray-900 leading-[1.5]">Vulnerabilities are streamed to your dashboard the moment our engineers verify them, eliminating the need to wait weeks for a PDF report.</p>
+                </div>
+              </div>
+
+              {/* Card 2 */}
+              <div className="flex flex-col gap-md border border-gray-200 rounded-[10px] p-md bg-white hover:border-gray-400 transition-all duration-300">
+                <div className="w-10 h-10 rounded-lg bg-[#FAFBFB] border border-gray-200 flex items-center justify-center text-black">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
+                </div>
+                <div className="flex flex-col gap-xxs">
+                  <h3 className="text-[15px] font-bold text-black tracking-tight">Workflow Integrations</h3>
+                  <p className="text-[12px] text-gray-900 leading-[1.5]">Push findings directly to Jira, Slack, or GitHub issues with custom mapping, ensuring your developers receive tickets in their native workflows.</p>
+                </div>
+              </div>
+
+              {/* Card 3 */}
+              <div className="flex flex-col gap-md border border-gray-200 rounded-[10px] p-md bg-white hover:border-gray-400 transition-all duration-300">
+                <div className="w-10 h-10 rounded-lg bg-[#FAFBFB] border border-gray-200 flex items-center justify-center text-black">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div className="flex flex-col gap-xxs">
+                  <h3 className="text-[15px] font-bold text-black tracking-tight">On-Demand Retests</h3>
+                  <p className="text-[12px] text-gray-900 leading-[1.5]">Once a patch is deployed, trigger an on-demand retest through the dashboard to verify resolution with proof-of-concept validation.</p>
+                </div>
+              </div>
+
+              {/* Card 4 */}
+              <div className="flex flex-col gap-md border border-gray-200 rounded-[10px] p-md bg-white hover:border-gray-400 transition-all duration-300">
+                <div className="w-10 h-10 rounded-lg bg-[#FAFBFB] border border-gray-200 flex items-center justify-center text-black">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <div className="flex flex-col gap-xxs">
+                  <h3 className="text-[15px] font-bold text-black tracking-tight">Remediation Governance</h3>
+                  <p className="text-[12px] text-gray-900 leading-[1.5]">Track remediation timelines, assign owners, and enforce SLA deadlines based on severity, ensuring accountability across teams.</p>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Ditch PDF Modernization Showcase Card */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-lg lg:gap-xxl pt-xl mt-xl border-t border-gray-200">
+              {/* Left Column */}
+              <div className="flex flex-col text-left">
+                <p className="text-[15px] sm:text-[16px] text-gray-900 leading-[1.6] font-normal">
+                  Static PDF pentest reports are obsolete the second they hit your inbox. They fragment communication, hide critical context, and stall remediation. Snapsec replaces static delivery with our live Vulnerability Management module, streaming manual test findings to your engineering teams instantly.
+                </p>
+              </div>
+
+              {/* Right Column */}
+              <div className="flex flex-col text-left">
+                <p className="text-[15px] sm:text-[16px] text-gray-900 leading-[1.6] font-normal">
+                  Our interactive dashboard provides developers with full-fidelity reproduction details, request/response headers, and vetted proof-of-concepts. Instantly push findings to Jira, collaborate directly with our security engineers, and trigger on-demand retests to verify your fixes in minutes rather than weeks.
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -572,12 +648,12 @@ const OurMethodologyPage = () => {
             </div>
 
             <div className="flex items-center gap-sm shrink-0 mt-sm md:mt-0 w-full md:w-auto">
-              <a
-                href="/contact"
+              <Link
+                to="/contact-us"
                 className="button-primary-m flex items-center justify-center gap-xs px-lg py-sm rounded-[6px] text-[13px] font-bold uppercase tracking-wider text-center w-full md:w-auto shrink-0"
               >
                 <span>Contact Us &rarr;</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -21,9 +21,9 @@ const moduleData = {
   },
   aim: {
     label: 'AIM',
-    name: 'Asset Intelligence Module',
+    name: 'Asset Inventory Management Module',
     tagline: 'Automatically classify and enrich every asset with ownership, technology, and relationship data.',
-    badge: 'ASSET INTELLIGENCE',
+    badge: 'ASSET INVENTORY',
     badgeBg: '#D9E4FF',
     badgeColor: '#000',
     accentColor: '#004DFF',
