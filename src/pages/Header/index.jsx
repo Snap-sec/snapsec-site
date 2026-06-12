@@ -715,7 +715,7 @@ export default function Header() {
             <a href="/" className="inline-flex items-center select-none z-50">
               <img
                 src="/assets/snapsec-logo.png"
-                alt="Snapsec Suite"
+                alt="Snapsec — Application Security Platform"
                 className="w-[130px] xl:w-[150px]"
               />
             </a>

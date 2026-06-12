@@ -8,10 +8,22 @@ import DemoReportSection from './components/DemoReportSection';
 import GlobalPresenceSection from './components/GlobalPresenceSection';
 import TeamSection from './components/TeamSection';
 import CTASection from '../PlatformPage/components/CTASection';
+import SEOHead from '../../components/SEOHead';
+import { OrganizationSchema, BreadcrumbSchema } from '../../components/StructuredData';
 
 const OurWorkPage = () => {
   return (
     <main className="content z-1 relative flex flex-col bg-white">
+      <SEOHead
+        title="Our Work — Penetration Testing Case Studies & Research | Snapsec"
+        description="Explore Snapsec's track record: 500+ security assessments, 150+ critical bugs patched across 10+ industries. View case studies, research, and sample pentest reports."
+        canonicalUrl="https://snapsec.co/our-work"
+      />
+      <OrganizationSchema />
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: 'https://snapsec.co/' },
+        { name: 'Our Work', url: 'https://snapsec.co/our-work' },
+      ]} />
       <HeroSection />
       <MissionSection />
       <ContributionsSection />
@@ -29,3 +41,4 @@ const OurWorkPage = () => {
 };
 
 export default OurWorkPage;
+

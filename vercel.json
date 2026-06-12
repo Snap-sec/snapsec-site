@@ -4,5 +4,22 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/services/our-methodology",
+      "destination": "/service/our-methodology",
+      "permanent": true
+    },
+    {
+      "source": "/services/methodology",
+      "destination": "/service/our-methodology",
+      "permanent": true
+    },
+    {
+      "source": "/discovery",
+      "destination": "/discovery/asm",
+      "permanent": true
+    }
   ]
 }

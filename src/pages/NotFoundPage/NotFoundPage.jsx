@@ -1,9 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SEOHead from '../../components/SEOHead';
 
 const NotFoundPage = () => {
   return (
     <main className="content z-1 relative flex flex-col bg-white min-h-[85vh] justify-center" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <SEOHead
+        title="Page Not Found (404) — Snapsec"
+        description="The page you're looking for doesn't exist. Return to the Snapsec homepage to explore our application security platform and services."
+        canonicalUrl="https://snapsec.co/"
+        noIndex={true}
+      />
       <div className="container py-xxl">
         {/* Border container consistent with other sections */}
         <div className="section-border flex flex-col items-center justify-center text-center px-sm sm:px-xl lg:px-80px py-xxl border-b border-gray-600 border-x-[0.5px] bg-white min-h-[500px]">

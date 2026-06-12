@@ -8,6 +8,8 @@ import Feature2 from './components/Feature2.jsx';
 import Feature3 from './components/Feature3.jsx';
 import FinalBenefits from './components/FinalBenefits.jsx';
 import CTABannerSection from './components/CTABannerSection.jsx';
+import SEOHead from '../../components/SEOHead';
+import { OrganizationSchema, BreadcrumbSchema, SoftwareAppSchema } from '../../components/StructuredData';
 
 const moduleData = {
   asm: {
@@ -57,15 +59,60 @@ const moduleData = {
   },
 };
 
+const seoData = {
+  asm: {
+    title: 'Attack Surface Management (ASM) — External Asset Discovery & Monitoring | Snapsec',
+    description: 'Continuously discover and monitor every internet-facing asset. Snapsec\'s ASM module maps subdomains, IPs, ports, and cloud services to identify shadow IT and external exposures in real time.',
+    softwareName: 'Snapsec ASM — Attack Surface Management',
+  },
+  aim: {
+    title: 'Asset Inventory Management (AIM) — Automated Asset Classification | Snapsec',
+    description: 'Automatically classify, enrich, and manage every asset with ownership, technology, and relationship data. Connects AWS, GCP, Azure, and Kubernetes for unified visibility.',
+    softwareName: 'Snapsec AIM — Asset Inventory Management',
+  },
+  was: {
+    title: 'Web Application Scanner (WAS) — Automated DAST & API Security Testing | Snapsec',
+    description: 'Automated dynamic application security testing (DAST) for web apps and APIs. Detect OWASP Top 10 vulnerabilities, injection flaws, broken auth, and SSRF with continuous scanning.',
+    softwareName: 'Snapsec WAS — Web Application Scanner',
+  },
+  vs: {
+    title: 'Vulnerability Scanner (VS) — Network & Infrastructure Security Scanning | Snapsec',
+    description: 'Continuous network vulnerability scanning for infrastructure, ports, and services. Deploy scanner agents to detect CVEs, misconfigurations, and exposed services across your network.',
+    softwareName: 'Snapsec VS — Vulnerability Scanner',
+  },
+  vm: {
+    title: 'Vulnerability Management (VM) — Risk-Based Prioritization & Remediation | Snapsec',
+    description: 'Centralized vulnerability management with risk-based prioritization, SLA tracking, and automated remediation workflows. Aggregate findings from Qualys, Snyk, Trivy, and more.',
+    softwareName: 'Snapsec VM — Vulnerability Management',
+  },
+};
+
 export default function DiscoveryPage() {
   const { moduleSlug } = useParams();
   const slug = (moduleSlug || 'asm').toLowerCase();
   const mod = moduleSlug ? moduleData[slug] : null;
+  const seo = seoData[slug] || seoData.asm;
 
   const showFeatures = slug === 'asm' || slug === 'vs' || slug === 'was' || slug === 'aim' || slug === 'vm';
 
   return (
     <>
+      <SEOHead
+        title={seo.title}
+        description={seo.description}
+        canonicalUrl={`https://snapsec.co/discovery/${slug}`}
+      />
+      <OrganizationSchema />
+      <SoftwareAppSchema
+        name={seo.softwareName}
+        description={seo.description}
+        url={`https://snapsec.co/discovery/${slug}`}
+        category="SecurityApplication"
+      />
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: 'https://snapsec.co/' },
+        { name: mod?.name || 'Module', url: `https://snapsec.co/discovery/${slug}` },
+      ]} />
       <HeroSection moduleSlug={slug} mod={mod} />
       <ChallengeSection moduleSlug={slug} mod={mod} />
       <SolutionSection moduleSlug={slug} mod={mod} />
@@ -82,4 +129,5 @@ export default function DiscoveryPage() {
     </>
   );
 }
+
 

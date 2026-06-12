@@ -8,19 +8,18 @@ const __dirname = path.dirname(__filename);
 const BASE_URL = 'https://snapsec.co';
 
 const routes = [
-  { path: '/', priority: '1.0', changefreq: 'daily' },
+  { path: '/', priority: '1.0', changefreq: 'weekly' },
   { path: '/platform', priority: '0.9', changefreq: 'weekly' },
-  { path: '/services', priority: '0.8', changefreq: 'weekly' },
-  { path: '/services/methodology', priority: '0.8', changefreq: 'weekly' },
-  { path: '/services/our-methodology', priority: '0.8', changefreq: 'weekly' },
-  { path: '/about-us', priority: '0.8', changefreq: 'weekly' },
-  { path: '/our-work', priority: '0.8', changefreq: 'weekly' },
-  { path: '/contact-us', priority: '0.8', changefreq: 'monthly' },
-  { path: '/discovery/asm', priority: '0.8', changefreq: 'weekly' },
-  { path: '/discovery/aim', priority: '0.8', changefreq: 'weekly' },
-  { path: '/discovery/was', priority: '0.8', changefreq: 'weekly' },
-  { path: '/discovery/vs', priority: '0.8', changefreq: 'weekly' },
-  { path: '/discovery/vm', priority: '0.8', changefreq: 'weekly' },
+  { path: '/services', priority: '0.8', changefreq: 'monthly' },
+  { path: '/service/our-methodology', priority: '0.7', changefreq: 'yearly' },
+  { path: '/discovery/asm', priority: '0.8', changefreq: 'monthly' },
+  { path: '/discovery/aim', priority: '0.7', changefreq: 'monthly' },
+  { path: '/discovery/was', priority: '0.7', changefreq: 'monthly' },
+  { path: '/discovery/vs', priority: '0.7', changefreq: 'monthly' },
+  { path: '/discovery/vm', priority: '0.8', changefreq: 'monthly' },
+  { path: '/about-us', priority: '0.5', changefreq: 'monthly' },
+  { path: '/our-work', priority: '0.6', changefreq: 'monthly' },
+  { path: '/contact-us', priority: '0.4', changefreq: 'yearly' },
 ];
 
 function generateSitemap() {

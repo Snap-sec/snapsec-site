@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import SEOHead from '../../components/SEOHead';
+import { OrganizationSchema, BreadcrumbSchema, FAQSchema } from '../../components/StructuredData';
 
 const STEPS = [
   {
@@ -339,6 +341,21 @@ const OurMethodologyPage = () => {
 
   return (
     <main className="content z-1 relative flex flex-col bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <SEOHead
+        title="Our Pentest Methodology — 10-Phase Security Testing Approach | Snapsec"
+        description="Snapsec's rigorous 10-phase penetration testing methodology combines reconnaissance, dynamic testing, access control modeling, and continuous retesting. Learn how we secure your applications."
+        canonicalUrl="https://snapsec.co/service/our-methodology"
+      />
+      <OrganizationSchema />
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: 'https://snapsec.co/' },
+        { name: 'Methodology', url: 'https://snapsec.co/service/our-methodology' },
+      ]} />
+      <FAQSchema questions={[
+        { question: 'What is Snapsec\'s penetration testing methodology?', answer: 'Snapsec follows a rigorous 10-phase methodology: Reconnaissance, Checklist Approach, Dynamic Security Testing, Automated Security Testing, Access Control Model Attacks, Component Security Testing, Report Writing, Remediation, Retesting, and Retest Reporting.' },
+        { question: 'Does Snapsec offer retesting after vulnerabilities are fixed?', answer: 'Yes, Snapsec provides unlimited retests. After your team patches identified vulnerabilities, our engineers re-test to verify fixes were applied correctly.' },
+        { question: 'What makes Snapsec\'s methodology different?', answer: 'Unlike automated-only scanners, Snapsec combines human expert analysis with automation. Our methodology emphasizes manual exploitation of business logic flaws and access control models that automated tools miss.' },
+      ]} />
 
       {/* ── HERO SECTION ── */}
       <section className="section-methodology-hero mt-[100px] lg:mt-[120px] bg-white">

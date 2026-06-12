@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
+import SEOHead from '../../components/SEOHead';
+import { OrganizationSchema, BreadcrumbSchema } from '../../components/StructuredData';
 
 const ContactUsPage = () => {
   const [state, handleSubmit] = useForm('mgoblqbe');
@@ -56,6 +58,16 @@ const ContactUsPage = () => {
 
   return (
     <main className="content z-1 relative flex flex-col bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <SEOHead
+        title="Contact Snapsec — Get in Touch with Our Security Team"
+        description="Contact Snapsec for penetration testing, vulnerability assessments, or platform demos. Email support@snapsec.co or use our contact form. Response within 24 hours."
+        canonicalUrl="https://snapsec.co/contact-us"
+      />
+      <OrganizationSchema />
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: 'https://snapsec.co/' },
+        { name: 'Contact Us', url: 'https://snapsec.co/contact-us' },
+      ]} />
       <section className="section-contact mt-[100px] lg:mt-[120px] pb-64px lg:pb-88px bg-white">
         <div className="container">
           {/* Main outer border container matching Discovery solutions sections */}

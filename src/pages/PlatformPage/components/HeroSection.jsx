@@ -21,7 +21,7 @@ const HeroSection = ({ isServicesPage }) => {
             <div className="h-full w-full">
               <div className="in-view h-full w-full" style={{ opacity: 1, transform: "none" }}>
                 <div style={{ width: "100%", height: "100%" }}>
-                  <img src="/assets/integrations-grid.svg" className="w-full h-full object-contain" alt="" />
+                  <img src="/assets/integrations-grid.svg" className="w-full h-full object-contain" alt="Snapsec platform integrations grid showing connected security tools and services" />
                 </div>
               </div>
             </div>
@@ -29,7 +29,7 @@ const HeroSection = ({ isServicesPage }) => {
           <div className="section-hero__grid pointer-events-none absolute -bottom-lg left-1/2 z-0 mx-auto flex w-[170%] -translate-x-1/2 justify-center md:w-[140%] lg:bottom-0 lg:w-full">
             <span className="block w-full lg:w-[1124px]" style={{ opacity: 1 }}>
               <img
-                alt="Grid"
+                alt="Snapsec background grid design"
                 width="1124"
                 height="680"
                 className="pointer-events-none w-full max-w-full select-none lg:w-[1124px] lg:max-w-none"
