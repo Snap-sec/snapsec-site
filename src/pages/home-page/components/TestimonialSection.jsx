@@ -4,41 +4,49 @@ import { useInView } from 'react-intersection-observer';
 
 const testimonials = [
   {
-    id: 'solaris',
-    logo: '/assets/solaris.svg',
-    authorName: 'Sarah Jenkins',
-    authorRole: 'VP of Infrastructure Security',
-    authorAvatar: '/assets/solaris-author.png',
-    quote: '"Before Snapsec, we had no clear visibility into our shadow IT and external exposures. Their continuous discovery and automated scanning identified critical perimeter vulnerabilities that traditional scanners missed."',
+    id: 'hala',
+    domain: 'hala.com',
+    logo: 'https://img.logo.dev/hala.com?token=pk_YDuXMfwrRe2kQtBuzc3Etg',
+    companyName: 'Hala Payments',
+    authorName: 'Ahmed Al Johani',
+    authorRole: 'CISO | Hala Payments',
+    authorAvatar: '/assets/ahmed-al-johani.png',
+    quote: '"Snapsec transformed how our team collaborates—tasks are clear, deadlines are met, and updates flow seamlessly, creating structure and transparency across every project."',
   },
   {
-    id: 'bankunited',
-    logo: '/assets/bank-united.svg',
-    authorName: 'David Stender',
-    authorRole: 'EVP, Enterprise Risk Officer & CISO',
-    authorAvatar: '/assets/david-stender.png',
-    quote: '"Understanding Non-Human Identities is crucial in cybersecurity, especially for enterprises operating in multi-environment or heavily cloud-based settings like ours. Snapsec fortifies companies by protecting these digital assets with clear visibility and full context."',
+    id: 'alif-bank',
+    domain: 'alif.tj',
+    logo: 'https://img.logo.dev/alif.tj?token=pk_YDuXMfwrRe2kQtBuzc3Etg',
+    companyName: 'Alif Bank',
+    authorName: 'Usmonjon Miraliev',
+    authorRole: 'CEO | Alif Bank',
+    authorAvatar: '/assets/usmonjon-miraliev.png',
+    quote: '"Snapsec Suite, combined with their expert services, gave us a complete security solution—continuous visibility from the platform and hands-on support for rapid, effective remediation."',
   },
   {
-    id: 'dexcom',
-    logo: '/assets/dexcom.svg',
-    authorName: 'Marcus Chen',
-    authorRole: 'Director of Application Security',
-    authorAvatar: '/assets/dexcom-author.png',
-    quote: '"The Dynamic Application Security Testing (DAST) in Snapsec\'s WAS module is exceptionally accurate. We integrated it directly into our CI/CD pipelines to catch vulnerabilities before they reach production."',
+    id: 'aila',
+    domain: 'aila.sa',
+    logo: 'https://img.logo.dev/aila.sa?token=pk_YDuXMfwrRe2kQtBuzc3Etg',
+    companyName: 'Aila',
+    authorName: 'Abdulaziz Bin Mugayel',
+    authorRole: 'Founder | Aila',
+    authorAvatar: '/assets/abdulaziz-bin-mugayel.png',
+    quote: '"Snapsec Suite has completely modernized our penetration testing workflow. We’ve finally moved away from static, outdated PDF reports to a dynamic, real-time platform where findings are continuously updated, tracked, and remediated."',
   },
   {
-    id: 'fluidra',
-    logo: '/assets/fluidra.svg',
-    authorName: 'Elena Rostova',
-    authorRole: 'Head of Cyber Operations',
-    authorAvatar: '/assets/fluidra-author.png',
-    quote: '"Managing asset inventory at scale was a nightmare. Snapsec\'s automated classification and team ownership mapping allowed us to assign and remediate vulnerabilities 3x faster than before."',
+    id: 'alif-uz',
+    domain: 'alif.uz',
+    logo: 'https://img.logo.dev/alif.uz?token=pk_YDuXMfwrRe2kQtBuzc3Etg',
+    companyName: 'Alif Uzbekistan',
+    authorName: 'Farzona',
+    authorRole: 'Project Manager | Alif Uzbekistan',
+    authorAvatar: '/assets/farzona.png',
+    quote: '"Snapsec’s quick, transparent process and always-available support make issue resolution effortless. It’s a stress-free, reliable experience that builds real confidence in delivery."',
   },
 ];
 
 export default function TestimonialSection() {
-  const [activeTab, setActiveTab] = useState('bankunited');
+  const [activeTab, setActiveTab] = useState('hala');
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
 
   const currentTestimonial = testimonials.find((t) => t.id === activeTab);
@@ -51,7 +59,7 @@ export default function TestimonialSection() {
           className="section-border section-border-top flex flex-col w-full"
         >
           {/* Tabs Row */}
-          <div className="flex w-full border-b border-gray-200 bg-white">
+          <div className="flex w-full border-b border-gray-200 bg-white overflow-x-auto scrollbar-none">
             {testimonials.map((t) => {
               const isActive = t.id === activeTab;
               return (
@@ -59,17 +67,24 @@ export default function TestimonialSection() {
                   key={t.id}
                   type="button"
                   onClick={() => setActiveTab(t.id)}
-                  className="relative flex items-center justify-center flex-1 h-[88px] border-r border-gray-200 last:border-r-0 cursor-pointer select-none transition-all duration-200 outline-none"
+                  className={`relative flex items-center justify-center gap-xs sm:gap-xs flex-1 min-w-[190px] h-[88px] border-r border-gray-200 last:border-r-0 cursor-pointer select-none transition-all duration-300 outline-none px-sm group ${
+                    isActive ? 'bg-white' : 'bg-gray-50'
+                  }`}
                 >
                   <img
                     src={t.logo}
-                    alt={`${t.id} logo`}
-                    className={`h-[28px] max-w-[140px] object-contain transition-all duration-300 ${
+                    alt={`${t.companyName} logo`}
+                    className={`h-[28px] w-[28px] object-contain rounded-md transition-all duration-300 ${
                       isActive 
-                        ? 'opacity-100 grayscale-0 filter brightness-0' 
-                        : 'opacity-40 grayscale filter contrast-50 hover:opacity-80'
+                        ? 'opacity-100 grayscale-0 filter' 
+                        : 'opacity-70 grayscale filter group-hover:opacity-100 group-hover:grayscale-0'
                     }`}
                   />
+                  <span className={`text-[18px] sm:text-[22px] font-bold font-['Space_Grotesk'] tracking-tight transition-all duration-300 ${
+                    isActive ? 'text-black' : 'text-gray-500 group-hover:text-black'
+                  }`}>
+                    {t.companyName}
+                  </span>
                   {/* Active bottom line */}
                   {isActive && (
                     <motion.div

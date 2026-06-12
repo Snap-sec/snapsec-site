@@ -48,7 +48,7 @@ export default function CTASection() {
                   />
                 </svg>
               </a>
-              <a href="mailto:support@snapsec.co" className="button-ghost-m">
+              <a href="/contact-us" className="button-ghost-m">
                 Contact Us
               </a>
             </motion.div>

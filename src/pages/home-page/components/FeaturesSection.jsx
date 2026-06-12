@@ -1,4 +1,5 @@
 import { useInView } from 'react-intersection-observer';
+import { Link } from 'react-router-dom';
 import { VMDashboard, ASMDashboard, AIMDashboard, VSDashboard, WASDashboard } from './DashboardIllustrations';
 
 const ArrowRight = () => (
@@ -10,6 +11,7 @@ const ArrowRight = () => (
 const features = [
   {
     label: { title: 'Vulnerability Management', bg: '#EAEFF6', color: '#3B4C63' },
+    slug: 'vm',
     title: 'Unify, prioritize, and remediate security findings.',
     links: [
       { icon: '/assets/visibility.svg', title: 'Unified Vulnerability Dashboard', link: 'https://docs.snapsec.co/products/vm/dashboard' },
@@ -21,7 +23,8 @@ const features = [
     layout: 'left',
   },
   {
-    label: { title: 'Attack Surface', bg: '#EAEFF6', color: '#3B4C63' },
+    label: { title: 'Attack Surface Management', bg: '#EAEFF6', color: '#3B4C63' },
+    slug: 'asm',
     title: 'Map and monitor your external attack surface.',
     links: [
       { icon: '/assets/visibility.svg', title: 'Continuous Asset Discovery', link: 'https://docs.snapsec.co/products/asm/asset-catalog' },
@@ -33,7 +36,8 @@ const features = [
     layout: 'right',
   },
   {
-    label: { title: 'Asset Inventory', bg: '#EAEFF6', color: '#3B4C63' },
+    label: { title: 'Asset Inventory Management', bg: '#EAEFF6', color: '#3B4C63' },
+    slug: 'aim',
     title: 'Unify and contextualize all digital assets.',
     links: [
       { icon: '/assets/visibility2.svg', title: '360° Asset Coverage (APIs, Repos, IPs)', link: 'https://docs.snapsec.co/products/aim/dashboard' },
@@ -45,6 +49,7 @@ const features = [
   },
   {
     label: { title: 'Vulnerability Scanning', bg: '#EAEFF6', color: '#3B4C63' },
+    slug: 'vs',
     title: 'Scan infrastructure continuously for active exposures.',
     links: [
       { icon: '/assets/threat-detection.svg', title: 'Continuous Infrastructure Scanning', link: 'https://docs.snapsec.co/products/vs/scanning' },
@@ -56,6 +61,7 @@ const features = [
   },
   {
     label: { title: 'Web Application Scanning', bg: '#EAEFF6', color: '#3B4C63' },
+    slug: 'was',
     title: 'Run automated DAST scans for web apps and APIs.',
     links: [
       { icon: '/assets/visibility.svg', title: 'Dynamic AppSec Testing (DAST)', link: 'https://docs.snapsec.co/products/was/overview' },
@@ -69,8 +75,8 @@ const features = [
 
 const dashboardMap = {
   'Vulnerability Management': VMDashboard,
-  'Attack Surface': ASMDashboard,
-  'Asset Inventory': AIMDashboard,
+  'Attack Surface Management': ASMDashboard,
+  'Asset Inventory Management': AIMDashboard,
   'Vulnerability Scanning': VSDashboard,
   'Web Application Scanning': WASDashboard,
 };
@@ -132,6 +138,16 @@ function FeatureBlock({ feature, index }) {
             </a>
           ))}
         </div>
+
+        <Link
+          to={`/discovery/${feature.slug}`}
+          className="group inline-flex items-center gap-xxs text-[14px] font-semibold text-gray-900 hover:text-black transition-colors border-b border-gray-900/10 hover:border-gray-900 pb-[2px] mt-xs"
+        >
+          <span>Explore {feature.label.title}</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0 transition-transform group-hover:translate-x-[2px]">
+            <path d="M5 3L9 7L5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </Link>
       </div>
 
       {/* Illustration column */}

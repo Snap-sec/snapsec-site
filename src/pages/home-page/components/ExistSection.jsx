@@ -42,26 +42,6 @@ function ExistCard({ item, index, isLast }) {
       {!isLast && (
         <div className="pointer-events-none absolute bottom-[-16px] left-1/2 z-[2] flex w-full -translate-x-1/2 items-center lg:bottom-1/2 lg:left-auto lg:right-[-54px] lg:h-full lg:w-[108px] lg:translate-x-0 lg:translate-y-1/2 lg:flex-col lg:py-0">
           <div className="h-[0.5px] w-full grow bg-gray-600 lg:h-full lg:w-[0.5px]" />
-          <motion.div
-            animate={controls}
-            initial="hidden"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1 },
-            }}
-            transition={{ duration: 0.5, delay: delay + 0.2 }}
-            className="bg-white px-xs lg:px-0 lg:py-xs"
-          >
-            <div className="mx-auto flex h-lg w-max shrink-0 items-center justify-center gap-[6px] rounded-[80px] border-[0.5px] border-black bg-white px-[10px]">
-              <span className="subtitle-xs">{item.stepText}</span>
-              <img
-                src="/assets/vector-arrow-right.svg"
-                alt="→"
-                className="w-[5px] rotate-90 lg:rotate-0"
-              />
-            </div>
-          </motion.div>
-          <div className="h-[0.5px] w-full grow bg-gray-600 lg:h-full lg:w-[0.5px]" />
         </div>
       )}
 
