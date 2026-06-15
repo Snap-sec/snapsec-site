@@ -6,7 +6,7 @@ const HeroSection = () => {
       <div className="container">
         {/* Main outer border container matching Discovery solutions and ContactUs sections */}
         <div className="section-border section-border-top flex flex-col border-b border-gray-600 border-x-[0.5px]">
-          
+
           {/* Main Column: Heading, Mission description, Stats */}
           <div className="flex flex-col items-center justify-center px-sm sm:px-xl lg:px-80px py-lg lg:py-[120px] gap-xl text-center">
             <div className="flex flex-col items-center gap-sm w-full">
@@ -28,12 +28,12 @@ const HeroSection = () => {
                 <span className="text-[10px] font-semibold text-gray-900 uppercase tracking-wider text-center">Assessments<br />Completed</span>
               </div>
               <div className="flex flex-col gap-[4px] items-center">
-                <span className="text-[20px] sm:text-[24px] font-bold text-black leading-none">150+</span>
-                <span className="text-[10px] font-semibold text-gray-900 uppercase tracking-wider text-center">Critical Bugs<br />Patched</span>
+                <span className="text-[20px] sm:text-[24px] font-bold text-black leading-none">3000+</span>
+                <span className="text-[10px] font-semibold text-gray-900 uppercase tracking-wider text-center">Critical Bugs<br />Found</span>
               </div>
               <div className="flex flex-col gap-[4px] items-center">
-                <span className="text-[20px] sm:text-[24px] font-bold text-black leading-none">10+</span>
-                <span className="text-[10px] font-semibold text-gray-900 uppercase tracking-wider text-center">Industries<br />Secured</span>
+                <span className="text-[20px] sm:text-[24px] font-bold text-black leading-none">70+</span>
+                <span className="text-[10px] font-semibold text-gray-900 uppercase tracking-wider text-center">Orgs<br />Secured</span>
               </div>
             </div>
           </div>
