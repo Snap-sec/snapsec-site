@@ -7,35 +7,40 @@ const TeamSection = () => {
       role: "Founder",
       initials: "IP",
       tag: "FND",
-      photo: "/images/leadership/imran.jpg"
+      photo: "/images/leadership/imran.jpg",
+      linkedin: "https://www.linkedin.com/in/imran-parray/"
     },
     {
       name: "Ahmed Al Johani",
       role: "Co-founder",
       initials: "AA",
       tag: "COF",
-      photo: "/images/leadership/ahmed.jpg"
+      photo: "/images/leadership/ahmed.jpg",
+      linkedin: "https://www.linkedin.com/in/aaljohani/"
     },
     {
       name: "Mubashir Mehraj",
       role: "VP of Sales",
       initials: "MM",
       tag: "SLS",
-      photo: null
+      photo: "/images/leadership/mubashir.png",
+      linkedin: "https://www.linkedin.com/in/mubashir-paray"
     },
     {
       name: "Shoaib Hussan Wani",
       role: "VP of Engineering",
       initials: "SW",
       tag: "ENG",
-      photo: "/images/leadership/shoaib.png"
+      photo: "/images/leadership/shoaib.png",
+      linkedin: "https://www.linkedin.com/in/shoaibhassanwani"
     },
     {
       name: "Mohammed Owaise",
       role: "Security Manager",
       initials: "MO",
       tag: "SEC",
-      photo: "/images/leadership/owais.png"
+      photo: "/images/leadership/owais.png",
+      linkedin: "https://www.linkedin.com/in/mohammadowaiss/"
     }
   ];
 
@@ -93,9 +98,22 @@ const TeamSection = () => {
 
                 {/* Details */}
                 <div className="flex flex-col mt-xxs">
-                  <h3 className="text-[15px] sm:text-[16px] font-semibold text-black leading-snug group-hover:text-primary transition-colors">
-                    {member.name}
-                  </h3>
+                  <div className="flex items-center justify-between gap-xs">
+                    <h3 className="text-[15px] sm:text-[16px] font-semibold text-black leading-snug group-hover:text-primary transition-colors">
+                      {member.name}
+                    </h3>
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-[#0077B5] transition-colors shrink-0 p-[2px]"
+                      aria-label={`${member.name} LinkedIn Profile`}
+                    >
+                      <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                      </svg>
+                    </a>
+                  </div>
                   <p className="text-[12px] sm:text-[13px] text-gray-900 font-normal">
                     {member.role}
                   </p>
