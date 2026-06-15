@@ -189,8 +189,8 @@ const BenefitsSection = ({ isServicesPage }) => {
                 <p className="body-heading-xl [&_br]:hidden lg:[&_br]:block">
                   {isServicesPage ? (
                     <>
-                      Assess. Verify. <br />
-                      Remediate. Protect. Secure.
+                      Request a <br />
+                      Security Audit
                     </>
                   ) : (
                     <>
@@ -202,7 +202,7 @@ const BenefitsSection = ({ isServicesPage }) => {
                 <div className="z-2 relative">
                   <Link to="/contact-us" className="group button-primary-s">
                     <span className="block">
-                      Book a Demo
+                      {isServicesPage ? 'Request Audit' : 'Book a Demo'}
                       <span className="inline-block tracking-normal transition-transform duration-300 group-hover:translate-x-[2px]">
                         -&gt;
                       </span>

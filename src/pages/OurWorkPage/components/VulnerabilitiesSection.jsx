@@ -4,14 +4,14 @@ const VulnerabilitiesSection = () => {
   const vulnerabilities = [
     { title: "Vulnerable to Log4shell on Box (CVE-2021-44228)", company: "Box", domain: "box.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Dec 2021" },
     { title: "Vulnerable to Log4shell Agorapulse (CVE-2021-44228)", company: "Agorapulse", domain: "agorapulse.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Dec 2021" },
-    { title: "Broken Access Control Leads to Huge Data Breach", company: "Twilio", domain: "twilio.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Aug 2022" },
+    { title: "Broken Access Control Enabling Large-Scale Data Exposure", company: "Twilio", domain: "twilio.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Aug 2022" },
     { title: "Vulnerable to Log4shell on Box (CVE-2021-44228)", company: "Box", domain: "box.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Jan 2022" },
-    { title: "Executing Custom Database Scripts from un-authorized roles", company: "Auth0", domain: "auth0.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Sep 2023" },
-    { title: "Executing Custom Database Scripts on Non-custom Database Or when custom Database is not Enabled", company: "Auth0", domain: "auth0.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Oct 2023" },
+    { title: "Execution of Custom Database Scripts from Unauthorized Roles", company: "Auth0", domain: "auth0.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Sep 2023" },
+    { title: "Execution of Custom Database Scripts on Non-Custom Databases or When Custom Database is Disabled", company: "Auth0", domain: "auth0.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Oct 2023" },
     { title: "Hibob Vulnerable to log4j RCE", company: "Hibob", domain: "hibob.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Jan 2022" },
     { title: "Log4j Java RCE [CVE-2021-44228] on gopro.com", company: "GoPro", domain: "gopro.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Dec 2021" },
-    { title: "Attacker is able to join any tenant on larksuite and view personal files/chats.", company: "Larksuite", domain: "larksuite.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Mar 2024" },
-    { title: "Account takeover by web cache deception attack + Personal information being leaked", company: "Hayatt Hotels", domain: "hyatt.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "May 2023" },
+    { title: "Unauthorized Multi-Tenant Access and Data Exposure on Larksuite", company: "Larksuite", domain: "larksuite.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Mar 2024" },
+    { title: "Account Takeover and Personally Identifiable Information (PII) Exposure via Web Cache Deception", company: "Hayatt Hotels", domain: "hyatt.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "May 2023" },
     { title: "Grafana Arbitrary Read File Vulnerability on datafoundry", company: "datafoundry", domain: "datafoundry.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Dec 2021" },
     { title: "Grafana Arbitrary Read File Vulnerability on Spectrum.net", company: "Spectrum", domain: "spectrum.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Dec 2021" },
     { title: "IDOR leads to Full Organisation Takeover", company: "Samsara", domain: "samsara.com", severity: "Critical", severityClass: "bg-red-50 text-red-700 border-red-200", date: "Apr 2024" },
@@ -31,7 +31,7 @@ const VulnerabilitiesSection = () => {
               High-Impact Vulnerabilities Discovered
             </h2>
             <p className="text-[14px] sm:text-[15px] text-gray-900 font-normal max-w-[800px]">
-              Our offensive security researchers actively participate in bug bounty programs and responsible disclosures, identifying critical vulnerabilities in some of the world's largest technology platforms.
+              Our offensive security researchers actively participate in bug bounty programs and responsible disclosures, identifying critical vulnerabilities in leading global technology platforms.
             </p>
           </div>
 

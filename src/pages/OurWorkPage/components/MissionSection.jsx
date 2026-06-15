@@ -21,10 +21,10 @@ const MissionSection = () => {
           {/* Right Column: Mission Text (Span 8) */}
           <div className="lg:col-span-8 flex flex-col gap-md">
             <p className="text-[16px] sm:text-[18px] text-gray-900 leading-[1.5] font-normal">
-              We do not copy-paste automated vulnerability scanner outputs and call it a day. Our approach is entirely impact-driven: we perform deep, manual adversarial testing to locate critical business logic flaws and vulnerabilities that automated scanners are fundamentally blind to. You can read more about how we work in our <Link to="/service/our-methodology" className="underline hover:text-black font-semibold transition-colors">Methodology</Link>.
+              We go beyond automated vulnerability scanning. Our assessments combine advanced security tooling with expert-led manual testing to identify high-impact vulnerabilities, business logic flaws, and application-specific risks that automated solutions often miss. Every finding is validated, prioritized, and assessed based on its real-world business impact, enabling organizations to focus on the risks that matter most. Learn more about our approach in our <Link to="/service/our-methodology" className="underline hover:text-black font-semibold transition-colors">Methodology</Link>.
             </p>
             <p className="text-[16px] sm:text-[18px] text-gray-900 leading-[1.5] font-normal">
-              Our core team is composed of elite, vetted offensive security specialists—including top-ranked bug bounty hunters on HackerOne and Bugcrowd. We focus on finding high-impact flaws that represent real business risk, giving you actionable insights rather than lists of low-severity noise.
+              Our core team comprises vetted offensive security specialists, including top-ranked threat researchers on global bug bounty platforms. We focus on identifying high-impact vulnerabilities that present material risks to your operations, delivering actionable intelligence rather than reports of low-severity noise.
             </p>
           </div>
 

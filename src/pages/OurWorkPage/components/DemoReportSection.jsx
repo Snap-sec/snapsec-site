@@ -20,7 +20,7 @@ const DemoReportSection = () => {
           {/* Right Column: Text & CTA (Span 8) */}
           <div className="lg:col-span-8 flex flex-col gap-md">
             <p className="text-[16px] sm:text-[18px] text-gray-900 leading-[1.5] font-normal">
-              We don't just find vulnerabilities—we document them with high-fidelity precision. Our deliverables provide clear, step-by-step reproduction scripts, request/response headers, and exact proof-of-concepts so your development team can validate and remediate the risk immediately.
+              Our assessments extend beyond identifying vulnerabilities to documenting them with high-fidelity precision. Our deliverables provide detailed reproduction steps, HTTP request/response parameters, and verified proof-of-concepts, enabling engineering teams to validate and remediate risks immediately.
             </p>
             <p className="text-[16px] sm:text-[18px] text-gray-900 leading-[1.5] font-normal">
               Our redacted sample penetration testing report demonstrates this level of detail, showcasing how we map CVSS severity, outline business logic attack paths, and deliver tailor-made remediation recommendations for each finding.

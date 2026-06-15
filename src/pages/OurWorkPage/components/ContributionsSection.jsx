@@ -80,7 +80,7 @@ const ContributionsSection = () => {
               Clients & Bug Bounty
             </span>
             <h2 className="text-[28px] sm:text-[36px] font-semibold leading-[1.2] text-black tracking-tight">
-              Organizations We've Helped Secure
+              Organizations We Have Helped Secure
             </h2>
             <p className="text-[14px] sm:text-[15px] text-gray-900 font-normal max-w-[650px]">
               We actively research security vulnerabilities, engage in responsible disclosures, and contribute to hardening the products of leading enterprise and tech organizations.
