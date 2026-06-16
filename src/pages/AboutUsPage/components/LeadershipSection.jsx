@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TeamSection = () => {
+const LeadershipSection = () => {
   const team = [
     {
       name: "Imran Parray",
@@ -33,14 +33,6 @@ const TeamSection = () => {
       tag: "ENG",
       photo: "/images/leadership/shoaib.png",
       linkedin: "https://www.linkedin.com/in/shoaibhassanwani"
-    },
-    {
-      name: "Mohammed Owaise",
-      role: "Security Manager",
-      initials: "MO",
-      tag: "SEC",
-      photo: "/images/leadership/owais.png",
-      linkedin: "https://www.linkedin.com/in/mohammadowaiss/"
     }
   ];
 
@@ -63,8 +55,8 @@ const TeamSection = () => {
             </p>
           </div>
 
-          {/* Grid of Team Members - 5 columns on desktop */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-md md:gap-lg mt-md">
+          {/* Grid of Team Members - 4 columns on desktop */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-md md:gap-lg mt-md">
             {team.map((member, idx) => (
               <div key={idx} className="flex flex-col gap-xs group">
                 {/* CSS Avatar Wrapper */}
@@ -128,4 +120,4 @@ const TeamSection = () => {
   );
 };
 
-export default TeamSection;
+export default LeadershipSection;

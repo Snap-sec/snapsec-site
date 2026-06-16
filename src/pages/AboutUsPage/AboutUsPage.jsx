@@ -4,7 +4,8 @@ import MissionSection from './components/MissionSection';
 import ValuesSection from './components/ValuesSection';
 import ContributionsSection from './components/ContributionsSection';
 import GlobalPresenceSection from './components/GlobalPresenceSection';
-import TeamSection from './components/TeamSection';
+import TestimonialSection from './components/TestimonialSection';
+import LeadershipSection from './components/LeadershipSection';
 import CTASection from '../PlatformPage/components/CTASection';
 import SEOHead from '../../components/SEOHead';
 import { OrganizationSchema, BreadcrumbSchema } from '../../components/StructuredData';
@@ -26,8 +27,9 @@ const AboutUsPage = () => {
       <MissionSection />
       <ValuesSection />
       <ContributionsSection />
+      <TestimonialSection />
       <GlobalPresenceSection />
-      <TeamSection />
+      <LeadershipSection />
       <CTASection />
     </main>
   );

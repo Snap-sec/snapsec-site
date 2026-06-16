@@ -6,7 +6,7 @@ import ContributionsSection from './components/ContributionsSection';
 import ResearchSection from './components/ResearchSection';
 import DemoReportSection from './components/DemoReportSection';
 import GlobalPresenceSection from './components/GlobalPresenceSection';
-import TeamSection from './components/TeamSection';
+import RedTeamLeadersSection from './components/RedTeamLeadersSection';
 import CTASection from '../PlatformPage/components/CTASection';
 import SEOHead from '../../components/SEOHead';
 import { OrganizationSchema, BreadcrumbSchema } from '../../components/StructuredData';
@@ -34,7 +34,7 @@ const OurWorkPage = () => {
       <GlobalPresenceSection />
 
       <ResearchSection />
-      <TeamSection />
+      <RedTeamLeadersSection />
       <CTASection isServicesPage={true} />
     </main>
   );

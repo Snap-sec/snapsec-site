@@ -30,7 +30,7 @@ const ContributionsSection = () => {
   ];
 
   return (
-    <section className="section-contributions bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <section id="organizations" className="section-contributions bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div className="container">
         {/* Main outer border container matching other pages */}
         <div className="section-border flex flex-col gap-xl px-sm py-xxl sm:px-xl lg:px-80px lg:py-88px border-b border-gray-600 border-x-[0.5px] bg-white">

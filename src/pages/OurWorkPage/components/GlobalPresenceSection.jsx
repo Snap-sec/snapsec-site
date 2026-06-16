@@ -37,7 +37,7 @@ const GlobalPresenceSection = () => {
 
               {/* Description */}
               <p className="text-[14px] sm:text-[15px] text-gray-900 leading-[1.5] mt-sm">
-                Our globally distributed team of penetration testers operates 24/7. We simulate real-world advanced persistent threats (APTs) from multiple regions to rigorously test your defenses and geo-fencing controls.
+                We provide tailored application security services and unified vulnerability management solutions to secure our clients and protect their digital assets across multiple regions.
               </p>
             </div>
 

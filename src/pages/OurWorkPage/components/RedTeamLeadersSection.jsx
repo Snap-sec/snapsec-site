@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TeamSection = () => {
+const RedTeamLeadersSection = () => {
   const team = [
     {
       name: "Imran Parray",
@@ -19,20 +19,12 @@ const TeamSection = () => {
       linkedin: "https://www.linkedin.com/in/aaljohani/"
     },
     {
-      name: "Mubashir Mehraj",
-      role: "VP of Sales",
-      initials: "MM",
-      tag: "SLS",
-      photo: "/images/leadership/mubashir.png",
-      linkedin: "https://www.linkedin.com/in/mubashir-paray"
-    },
-    {
-      name: "Shoaib Hussan Wani",
-      role: "VP of Engineering",
-      initials: "SW",
-      tag: "ENG",
-      photo: "/images/leadership/shoaib.png",
-      linkedin: "https://www.linkedin.com/in/shoaibhassanwani"
+      name: "Imran Nisar",
+      role: "Head of Security",
+      initials: "IN",
+      tag: "SEC",
+      photo: "/images/red-team/imran nissar.jpeg",
+      linkedin: "https://www.linkedin.com"
     },
     {
       name: "Mohammed Owaise",
@@ -43,7 +35,6 @@ const TeamSection = () => {
       linkedin: "https://www.linkedin.com/in/mohammadowaiss/"
     }
   ];
-
   return (
     <section className="section-team bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
       <div className="container">
@@ -63,8 +54,8 @@ const TeamSection = () => {
             </p>
           </div>
 
-          {/* Grid of Team Members - 5 columns on desktop */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-md md:gap-lg mt-md">
+          {/* Grid of Team Members - 4 columns on desktop */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-md md:gap-lg mt-md max-w-[1200px]">
             {team.map((member, idx) => (
               <div key={idx} className="flex flex-col gap-xs group">
                 {/* CSS Avatar Wrapper */}
@@ -122,10 +113,11 @@ const TeamSection = () => {
             ))}
           </div>
 
+
         </div>
       </div>
     </section>
   );
 };
 
-export default TeamSection;
+export default RedTeamLeadersSection;
