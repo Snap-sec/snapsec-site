@@ -16,7 +16,7 @@ const footerLinks = {
   Resources: [
     { label: 'Documentation', href: 'https://docs.snapsec.co', external: true },
     { label: 'Blog', href: 'https://blog.snapsec.co', external: true },
-    { label: 'Support Email', href: 'mailto:support@snapsec.co', external: true },
+    { label: 'Our Work', href: '/our-work' },
     { label: 'Live Demo', href: 'https://suite.snapsec.co/demo', external: true },
   ],
   Company: [
@@ -46,11 +46,6 @@ const socialLinks = [
   },
 ];
 
-const certifications = [
-  { src: '/assets/aicpa_soc.svg', alt: 'SOC 2' },
-  { src: '/assets/iso.svg', alt: 'ISO 27001' },
-];
-
 export default function Footer() {
   return (
     <footer className="bg-black text-white">
@@ -71,18 +66,6 @@ export default function Footer() {
                 A centralized AppSec platform unifying discovery, vulnerability management, 
                 intelligence, and protection across your entire ecosystem.
               </p>
-
-              {/* Certifications */}
-              <div className="flex items-center gap-md">
-                {certifications.map((cert) => (
-                  <img
-                    key={cert.alt}
-                    src={cert.src}
-                    alt={cert.alt}
-                    className="h-xl w-auto opacity-60"
-                  />
-                ))}
-              </div>
 
               {/* Social */}
               <div className="flex items-center gap-sm">
@@ -164,22 +147,18 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-md">
               <a
-                href="#"
+                href="/privacy-policy"
                 className="body-text-xxxs text-gray-500 transition-colors hover:text-white"
               >
                 Privacy Policy
               </a>
               <a
-                href="#"
+                href="https://docs.snapsec.co"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="body-text-xxxs text-gray-500 transition-colors hover:text-white"
               >
-                Terms of Use
-              </a>
-              <a
-                href="#"
-                className="body-text-xxxs text-gray-500 transition-colors hover:text-white"
-              >
-                Trust Center
+                Docs
               </a>
             </div>
           </div>

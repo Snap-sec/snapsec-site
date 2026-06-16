@@ -8,7 +8,9 @@ import ServicesPage, { MethodologyPage, OurMethodologyPage } from './pages/Servi
 import AboutUsPage from './pages/AboutUsPage/index.jsx';
 import OurWorkPage from './pages/OurWorkPage/index.jsx';
 import ContactUsPage from './pages/ContactUsPage/index.jsx';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage/index.jsx';
 import NotFoundPage from './pages/NotFoundPage/index.jsx';
+
 
 const BlogRedirect = () => {
   const location = useLocation();
@@ -42,6 +44,7 @@ export default function AppRoutes() {
       <Route path="/about-us" element={<AboutUsPage />} />
       <Route path="/our-work" element={<OurWorkPage />} />
       <Route path="/contact-us" element={<ContactUsPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
       <Route path="/blog/*" element={<BlogRedirect />} />
       <Route path="/blog" element={<BlogRedirect />} />
       <Route path="*" element={<NotFoundPage />} />
