@@ -3,40 +3,40 @@ import React from 'react';
 const ResearchSection = () => {
   const blogs = [
     {
-      title: "Zero-Day in Enterprise VPN",
-      description: "How we bypassed multifactor authentication on a major VPN appliance.",
-      date: "May 12, 2026",
-      link: "https://blog.snapsec.co/zero-day-vpn"
+      title: "How We Identified Multiple Issues in Zendesk",
+      description: "A deep dive into multiple access control weaknesses and business logic vulnerabilities identified in Zendesk.",
+      date: "April 08, 2026",
+      link: "https://blog.snapsec.co/zendesk-multiple-vulnerabilities/"
     },
     {
-      title: "Exploiting OAuth Implementations",
-      description: "Common pitfalls in modern OAuth integrations leading to account takeover.",
-      date: "April 28, 2026",
-      link: "https://blog.snapsec.co/oauth-exploits"
+      title: "How did we Found Log4shell on Agorapulse",
+      description: "A technical write-up detailing the discovery and execution of the Log4j RCE vulnerability on Agorapulse.",
+      date: "March 25, 2026",
+      link: "https://blog.snapsec.co/log4shell-on-agorapulse/"
     },
     {
-      title: "Cloud Misconfigurations",
-      description: "A deep dive into AWS IAM privilege escalation paths.",
-      date: "March 15, 2026",
-      link: "https://blog.snapsec.co/aws-iam-privesc"
+      title: "We Hacked Larksuite For 1 month and Here is what we found",
+      description: "A month of research on Larksuite yielding multiple critical privilege escalations and access control bypasses.",
+      date: "October 22, 2025",
+      link: "https://blog.snapsec.co/hacking-larksuite/"
     },
     {
-      title: "Bypassing Modern WAFs",
-      description: "Techniques used by our Red Team to circumvent popular Web Application Firewalls.",
-      date: "February 04, 2026",
-      link: "https://blog.snapsec.co/waf-bypass"
+      title: "Access to private files of helpdesk",
+      description: "Broken access control in Larksuite allowed team administrators to view ticket attachments and private files of separate helpdesks.",
+      date: "February 28, 2020",
+      link: "https://hackerone.com/reports/804534"
     },
     {
-      title: "Smart Contract Vulnerabilities",
-      description: "Analyzing the logic flaws that led to a $10M exploit simulation.",
-      date: "January 19, 2026",
-      link: "https://blog.snapsec.co/smart-contract-flaws"
+      title: "Unauthorized Tenant Join on Larksuite",
+      description: "Critical privilege escalation flaw in Larksuite allowed unauthorized external users to join any tenant and view shared files and chats.",
+      date: "October 07, 2021",
+      link: "https://hackerone.com/reports/1363185"
     },
     {
-      title: "Active Directory Persistence",
-      description: "Novel ways of maintaining access in highly secure corporate networks.",
-      date: "December 10, 2025",
-      link: "https://blog.snapsec.co/ad-persistence"
+      title: "App Approval Privilege Escalation on Larksuite",
+      description: "Improper authorization checks enabled non-privileged Lark suite users to bypass admin app approvals, leading to privilege escalation.",
+      date: "April 19, 2021",
+      link: "https://hackerone.com/reports/1168475"
     }
   ];
 
