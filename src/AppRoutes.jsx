@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/home-page/home-pages.jsx';
 import ModuleViewPage from './pages/ModuleViewPage/index.jsx';
 import DiscoveryPage from './pages/DiscoveryPage/index.jsx';
@@ -11,23 +11,6 @@ import ContactUsPage from './pages/ContactUsPage/index.jsx';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage/index.jsx';
 import NotFoundPage from './pages/NotFoundPage/index.jsx';
 
-
-const BlogRedirect = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    window.location.replace('https://blog.snapsec.co/');
-  }, []);
-
-  return (
-    <div className="flex h-screen w-screen items-center justify-center bg-white font-sans text-black">
-      <div className="flex flex-col items-center gap-[12px]">
-        <div className="h-[24px] w-[24px] animate-spin rounded-full border-2 border-gray-200 border-t-black" />
-        <p className="text-[14px] font-medium tracking-tight">Redirecting to Snapsec Blog...</p>
-      </div>
-    </div>
-  );
-};
 
 export default function AppRoutes() {
   return (
@@ -45,8 +28,6 @@ export default function AppRoutes() {
       <Route path="/our-work" element={<OurWorkPage />} />
       <Route path="/contact-us" element={<ContactUsPage />} />
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-      <Route path="/blog/*" element={<BlogRedirect />} />
-      <Route path="/blog" element={<BlogRedirect />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
