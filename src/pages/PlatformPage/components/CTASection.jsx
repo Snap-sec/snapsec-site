@@ -1,36 +1,41 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const CTASection = ({ isServicesPage }) => {
+const CTASection = ({ isServicesPage, title, subtitle, ctaText, ctaLink, badge }) => {
   return (
     <div className="section-platform-cta">
       <div className="container bg-white">
         <div className="section-platform-cta__wrapper relative flex flex-col gap-xxl overflow-hidden border-x-[0.5px] border-t-[0.5px] border-gray-600 px-sm pt-[100px] pb-xxl text-center sm:px-xl lg:gap-64px lg:px-80px lg:py-88px">
           <div className="relative flex w-full flex-col items-center gap-lg lg:gap-lg">
-            <div className="relative z-2 flex flex-col gap-sm lg:gap-lg">
-              <h3 className="heading-h1 mx-auto w-full max-w-[650px]">
-                {isServicesPage
+            <div className="relative z-2 flex flex-col items-center gap-sm lg:gap-md">
+              {badge && (
+                <span className="inline-block rounded-full bg-black/5 px-3 py-1 text-[11px] font-semibold text-black uppercase tracking-wider">
+                  {badge}
+                </span>
+              )}
+              <h3 className="heading-h1 mx-auto w-full max-w-[720px]">
+                {title || (isServicesPage
                   ? "Request for Services"
-                  : "One Platform to Replace your fragmental toolset"}
+                  : "One Platform to Replace your fragmental toolset")}
               </h3>
               <p
-                className="subtitle-m mx-auto w-full max-w-[480px]"
+                className="subtitle-m mx-auto w-full max-w-[560px]"
                 style={{ textAlign: 'center' }}
               >
-                {isServicesPage
+                {subtitle || (isServicesPage
                   ? "Get in touch with our experts to secure your applications, infrastructure, and cloud environments."
-                  : "Discover, detect, prioritize, and remediate — all from a single unified security platform built for modern enterprises."}
+                  : "Discover, detect, prioritize, and remediate — all from a single unified security platform built for modern enterprises.")}
               </p>
             </div>
             <div className="relative z-2">
               <Link
                 className="group button-primary-m min-w-[198px]"
-                to="/contact-us"
+                to={ctaLink || "/contact-us"}
               >
                 <span className="block">
-                  {isServicesPage ? "Contact Us" : "See Snapsec in Action"}{' '}
+                  {ctaText || (isServicesPage ? "Contact Us" : "See Snapsec in Action")}{' '}
                   <span className="inline-block tracking-normal transition-transform duration-300 group-hover:translate-x-[2px]">
-                    -&gt;
+                    →
                   </span>
                 </span>
               </Link>

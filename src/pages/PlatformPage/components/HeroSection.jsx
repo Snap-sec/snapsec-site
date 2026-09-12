@@ -1,31 +1,56 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const HeroSection = ({ isServicesPage }) => {
+const HeroSection = ({ isServicesPage, title, subtitle, ctaText, ctaLink, ctaNote, featureCards }) => {
   return (
     <div className="section-platform-hero mt-120px overflow-hidden lg:mt-140px">
       <div className="container bg-white">
         <div className="section-platform-hero__wrapper relative flex flex-col gap-xl overflow-hidden border-x-[0.5px] border-gray-600 px-sm pb-64px sm:px-xl lg:gap-xxl lg:px-80px lg:pb-88px">
           <div className="section-platform-hero__heading mx-auto flex w-full max-w-[790px] flex-col gap-md text-center">
             <h1 className="heading-hero">
-              {isServicesPage 
+              {title || (isServicesPage 
                 ? "Cybersecurity Services" 
-                : "All Your Application Security Needs Centralized At One Place"}
+                : "All Your Application Security Needs Centralized At One Place")}
             </h1>
             <p className="subtitle-m mx-auto w-full [&_br]:hidden lg:[&_br]:inline-block">
-              {isServicesPage
+              {subtitle || (isServicesPage
                 ? "We help businesses identify vulnerabilities, manage exposure, and protect their digital infrastructure from cyber threats."
-                : "Eliminate the complexity of scattered security tools with a unified platform that brings visibility, governance, and threat detection together."}
+                : "Eliminate the complexity of scattered security tools with a unified platform that brings visibility, governance, and threat detection together.")}
             </p>
+            {ctaText && (
+              <div className="pt-2 flex flex-col items-center gap-2 z-2 relative">
+                <Link
+                  to={ctaLink || "/contact-us"}
+                  className="group button-primary-m"
+                >
+                  <span>{ctaText}</span>
+                  <span className="inline-block tracking-normal transition-transform duration-300 group-hover:translate-x-[2px]">
+                    →
+                  </span>
+                </Link>
+                {ctaNote && (
+                  <span className="text-[12px] text-gray-500 font-medium">
+                    {ctaNote}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
-          <div className="pointer-events-none relative z-1 mx-auto aspect-[632/290] w-full max-w-[632px] lg:pointer-events-auto">
-            <div className="h-full w-full">
-              <div className="in-view h-full w-full" style={{ opacity: 1, transform: "none" }}>
-                <div style={{ width: "100%", height: "100%" }}>
-                  <img src="/assets/integrations-grid.svg" className="w-full h-full object-contain" alt="Snapsec platform integrations grid showing connected security tools and services" />
+          {featureCards ? (
+            <div className="relative z-1 mx-auto w-full">
+              {featureCards}
+            </div>
+          ) : (
+            <div className="pointer-events-none relative z-1 mx-auto aspect-[632/290] w-full max-w-[632px] lg:pointer-events-auto">
+              <div className="h-full w-full">
+                <div className="in-view h-full w-full" style={{ opacity: 1, transform: "none" }}>
+                  <div style={{ width: "100%", height: "100%" }}>
+                    <img src="/assets/integrations-grid.svg" className="w-full h-full object-contain" alt="Snapsec platform integrations grid showing connected security tools and services" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
           <div className="section-hero__grid pointer-events-none absolute -bottom-lg left-1/2 z-0 mx-auto flex w-[170%] -translate-x-1/2 justify-center md:w-[140%] lg:bottom-0 lg:w-full">
             <span className="block w-full lg:w-[1124px]" style={{ opacity: 1 }}>
               <img

@@ -10,6 +10,7 @@ const BASE_URL = 'https://snapsec.co';
 const routes = [
   { path: '/', priority: '1.0', changefreq: 'weekly' },
   { path: '/platform', priority: '0.9', changefreq: 'weekly' },
+  { path: '/money2020', priority: '0.8', changefreq: 'weekly' },
   { path: '/services', priority: '0.8', changefreq: 'monthly' },
   { path: '/service/our-methodology', priority: '0.7', changefreq: 'yearly' },
   { path: '/discovery/asm', priority: '0.8', changefreq: 'monthly' },

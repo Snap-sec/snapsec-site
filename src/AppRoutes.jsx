@@ -9,6 +9,7 @@ import AboutUsPage from './pages/AboutUsPage/index.jsx';
 import OurWorkPage from './pages/OurWorkPage/index.jsx';
 import ContactUsPage from './pages/ContactUsPage/index.jsx';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage/index.jsx';
+import Money2020Page from './pages/Money2020Page/index.jsx';
 import NotFoundPage from './pages/NotFoundPage/index.jsx';
 
 
@@ -20,6 +21,7 @@ export default function AppRoutes() {
       <Route path="/discovery" element={<DiscoveryPage />} />
       <Route path="/discovery/:moduleSlug" element={<DiscoveryPage />} />
       <Route path="/platform" element={<PlatformPage />} />
+      <Route path="/money2020" element={<Money2020Page />} />
       <Route path="/services" element={<ServicesPage />} />
       <Route path="/services/methodology" element={<MethodologyPage />} />
       <Route path="/service/our-methodology" element={<OurMethodologyPage />} />
