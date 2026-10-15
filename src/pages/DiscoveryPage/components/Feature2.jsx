@@ -525,9 +525,61 @@ function VSMultiScannerMap() {
 // Interactive Compliance Dashboard with 24-Dot Policy Grid
 function StaticComplianceDashboard({ moduleSlug }) {
   const isVS = moduleSlug === 'vs';
-  const isASM = moduleSlug === 'asm' || !isVS;
+  const isSCA = moduleSlug === 'sca';
+  const isASM = moduleSlug === 'asm' || (!isVS && !isSCA);
 
   const [selectedRuleId, setSelectedRuleId] = useState(0);
+
+  const scaAssets = [
+    {
+      id: 0,
+      name: "frontend-app",
+      type: "Repository • package.json",
+      status: "Non-Compliant",
+      violationsCount: 1,
+      checkedTime: "Updated 5m ago"
+    },
+    {
+      id: 1,
+      name: "auth-service",
+      type: "Repository • Cargo.toml / Image",
+      status: "Non-Compliant",
+      violationsCount: 2,
+      checkedTime: "Updated 12m ago"
+    },
+    {
+      id: 2,
+      name: "payment-portal",
+      type: "Repository • pom.xml",
+      status: "Compliant",
+      violationsCount: 0,
+      checkedTime: "Updated 30m ago"
+    },
+    {
+      id: 3,
+      name: "data-pipeline",
+      type: "Repository • requirements.txt",
+      status: "Compliant",
+      violationsCount: 0,
+      checkedTime: "Updated 1h ago"
+    },
+    {
+      id: 4,
+      name: "node:18-alpine",
+      type: "Base Image Layer",
+      status: "Compliant",
+      violationsCount: 0,
+      checkedTime: "Updated 2h ago"
+    },
+    {
+      id: 5,
+      name: "golang:1.21-alpine",
+      type: "Base Image Layer",
+      status: "Compliant",
+      violationsCount: 0,
+      checkedTime: "Updated 3h ago"
+    }
+  ];
 
   const asmAssets = [
     {
@@ -1071,7 +1123,9 @@ function StaticComplianceDashboard({ moduleSlug }) {
 
   const current = rules[selectedRuleId] || rules[0];
 
-  if (isASM) {
+  if (isASM || isSCA) {
+    const assets = isSCA ? scaAssets : asmAssets;
+    const monitorTitle = isSCA ? "Dependency Compliance Monitor" : "Asset Compliance Monitor";
     return (
       <div 
         className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[400px] text-left font-sans select-none" 
@@ -1082,7 +1136,7 @@ function StaticComplianceDashboard({ moduleSlug }) {
           <div className="flex items-center gap-[6px]">
             <span className="w-[8px] h-[8px] rounded-full bg-red-500 animate-pulse" />
             <span className="text-gray-950 font-bold text-[11px] tracking-wider uppercase">
-              Asset Compliance Monitor
+              {monitorTitle}
             </span>
           </div>
           <div className="text-[9px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-xs py-xxs rounded">
@@ -1092,7 +1146,7 @@ function StaticComplianceDashboard({ moduleSlug }) {
 
         {/* Content list - matches height/paddings, overflow-hidden keeps it static */}
         <div className="flex-1 flex flex-col divide-y divide-gray-150 overflow-hidden px-sm py-xs">
-          {asmAssets.map((asset) => {
+          {assets.map((asset) => {
             const isCompliant = asset.status === "Compliant";
             return (
               <div key={asset.id} className="py-sm flex items-center justify-between">
@@ -1498,6 +1552,7 @@ export default function Feature2({ moduleSlug }) {
   const isWAS = moduleSlug === 'was';
   const isAIM = moduleSlug === 'aim';
   const isVM = moduleSlug === 'vm';
+  const isSCA = moduleSlug === 'sca';
 
   return (
     <section className="section-visibility-identity bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -1510,12 +1565,12 @@ export default function Feature2({ moduleSlug }) {
             <div className="flex flex-col items-start gap-sm w-full">
               {/* Badge */}
               <span className="inline-flex items-center rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.16em] uppercase bg-[#F5F5F5] text-black border border-gray-300">
-                {isVM ? "Risk Normalization" : isAIM ? "Focused Inquiries" : isWAS ? "Rule Customization" : isVS ? "Vulnerability Inspection" : "Compliance Auditing"}
+                {isVM ? "Risk Normalization" : isAIM ? "Focused Inquiries" : isWAS ? "Rule Customization" : isVS ? "Vulnerability Inspection" : isSCA ? "Policy Guardrails" : "Compliance Auditing"}
               </span>
 
               {/* Heading */}
               <h2 className="text-[28px] sm:text-[36px] font-semibold leading-[1.2] text-black tracking-tight mt-xs">
-                {isVM ? "Risk Normalization & Automation" : isAIM ? "Context-Specific Views & Isolation" : isWAS ? "Customizable Rule Engine" : isVS ? "Unlimited Scanner" : "Monitor Asset Compliance Violations"}
+                {isVM ? "Risk Normalization & Automation" : isAIM ? "Context-Specific Views & Isolation" : isWAS ? "Customizable Rule Engine" : isVS ? "Unlimited Scanner" : isSCA ? "Automate Dependency License & Compliance Policies" : "Monitor Asset Compliance Violations"}
               </h2>
 
               {/* Description */}
@@ -1528,7 +1583,9 @@ export default function Feature2({ moduleSlug }) {
                       ? "Pre-written rules but we allow customization of those rules and adding new rules to match your needs."
                       : isVS 
                         ? "Deploy more than one scanner reporting to a single dashboard for multi-zoned networks."
-                        : "Establish continuous guardrails to detect assets that violate security policies, regulatory frameworks, and configuration standards in real time."}
+                        : isSCA
+                          ? "Define and enforce license and dependency policies. Block GPL-licensed packages from production builds and flag legacy packages according to custom compliance constraints."
+                          : "Establish continuous guardrails to detect assets that violate security policies, regulatory frameworks, and configuration standards in real time."}
               </p>
             </div>
 
@@ -1545,7 +1602,9 @@ export default function Feature2({ moduleSlug }) {
                       ? "Calculate true severity scores using contextual asset importance, exploit availability, and environment exposure."
                       : isAIM
                         ? "Classify asset networks by target stages (Production, Staging, Development) to isolate external exposures."
-                        : "Access hundreds of ready-to-run rules covering OWASP Top 10, database bypasses, and file injection checks."}
+                        : isSCA
+                          ? "Automatically flag COPYLEFT, GPL, and unapproved licenses before they reach production codebases."
+                          : "Access hundreds of ready-to-run rules covering OWASP Top 10, database bypasses, and file injection checks."}
                   </p>
                 </div>
               </div>
@@ -1564,7 +1623,9 @@ export default function Feature2({ moduleSlug }) {
                           ? "Edit existing rules or write custom YAML definitions to target proprietary application flaws."
                           : isVS 
                             ? "Get precise upgrade commands and configuration changes to fix vulnerable package versions immediately."
-                            : "Get precise actionable configuration changes for security groups, TLS layers, and IAM permissions."}
+                            : isSCA
+                              ? "Detect abandoned, unmaintained, or severely outdated package dependencies to mitigate maintenance risks."
+                              : "Get precise actionable configuration changes for security groups, TLS layers, and IAM permissions."}
                   </p>
                 </div>
               </div>

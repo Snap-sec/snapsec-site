@@ -418,6 +418,125 @@ function VMRemediateWidget({ inView = true }) {
   );
 }
 
+function SCAIngestWidget({ inView = true }) {
+  const repos = [
+    { name: 'frontend-app', type: 'Repo', pkgs: 142 },
+    { name: 'auth-service', type: 'Repo', pkgs: 58 },
+    { name: 'node:18-alpine', type: 'Image', pkgs: 94 },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      style={{
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
+        border: '1px solid #EEEEEE', padding: '14px 16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <span style={{ fontSize: '10px', fontWeight: 600, color: '#1A1A1A', letterSpacing: '0.03em', textTransform: 'uppercase' }}>Ingestion</span>
+        <span style={{ fontSize: '10px', fontWeight: 750, color: '#004DFF' }}>Active</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+        {repos.map((r, i) => (
+          <motion.div key={r.name}
+            initial={{ opacity: 0, x: -6 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.35 + i * 0.07, duration: 0.25 }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 7px', borderRadius: '6px', background: '#FAFAFA' }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', flex: 1 }}>
+              <span style={{ fontSize: '9px', color: '#333', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.name}</span>
+              <span style={{ fontSize: '7px', color: '#9CA3AF', textTransform: 'uppercase' }}>{r.type}</span>
+            </div>
+            <span style={{ fontSize: '9px', color: '#1A1A1A', fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>{r.pkgs} pkgs</span>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function SCAAnalysisWidget({ inView = true }) {
+  const checks = [
+    { label: 'CVEs Found', count: 18, color: '#EF4444' },
+    { label: 'License Policy', count: 2, color: '#F97316' },
+    { label: 'Transitive Risks', count: 42, color: '#EAB308' },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: 0.25 }}
+      style={{
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
+        border: '1px solid #EEEEEE', padding: '14px 16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <span style={{ fontSize: '10px', fontWeight: 600, color: '#1A1A1A', letterSpacing: '0.03em', textTransform: 'uppercase' }}>Analysis</span>
+        <span style={{ fontSize: '14px', fontWeight: 700, color: '#EF4444', fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1 }}>62</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+        {checks.map((c, i) => (
+          <motion.div key={c.label}
+            initial={{ opacity: 0, x: -6 }} animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ delay: 0.35 + i * 0.07, duration: 0.25 }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 7px', borderRadius: '6px', background: '#FAFAFA' }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: c.color }} />
+              <span style={{ fontSize: '9.5px', color: '#333', fontWeight: 500 }}>{c.label}</span>
+            </div>
+            <span style={{ fontSize: '9.5px', color: '#1A1A1A', fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>{c.count}</span>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function SCARemediationWidget({ inView = true }) {
+  const patches = [
+    { name: 'axios 1.6.0 → 1.7.4', tag: 'Safe Upgrade' },
+    { name: 'lodash 4.17.20 → 4.17.21', tag: 'Auto Patch' },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay: 0.3 }}
+      style={{
+        width: '200px', maxWidth: '100%', background: '#fff', borderRadius: '12px',
+        border: '1px solid #EEEEEE', padding: '14px 16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02)',
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <span style={{ fontSize: '10px', fontWeight: 600, color: '#1A1A1A', letterSpacing: '0.03em', textTransform: 'uppercase' }}>Remediation</span>
+        <span style={{ fontSize: '10px', fontWeight: 750, color: '#10B981' }}>94% Fixed</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        {patches.map((p, i) => (
+          <motion.div key={p.name}
+            initial={{ opacity: 0, x: -6 }} animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.5 + i * 0.08, duration: 0.25 }}
+            style={{ display: 'flex', flexDirection: 'column', padding: '5px 7px', borderRadius: '6px', background: '#FAFAFA', gap: '2px' }}
+          >
+            <span style={{ fontSize: '9px', color: '#1A1A1A', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</span>
+            <span style={{ fontSize: '7px', fontWeight: 600, padding: '0px 3px', borderRadius: '2px', background: '#D1FAE5', color: '#065F46', textTransform: 'uppercase', width: 'fit-content' }}>{p.tag}</span>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 // ============================================================
 // Unified Process Mockup Data & Routing Configuration
 // ============================================================
@@ -447,6 +566,11 @@ const MODULE_PROCESS_ITEMS = {
     { title: 'Aggregate',      sub: 'INTEGRATIONS & TOOL INGESTION', Widget: VMAggregateWidget     },
     { title: 'Prioritize',     sub: 'RISK RATINGS & FALSE POSITIVES', Widget: VMPrioritizeWidget    },
     { title: 'Remediate',      sub: 'SLA TRACKING & FIX VALIDATION', Widget: VMRemediateWidget     },
+  ],
+  sca: [
+    { title: 'Ingest',         sub: 'REPOS & REGISTRIES',            Widget: SCAIngestWidget       },
+    { title: 'Analyze',        sub: 'CVEs & LICENSES',               Widget: SCAAnalysisWidget     },
+    { title: 'Remediate',      sub: 'UPGRADES & PRs',                Widget: SCARemediationWidget  },
   ],
 };
 
@@ -607,6 +731,25 @@ const solutionData = {
       {
         "title": "Remediate",
         "text": "Assign ownership, create tickets, track remediation progress, monitor SLAs, and validate fixes to ensure vulnerabilities are resolved efficiently across teams."
+      }
+    ]
+  },
+  sca: {
+    title: 'The Snapsec SCA Solution',
+    desc: 'SCA continuously scans your codebase and container images to identify vulnerable third-party dependencies, open-source license violations, and package risks. Automated alerts and remediation advice help development teams secure their software supply chain without slowing down.',
+    btnText: 'Explore SCA Live',
+    cards: [
+      {
+        "title": "Ingest",
+        "text": "Integrate with code repositories and container registries to continuously scan package manifests, lockfiles, and container image layers."
+      },
+      {
+        "title": "Analyze",
+        "text": "Identify outdated packages, vulnerable open-source dependencies, and license non-compliance across libraries and transitive packages."
+      },
+      {
+        "title": "Remediate",
+        "text": "Receive automated dependency upgrade recommendations, security patches, and lockfile updates to mitigate software supply chain risk."
       }
     ]
   }

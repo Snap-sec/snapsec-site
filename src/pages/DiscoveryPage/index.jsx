@@ -57,6 +57,15 @@ const moduleData = {
     badgeColor: '#FFF',
     accentColor: '#004DFF',
   },
+  sca: {
+    label: 'SCA',
+    name: 'Software Composition Analysis',
+    tagline: 'Continuously scan repositories and container images to identify vulnerable dependencies and license policy issues.',
+    badge: 'Software Composition Analysis',
+    badgeBg: '#E0F2FE',
+    badgeColor: '#0369A1',
+    accentColor: '#0052cc',
+  },
 };
 
 const seoData = {
@@ -85,6 +94,11 @@ const seoData = {
     description: 'Centralized vulnerability management with risk-based prioritization, SLA tracking, and automated remediation workflows. Aggregate findings from Qualys, Snyk, Trivy, and more.',
     softwareName: 'Snapsec VM — Vulnerability Management',
   },
+  sca: {
+    title: 'Software Composition Analysis (SCA) — Open-Source Dependency Security | Snapsec',
+    description: 'Continuously scan your codebase, dependencies, and container images for vulnerabilities and license non-compliance. Automate package upgrades and secure your software supply chain with Snapsec SCA.',
+    softwareName: 'Snapsec SCA — Software Composition Analysis',
+  },
 };
 
 export default function DiscoveryPage() {
@@ -93,7 +107,7 @@ export default function DiscoveryPage() {
   const mod = moduleSlug ? moduleData[slug] : null;
   const seo = seoData[slug] || seoData.asm;
 
-  const showFeatures = slug === 'asm' || slug === 'vs' || slug === 'was' || slug === 'aim' || slug === 'vm';
+  const showFeatures = slug === 'asm' || slug === 'vs' || slug === 'was' || slug === 'aim' || slug === 'vm' || slug === 'sca';
 
   return (
     <>

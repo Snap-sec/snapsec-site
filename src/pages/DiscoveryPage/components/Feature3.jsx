@@ -396,6 +396,7 @@ function VSAutoUpdatingCatalogMap() {
 // Minimalist, Static YAML Code Editor Mockup
 function YamlEditorMockup({ moduleSlug }) {
   const isVS = moduleSlug === 'vs';
+  const isSCA = moduleSlug === 'sca';
 
   const yamlLines = isVS ? [
     { num: "01", text: "id: ", highlight: true, val: "outdated-openssl-detection" },
@@ -412,6 +413,20 @@ function YamlEditorMockup({ moduleSlug }) {
     { num: "12", text: "actions:", highlight: true, val: "" },
     { num: "13", text: "  - ", highlight: true, val: "notify: '#sec-alerts-slack'" },
     { num: "14", text: "  - ", highlight: true, val: "ticket: 'Jira - SecOps'" }
+  ] : isSCA ? [
+    { num: "01", text: "id: ", highlight: true, val: "sca-license-policy" },
+    { num: "02", text: "info:", highlight: true, val: "" },
+    { num: "03", text: "  name: ", highlight: true, val: "\"Block Copyleft Licenses\"" },
+    { num: "04", text: "  severity: ", highlight: true, val: "high" },
+    { num: "05", text: "  description: ", highlight: true, val: "\"Flags GPLv3/AGPL licenses in production targets.\"" },
+    { num: "06", text: "", highlight: false, val: "" },
+    { num: "07", text: "conditions:", highlight: true, val: "" },
+    { num: "08", text: "  - ", highlight: true, val: "dependency.license in ['GPL-3.0', 'AGPL-3.0']" },
+    { num: "09", text: "  - ", highlight: true, val: "project.environment == 'Production'" },
+    { num: "10", text: "", highlight: false, val: "" },
+    { num: "11", text: "actions:", highlight: true, val: "" },
+    { num: "12", text: "  - ", highlight: true, val: "fail_build: true" },
+    { num: "13", text: "  - ", highlight: true, val: "notify: '#compliance-alerts-slack'" }
   ] : [
     { num: "01", text: "id: ", highlight: true, val: "custom-staging-db-check" },
     { num: "02", text: "info:", highlight: true, val: "" },
@@ -438,7 +453,7 @@ function YamlEditorMockup({ moduleSlug }) {
         <div className="flex items-center gap-xs">
           <span className="w-1.5 h-1.5 rounded-full bg-black" />
           <span className="font-mono text-[10px] tracking-tight">
-            {isVS ? "outdated-openssl-detection.yaml" : "custom-staging-db-check.yaml"}
+            {isVS ? "outdated-openssl-detection.yaml" : isSCA ? "sca-license-policy.yaml" : "custom-staging-db-check.yaml"}
           </span>
         </div>
         <span className="text-[8px] font-bold uppercase tracking-wider px-[6px] py-[2px] bg-gray-100 text-gray-600 rounded">YAML Schema v2</span>
@@ -673,6 +688,7 @@ export default function Feature3({ moduleSlug }) {
   const isWAS = moduleSlug === 'was';
   const isAIM = moduleSlug === 'aim';
   const isVM = moduleSlug === 'vm';
+  const isSCA = moduleSlug === 'sca';
 
   return (
     <section className="section-visibility-yaml bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -685,12 +701,12 @@ export default function Feature3({ moduleSlug }) {
             <div className="flex flex-col items-start gap-sm w-full">
               {/* Badge */}
               <span className="inline-flex items-center rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.16em] uppercase bg-[#F5F5F5] text-black border border-gray-300">
-                {isVM ? "Ownership & SLAs" : isAIM ? "Risk Intelligence" : isWAS ? "AI Engine" : isVS ? "Asset Catalog" : "Custom Detection"}
+                {isVM ? "Ownership & SLAs" : isAIM ? "Risk Intelligence" : isWAS ? "AI Engine" : isVS ? "Asset Catalog" : isSCA ? "SBOM & Policies" : "Custom Detection"}
               </span>
 
               {/* Heading */}
               <h2 className="text-[28px] sm:text-[36px] font-semibold leading-[1.2] text-black tracking-tight mt-xs">
-                {isVM ? "Vulnerability Ownership & Accountability" : isAIM ? "Identify Risk Concentration Quickly" : isWAS ? "AI Driven Intelligence" : isVS ? "Auto Updating Asset Catalog" : "Codify Your Security Policies with Custom YAML Rules"}
+                {isVM ? "Vulnerability Ownership & Accountability" : isAIM ? "Identify Risk Concentration Quickly" : isWAS ? "AI Driven Intelligence" : isVS ? "Auto Updating Asset Catalog" : isSCA ? "Generate Standardized SBOMs & Policies" : "Codify Your Security Policies with Custom YAML Rules"}
               </h2>
 
               {/* Description */}
@@ -703,7 +719,9 @@ export default function Feature3({ moduleSlug }) {
                       ? "We use AI for crawling and finding more vulnerabilities and for reporting."
                       : isVS 
                         ? "The asset catalog automatically detects and brings them to scanning."
-                        : "Don't rely on generic checks. Write simple, declarative YAML rules to instantly target company-specific exposures, enforce strict guardrails, and secure your environment on your own terms."}
+                        : isSCA
+                          ? "Enforce security standards across container images and package registries. Export machine-readable CycloneDX/SPDX SBOM files and set up policy checks for automated CI/CD pipeline gatekeeping."
+                          : "Don't rely on generic checks. Write simple, declarative YAML rules to instantly target company-specific exposures, enforce strict guardrails, and secure your environment on your own terms."}
               </p>
             </div>
 
@@ -713,7 +731,7 @@ export default function Feature3({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVM ? "Vulnerability Ownership" : isAIM ? "Alerting & Triggers" : isWAS ? "AI-Powered Crawling" : isVS ? "Codified Vulnerability Logic" : "Codified Attack Surface"}
+                    {isVM ? "Vulnerability Ownership" : isAIM ? "Alerting & Triggers" : isWAS ? "AI-Powered Crawling" : isVS ? "Codified Vulnerability Logic" : isSCA ? "CycloneDX & SPDX Exports" : "Codified Attack Surface"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
                     {isVM
@@ -724,7 +742,9 @@ export default function Feature3({ moduleSlug }) {
                           ? "Our autonomous agent crawls complex SPAs, authenticated login forms, and API routes to uncover deep, hidden endpoints."
                           : isVS 
                             ? "Translate complex library audits and version restrictions into executable files. Target specific package names, running ciphers, or server runtime headers."
-                            : "Translate complex security policies into executable files. Target specific asset subnets, open ports, cloud resource configurations, or host tags."}
+                            : isSCA
+                              ? "Generate comprehensive software bills of materials (SBOM) in JSON and XML formats for vendor auditing and compliance."
+                              : "Translate complex security policies into executable files. Target specific asset subnets, open ports, cloud resource configurations, or host tags."}
                   </p>
                 </div>
               </div>
@@ -732,7 +752,7 @@ export default function Feature3({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVM ? "SLA Enforcements" : isAIM ? "Risk Prioritization" : isWAS ? "Automated Reporting" : "Instant Action Workflows"}
+                    {isVM ? "SLA Enforcements" : isAIM ? "Risk Prioritization" : isWAS ? "Automated Reporting" : isSCA ? "Policy Gatekeeping" : "Instant Action Workflows"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
                     {isVM
@@ -741,7 +761,9 @@ export default function Feature3({ moduleSlug }) {
                         ? "Classify exposures by severity to help security teams prioritize remediation on critical issues first."
                         : isWAS
                           ? "Generate detailed vulnerability reports, complete with reproducible proof-of-concept steps and direct remediation code."
-                          : "Trigger immediate remediation. Automatically route policy violations directly to Jira, trigger webhook events, or alert security teams via Slack."}
+                          : isSCA
+                            ? "Block builds or deployments based on dependency license risks or vulnerability thresholds defined in policy files."
+                            : "Trigger immediate remediation. Automatically route policy violations directly to Jira, trigger webhook events, or alert security teams via Slack."}
                   </p>
                 </div>
               </div>

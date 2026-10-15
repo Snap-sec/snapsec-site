@@ -4,6 +4,7 @@ import HomePage from './pages/home-page/home-pages.jsx';
 import ModuleViewPage from './pages/ModuleViewPage/index.jsx';
 import DiscoveryPage from './pages/DiscoveryPage/index.jsx';
 import PlatformPage from './pages/PlatformPage/index.js';
+import PricingPage from './pages/PricingPage/index.js';
 import ServicesPage, { MethodologyPage, OurMethodologyPage } from './pages/ServicesPage/index.js';
 import AboutUsPage from './pages/AboutUsPage/index.jsx';
 import OurWorkPage from './pages/OurWorkPage/index.jsx';
@@ -21,6 +22,7 @@ export default function AppRoutes() {
       <Route path="/discovery" element={<DiscoveryPage />} />
       <Route path="/discovery/:moduleSlug" element={<DiscoveryPage />} />
       <Route path="/platform" element={<PlatformPage />} />
+      <Route path="/pricing" element={<PricingPage />} />
       <Route path="/money2020" element={<Money2020Page />} />
       <Route path="/services" element={<ServicesPage />} />
       <Route path="/services/methodology" element={<MethodologyPage />} />

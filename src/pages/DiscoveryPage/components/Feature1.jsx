@@ -1397,11 +1397,170 @@ function DiscoveryNetworkMap({ moduleSlug }) {
   );
 }
 
+function SCADependencyTreeWidget() {
+  const [hoveredNode, setHoveredNode] = useState(null);
+
+  const nodes = [
+    { id: 1, label: 'app-service', version: '1.2.0', x: 300, y: 50, type: 'root', status: 'Secure', info: 'Root Application' },
+    { id: 2, label: 'express', version: '4.18.2', x: 200, y: 120, type: 'direct', status: 'Secure', info: 'Direct Dependency • Web Framework' },
+    { id: 3, label: 'axios', version: '1.6.0', x: 300, y: 120, type: 'direct', status: 'Vulnerable', cve: 'CVE-2024-28849', info: 'Direct Dependency • SSRF / Info Leak Risk' },
+    { id: 4, label: 'lodash', version: '4.17.20', x: 400, y: 120, type: 'direct', status: 'Vulnerable', cve: 'CVE-2021-23337', info: 'Direct Dependency • Prototype Pollution' },
+    { id: 5, label: 'body-parser', version: '1.20.1', x: 150, y: 200, type: 'transitive', status: 'Secure', info: 'Transitive Dependency • Parser' },
+    { id: 6, label: 'follow-redirects', version: '1.15.4', x: 300, y: 200, type: 'transitive', status: 'Vulnerable', cve: 'CVE-2024-XXXX', info: 'Transitive Dependency • Redirect Leak' },
+    { id: 7, label: 'safe-buffer', version: '5.2.1', x: 450, y: 200, type: 'transitive', status: 'Secure', info: 'Transitive Dependency • Buffer Util' },
+  ];
+
+  const connections = [
+    { from: 1, to: 2 }, { from: 1, to: 3 }, { from: 1, to: 4 },
+    { from: 2, to: 5 }, { from: 3, to: 6 }, { from: 4, to: 7 },
+  ];
+
+  return (
+    <div className="w-full rounded-[8px] border border-gray-600 bg-white overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] flex flex-col h-[400px]" style={{ fontFamily: "'Inter', sans-serif" }}>
+      {/* Title Bar */}
+      <div className="bg-[#FAFAFA] border-b border-gray-600 px-sm py-xs flex items-center justify-between">
+        <div className="flex items-center gap-[6px]">
+          <span className="w-[8px] h-[8px] rounded-full bg-red-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-yellow-400" />
+          <span className="w-[8px] h-[8px] rounded-full bg-green-400" />
+          <span className="text-gray-900 font-semibold text-[10px] ml-xs tracking-wider uppercase">
+            Dependency Tree Analysis
+          </span>
+        </div>
+        <div className="flex items-center gap-xs text-gray-900 text-[10px] font-semibold">
+          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse inline-block" />
+          <span className="text-red-600 uppercase">
+            3 VULNERABLE PACKAGES
+          </span>
+        </div>
+      </div>
+
+      {/* Tree Map Area */}
+      <div className="flex-1 relative overflow-hidden bg-white cursor-crosshair">
+        <svg className="w-full h-full" viewBox="0 0 600 270">
+          {/* Grid Pattern */}
+          <pattern id="treeGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#F3F4F6" strokeWidth="0.5" />
+          </pattern>
+          <rect width="600" height="270" fill="url(#treeGrid)" />
+
+          {/* Connection Lines */}
+          {connections.map((conn, idx) => {
+            const fromNode = nodes.find(n => n.id === conn.from);
+            const toNode = nodes.find(n => n.id === conn.to);
+            if (!fromNode || !toNode) return null;
+            const isVulnerablePath = fromNode.status === 'Vulnerable' || toNode.status === 'Vulnerable';
+            return (
+              <line
+                key={idx}
+                x1={fromNode.x}
+                y1={fromNode.y}
+                x2={toNode.x}
+                y2={toNode.y}
+                stroke={isVulnerablePath ? "#EF4444" : "#E5E7EB"}
+                strokeWidth={isVulnerablePath ? 2 : 1.5}
+                strokeDasharray={isVulnerablePath ? "3 3" : "none"}
+              />
+            );
+          })}
+
+          {/* Nodes */}
+          {nodes.map((node) => {
+            const isVulnerable = node.status === 'Vulnerable';
+            const color = isVulnerable ? '#EF4444' : '#10B981';
+            const isHovered = hoveredNode?.id === node.id;
+
+            return (
+              <g key={node.id} className="cursor-pointer"
+                 onMouseEnter={() => setHoveredNode(node)}
+                 onMouseLeave={() => setHoveredNode(null)}>
+                {isVulnerable && (
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r="12"
+                    fill="#EF4444"
+                    fillOpacity="0.2"
+                    className="animate-ping"
+                  />
+                )}
+                <circle
+                  cx={node.x}
+                  cy={node.y}
+                  r={isHovered ? 8 : 6}
+                  fill={color}
+                  className="transition-all duration-200"
+                />
+                <text
+                  x={node.x}
+                  y={node.y - 14}
+                  textAnchor="middle"
+                  className="text-[10px] font-sans font-bold fill-gray-900 select-none pointer-events-none"
+                >
+                  {node.label}
+                </text>
+                <text
+                  x={node.x}
+                  y={node.y + 20}
+                  textAnchor="middle"
+                  className="text-[9px] font-mono fill-gray-400 select-none pointer-events-none"
+                >
+                  v{node.version}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* Floating Tooltip */}
+        <div className={`absolute bottom-xs left-xs right-xs bg-white border border-gray-600 rounded-[6px] p-xs shadow-md transition-all duration-200 flex items-center justify-between text-[11px] ${hoveredNode ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}>
+          {hoveredNode && (
+            <>
+              <div className="flex flex-col min-w-0">
+                <span className="font-bold text-black truncate">{hoveredNode.label} @ v{hoveredNode.version}</span>
+                <span className="text-[10px] text-gray-500 mt-[1px]">{hoveredNode.info}</span>
+              </div>
+              <span className={`text-[9px] uppercase font-bold tracking-wider px-[6px] py-[2.5px] rounded-[4px] shrink-0 ml-sm ${
+                hoveredNode.status === 'Vulnerable'
+                  ? "bg-red-100 text-red-700 border border-red-200"
+                  : "bg-green-100 text-green-700"
+              }`}>
+                {hoveredNode.status === 'Vulnerable' ? hoveredNode.cve : "Secure"}
+              </span>
+            </>
+          )}
+        </div>
+
+        {!hoveredNode && (
+          <div className="absolute bottom-xs left-xs bg-white border border-gray-200 rounded-[4px] px-[8px] py-[4px] text-[10px] text-gray-500 shadow-sm pointer-events-none">
+            Hover nodes to inspect direct/transitive package status.
+          </div>
+        )}
+      </div>
+
+      {/* Legend Row */}
+      <div className="bg-[#FAFAFA] border-t border-gray-200 px-sm py-[8px] flex items-center justify-between text-[10px] font-semibold text-gray-900">
+        <div className="flex gap-md">
+          <div className="flex items-center gap-[4px]">
+            <span className="w-2 h-2 rounded-full bg-[#10B981]" />
+            <span>Secure Libraries (4)</span>
+          </div>
+          <div className="flex items-center gap-[4px]">
+            <span className="w-2 h-2 rounded-full bg-[#EF4444]" />
+            <span>Vulnerable Packages (3)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Feature1({ moduleSlug }) {
   const isVS = moduleSlug === 'vs';
   const isWAS = moduleSlug === 'was';
   const isAIM = moduleSlug === 'aim';
   const isVM = moduleSlug === 'vm';
+  const isSCA = moduleSlug === 'sca';
 
   return (
     <section className="section-visibility-integration bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -1414,12 +1573,12 @@ export default function Feature1({ moduleSlug }) {
             <div className="flex flex-col items-start gap-sm w-full">
               {/* Badge */}
               <span className="inline-flex items-center rounded-[4px] px-[8px] py-[2.5px] text-[10px] font-bold tracking-[0.16em] uppercase bg-[#F5F5F5] text-black border border-gray-300">
-                {isVM ? "Data Aggregation" : isAIM ? "Asset Discovery" : isWAS ? "Dynamic Scan Engine" : isVS ? "Continuous Assessment" : "Multi-Source Discovery"}
+                {isVM ? "Data Aggregation" : isAIM ? "Asset Discovery" : isWAS ? "Dynamic Scan Engine" : isVS ? "Continuous Assessment" : isSCA ? "Supply Chain Security" : "Multi-Source Discovery"}
               </span>
 
               {/* Heading / Value */}
               <h2 className="text-[28px] sm:text-[36px] font-semibold leading-[1.2] text-black tracking-tight mt-xs">
-                {isVM ? "Unified Vulnerability Aggregation & Normalization" : isAIM ? "Unified Asset Inventory & Visibility" : isWAS ? "Comprehensive Web Application & API scanning" : isVS ? "Comprehensive Asset Coverage" : "See every asset exposed to the internet."}
+                {isVM ? "Unified Vulnerability Aggregation & Normalization" : isAIM ? "Unified Asset Inventory & Visibility" : isWAS ? "Comprehensive Web Application & API scanning" : isVS ? "Comprehensive Asset Coverage" : isSCA ? "Comprehensive Dependency & Package Scanning" : "See every asset exposed to the internet."}
               </h2>
 
               {/* Description */}
@@ -1432,7 +1591,9 @@ export default function Feature1({ moduleSlug }) {
                       ? "It scans more than 1000 vulnerabilities, including the OWASP Top 10 and other advanced web attacks on your web application."
                       : isVS 
                         ? "Scan assets like internal IPs, subdomains, external IPs, and IT assets all in one place."
-                        : "Discover domains, subdomains, IPs, applications, APIs, cloud resources, and shadow IT assets across your organization to maintain a complete and continuously updated view of your external attack surface."}
+                        : isSCA
+                          ? "Automatically scan your application source code, lockfiles, and container layers to detect third-party package vulnerabilities and licensing risks."
+                          : "Discover domains, subdomains, IPs, applications, APIs, cloud resources, and shadow IT assets across your organization to maintain a complete and continuously updated view of your external attack surface."}
               </p>
             </div>
 
@@ -1442,7 +1603,7 @@ export default function Feature1({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVM ? "Multi-Source Aggregation" : isAIM ? "Complete Asset Coverage" : isWAS ? "OWASP Top 10 Audits" : isVS ? "Automated CVE Mapping" : "Continuous Mapping"}
+                    {isVM ? "Multi-Source Aggregation" : isAIM ? "Complete Asset Coverage" : isWAS ? "OWASP Top 10 Audits" : isVS ? "Automated CVE Mapping" : isSCA ? "Code & Container Ingestion" : "Continuous Mapping"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
                     {isVM
@@ -1453,7 +1614,9 @@ export default function Feature1({ moduleSlug }) {
                           ? "Detect injection attacks, cross-site scripting, broken authentication, and security misconfigurations."
                           : isVS 
                             ? "Automatically match discovered services against the latest NVD vulnerability database."
-                            : "Automatic monitoring of DNS records, CT logs, and cloud catalogs."}
+                            : isSCA
+                              ? "Sync with GitHub, GitLab, and container registries to parse package manifests and base images automatically."
+                              : "Automatic monitoring of DNS records, CT logs, and cloud catalogs."}
                   </p>
                 </div>
               </div>
@@ -1461,7 +1624,7 @@ export default function Feature1({ moduleSlug }) {
                 <span className="w-5 h-5 rounded-full bg-green-50 border border-green-200 text-green-600 flex items-center justify-center shrink-0 mt-[2px]">✓</span>
                 <div>
                   <h4 className="text-[13px] font-bold text-black">
-                    {isVM ? "Normalization Engine" : isAIM ? "Dynamic Continuous Sync" : isWAS ? "API & Input Exposure" : isVS ? "Package Version Audits" : "Shadow IT Detection"}
+                    {isVM ? "Normalization Engine" : isAIM ? "Dynamic Continuous Sync" : isWAS ? "API & Input Exposure" : isVS ? "Package Version Audits" : isSCA ? "Deep Vulnerability Detection" : "Shadow IT Detection"}
                   </h4>
                   <p className="text-[12px] text-gray-900 mt-[2px]">
                     {isVM
@@ -1472,7 +1635,9 @@ export default function Feature1({ moduleSlug }) {
                           ? "Verify forms, outbound webhook integrations, XML inputs, and API parameters against bypasses."
                           : isVS 
                             ? "Identify vulnerable third-party dependencies, open ports, and unpatched infrastructure."
-                            : "Uncover rogue environments, unmanaged APIs, and forgotten cloud storage."}
+                            : isSCA
+                              ? "Trace transitive dependencies, outdated libraries, and license non-compliance to pinpoint risks."
+                              : "Uncover rogue environments, unmanaged APIs, and forgotten cloud storage."}
                   </p>
                 </div>
               </div>
@@ -1490,6 +1655,8 @@ export default function Feature1({ moduleSlug }) {
                 <WASWebUiBugMap />
               ) : isVS ? (
                 <VSRadarScannerMap moduleSlug={moduleSlug} />
+              ) : isSCA ? (
+                <SCADependencyTreeWidget />
               ) : (
                 <DiscoveryNetworkMap moduleSlug={moduleSlug} />
               )}
